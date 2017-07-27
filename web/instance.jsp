@@ -34,11 +34,14 @@
 	<link href="css/screen.css" rel="stylesheet" />
 	<link href="css/inline.style.sheet4.css" rel="stylesheet" />
 
+	<link href="css/plugins/right-menu/context.standalone.css" rel="stylesheet" type="text/css" />
+	<link href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" rel="stylesheet" type="text/css" />
+
 
 	<%--<script src="OntoSys/js/easyui/jquery-1.44-min.js" type="text/javascript"></script>--%>
-	<script src="js/jquery.js" type="text/javascript"></script>
+	<%--<script src="js/jquery.js" type="text/javascript"></script>--%>
     <%--<script src="js/jquery-1.10.2.min.js"></script>--%>
-	<%--<script src="js/jquery-1.10.2.js"></script>--%>
+	<script src="js/jquery-1.10.2.js"></script>
 
 
 	<%--<script src="js/jquery-ui.min.js"></script>--%>
@@ -47,7 +50,7 @@
 	<script src="js/jquery.autocomplete.js" type="text/javascript"></script>
 	<%--<script src='data/localdata.js' type='text/javascript'></script>--%>
 	<%--<script src="data/testdata.js" type="text/javascript" charset=”utf-8″></script>--%>
-	<script src="js/jquery.treeview.edit.js" type="text/javascript"></script>
+	<%--<script src="js/jquery.treeview.edit.js" type="text/javascript"></script>--%>
 	<%--<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>--%>
 	<script src="http://webapi.amap.com/maps?v=1.3&key=8325164e247e15eea68b59e89200988b&plugin=AMap.Transfer,AMap.Walking,AMap.Driving,AMap.PlaceSearch,AMap.ToolBar,AMap.Marker,AMap.MouseTool,AMap.PolyEditor"></script>
 	<script src="http://webapi.amap.com/js/marker.js"></script>
@@ -61,12 +64,17 @@
 	<script src="OntoSys/js/galleryview/jquery.easing.1.3.js" type="text/javascript"></script>
 	<script src="OntoSys/js/galleryview/jquery.galleryview-3.0-dev.js" type="text/javascript"></script>
 	<script src="OntoSys/js/easyResponsiveTabs.js" type="text/javascript"></script>
-	<script src="OntoSys/js/easyui/jquery.iDialog.js"></script>
+	<%--<script src="OntoSys/js/easyui/jquery.iDialog.js"></script>--%>
 	<script src="OntoSys/js/custom2.js"></script>
 	<%--<script src="OntoSys/js/my/instanceLoad.js" type="text/javascript" charset="utf-8"></script>--%>
+
+	<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+	<!--<script src="../../../js/bootstrap/js/bootstrap.js" type="text/javascript"></script>-->
+	<script src="js/plugins/right-menu/demo3.js"></script>
+	<script src="js/plugins/right-menu/context.js"></script>
     
 </head>
-<body class="easyui-layout" onload="load();">
+<body class="easyui-layout"">
     <div id="northDiv" data-options="region:'north',border:false">
         <span><img id="icon" src="OntoSys/img/knowledge.png" /></span>
         <span>地名一张图管理系统</span>

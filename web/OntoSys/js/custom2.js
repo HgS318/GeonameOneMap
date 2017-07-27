@@ -9,6 +9,9 @@ var entered = false;	//	信息窗体搜索框是否键入过Enter
 var infoWinDown;	//	信息窗体下部搜索框html
 
 
+
+var mousePos;
+
 var k = true, R = false;
 var O = '93%', j = '500px', L = '5px';
 var G = '93%', J = '500px', K = '5px';
@@ -859,12 +862,24 @@ $(function() {
 					map.addControl(new AMap.Scale);
 				});
 			});
+			map.on('rightclick', function(e) {
+				// me.contextMenu.open(map, e.lnglat);
+				// me.contextMenuPositon = e.lnglat; //右键菜单位置
+				var pos = [e.lnglat.lng, e.lnglat.lat];
+				mousePos = pos;
+			});
 			placedata = data;
 
 			showingPlaces = placedata;
 			initmarkers();
 			setAutoComplete();
 			map.setFitView();
+
+			context.init({preventDoubleContext: false});
+//    context.attach('#PNG_JPG', test_menu);
+//    context.attach('#NO_OPTIONS', test_menu);
+//    context.attach('#notDynamic', test_menu2);
+			context.attach('#mapContainer', test_menu);
 		},
 		error:function(data){
 			console.log(data);
