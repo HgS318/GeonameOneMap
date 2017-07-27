@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0047)http://www.rsteq.com/geowiki/index.php?category -->
+<html xmlns="http://www.w3.org/1999/xhtml" id="html"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<title> 地理百科 </title>
+
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="generator" content="HDWiki 5.1">
+<meta name="author" content="HDWiki Team and Hudong UI team">
+<meta name="copyright" content="2005-2013 baike.com">
+<link href="./百科分类_files/hdwiki.css" rel="stylesheet" type="text/css" media="all">
+<script type="text/javascript" src="./百科分类_files/jquery.js"></script>
+<script type="text/javascript" src="./百科分类_files/front.js"></script>
+<script type="text/javascript" src="./百科分类_files/jquery.dialog-0.8.min.js"></script>
+<script type="text/javascript" src="./百科分类_files/login.js"></script><script type="text/javascript" src="./百科分类_files/function.js"></script>
+<script type="text/javascript">
+$.dialog.setConfig('base', 'http://www.rsteq.com/geowiki/style/default');
+var g_isLogin, g_isUcenter=false, g_forward = '',g_api_url='', g_regulars = '', g_uname_minlength, g_uname_maxlength;
+g_regulars = "";
+g_isLogin = false;
+g_seo_prefix = "index.php?";
+g_seo_suffix = "";
+g_uname_minlength = "3"||3;
+g_uname_maxlength = "15"||15;
+</script>
+<style id="hudong_dialog_style">div.hudong_dialog {border:1px rgb(0, 126, 115) solid;background-color:#FFFFFF;overflow:hidden;}			
+ div.hudong_dialog h2.title{margin:0;height:22px;background-color:rgb(0, 126, 115);				border-bottom:1px solid rgb(0, 126, 115);color:#fff;padding:3px 5px;font-weight:bold;font-size:14px;overflow:hidden;-moz-user-select:none;line-height:22px;}			
+ div.hudong_dialog .close{display:block;float:right;cursor:pointer;width:16px;height:16px;margin:0;				top:5px;right:5px;position:absolute;background:url(http://www.rsteq.com/geowiki/style/default/close.jpg);}			
+ div.hudong_dialog div.content{padding:0;text-align:center;background-color:#FFFFFF;position:relative;}			
+ div.hudong_dialog div.button{position:absolute;width:100%;left:0px;bottom:0;text-align:center;height:25px;padding:4px 10px 10px;}			
+ div.hudong_dialog div.button input{text-align:center;margin-right:10px;}			
+ div.hudong_overlay{z-index:2001;cursor:default;background-color:#ffffff;				width:0 !important;height:100%;top:0px;left:0 !important;position:absolute;margin:0 auto;}div.bluebox {border:5px solid #666666;}			
+ div.bluebox h2.title{background:none;background-color:#009DF0;color:#FFFFFF;font-size:14px;}			
+ div.bluebox .close{top:5px;right:5px;}			
+ div.bluebox div.button{background-color:#E8E8E8;padding:5px 10px 2px;}div.noborder {border:0;background-color:transparent;}
+ div.noborder .close{top:10px;right:10px;}</style></head>
+<body>
+<!--编辑异常中断，下次登录提示-->
+
+<ul id="login" class="w-950 bor_b-ccc"> 
+<li name="login"><a href="http://www.rsteq.com/geowiki/index.php?user-login">登录</a></li>
+<li name="register" class="bor_no"><a href="http://www.rsteq.com/geowiki/index.php?user-register">注册</a></li>
+<!--<li class="bor_no help"><a href="index.php?doc-innerlink-%E5%B8%AE%E5%8A%A9">帮助</a></li>-->
+</ul>
+<div class="bg_book">
+	<a href="http://www.rsteq.com/geowiki" id="logo"><img alt="HDWiki" height="65px" src="./百科分类_files/logo.gif"></a>
+		<form name="searchform" method="post" action="http://www.rsteq.com/geowiki/index.php?search-kw">
+	<p id="search">
+		<input name="searchtext" class="btn_txt" maxlength="80" size="42" value="" type="text">
+	<input name="default" value="搜索词条" tabindex="2" class="enter_doc" onclick="document.searchform.action=&#39;index.php?search-default&#39;;document.searchform.submit();" type="button">
+	<input name="full" value="1" tabindex="1" type="hidden">
+	<!--<input name="search" value="搜 索" tabindex="1" class="btn_inp sea_doc" type="submit"/>-->
+	<a href="http://www.rsteq.com/geowiki/index.php?search-fulltext" class="sea_advanced link_black">高级搜索</a>
+		
+	<label>热门搜索：
+									<a href="http://www.rsteq.com/geowiki/index.php?doc-innerlink-%E6%97%B6%E4%BB%A4%E6%B9%96" target="_blank">时令湖</a>
+												<a href="http://www.rsteq.com/geowiki/index.php?doc-innerlink-%E6%B5%B7%E4%B8%8A%E5%B9%B3%E5%8F%B0" target="_blank">海上平台</a>
+												<a href="http://www.rsteq.com/geowiki/index.php?doc-innerlink-%E7%A7%BB%E5%8A%A8%E9%80%9A%E4%BF%A1%E5%A1%94" target="_blank">移动通信塔</a>
+						</label>
+	</p>
+	</form>
+		<div id="nav" class="w-950 bor_b-ccc">
+	<ul>
+			<li><a href="http://www.rsteq.com/geowiki/">首页</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?category">百科分类</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list">排行榜</a></li>
+			
+			</ul>
+
+			<!-- 匿名用户 -->
+	
+	</div>
+</div>
+
+<!--ad start -->
+
+
+<!--ad end --><div id="category" class="l w-710 o-v bor-c_dl category">
+	<div class="hd_map">
+	<a href="http://www.rsteq.com/geowiki">地理百科</a> &gt;&gt;百科分类
+	</div>
+	<!--
+		<dl class="i6-ff m-t10 p-b10">
+			
+	  <dt><a href="http://www.rsteq.com/geowiki/index.php?category-view-71">植被与土质</a></dt>
+	  	  <dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-115">农林用地</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-116">城市绿地</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-117">土质</a></dd>	 	</dl>
+		<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="http://www.rsteq.com/geowiki/index.php?category-view-69">境界与政区</a></dt>
+	  	  <dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-102">国外地区</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-103">国家行政区</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-104">省级行政区</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-105">地级行政区</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-106">县级行政区</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-107">乡级行政区</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-108">其它区域</a></dd>	 	</dl>
+		<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="http://www.rsteq.com/geowiki/index.php?category-view-70">地貌</a></dt>
+	  	  <dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-109">等高线（广义）</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-110">高程注记点</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-111">水域等值线</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-112">水下注记点</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-113">自然地貌</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-114">人工地貌</a></dd>	 	</dl>
+		<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="http://www.rsteq.com/geowiki/index.php?category-view-68">管线</a></dt>
+	  	  <dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-101">城市管线</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-100">油、气、水输送主管道</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-99">通信线</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-98">输电线</a></dd>	 	</dl>
+		<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="http://www.rsteq.com/geowiki/index.php?category-view-66">居民地及设施</a></dt>
+	  	  <dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-88">其它建筑物及设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-87">科学观测站</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-86">宗教设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-85">名胜古迹</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-84">公共服务及其设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-83">农业及其设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-82">工矿及其设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-81">居民地</a></dd>	 	</dl>
+		<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="http://www.rsteq.com/geowiki/index.php?category-view-67">交通</a></dt>
+	  	  <dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-97">其它交通设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-96">空运设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-95">航道</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-94">水运设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-93">道路构造物及附属设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-92">乡村道路</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-91">城市道路</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-90">城际公路</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-89">铁路</a></dd>	 	</dl>
+		<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="http://www.rsteq.com/geowiki/index.php?category-view-64">定位基础</a></dt>
+	  	  <dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-73">数学基础</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-72">测量控制点</a></dd>	 	</dl>
+		<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="http://www.rsteq.com/geowiki/index.php?category-view-65">水系</a></dt>
+	  	  <dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-80">水利及附属设施</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-79">其它水系要素</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-78">海洋要素</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-77">水库（广义）</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-76">湖泊（广义）</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-75">沟渠</a></dd><dd><a href="http://www.rsteq.com/geowiki/index.php?category-view-74">河流</a></dd>	 	</dl>
+		-->
+		
+		    <dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-71" >行政区域类</a></dt>
+				<dd><a href="index.php?category-view-115">行政区域</a></dd>
+			</dl>
+            <dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-69" >非行政区域类</a></dt>
+					<dd><a href="index.php?category-view-102">地片</a></dd>
+					<dd><a href="index.php?category-view-103">边贸区、口岸</a></dd>
+					<dd><a href="index.php?category-view-104">非行政区域类其他</a></dd>
+					<dd><a href="index.php?category-view-105">工业区、开发区</a></dd>
+					<dd><a href="index.php?category-view-106">军事区</a></dd>
+					<dd><a href="index.php?category-view-107">矿区</a></dd>
+					<dd><a href="index.php?category-view-108">农、林、牧、渔区</a></dd> 
+					<dd><a href="index.php?category-view-102">区片</a></dd>
+					<!-- <dd><a href="index.php?category-view-107">...</a></dd> -->
+			</dl>
+            <dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-70" >群众自治组织类</a></dt>
+                <dd><a href="index.php?category-view-109">群众自治组织</a></dd>
+				<dd><a href="index.php?category-view-110">群众自治组织类其他</a></dd>
+			</dl>
+            <dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-68" >居民点类</a></dt>
+                <dd><a href="index.php?category-view-101">居民点</a></dd>
+				<dd><a href="index.php?category-view-100">居民点类其他</a></dd>
+			</dl>
+            <dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-66" >交通运输设施类</a></dt>
+                <dd><a href="index.php?category-view-88">街、巷</a></dd>
+				<dd><a href="index.php?category-view-87">车站、停车场</a></dd>
+				<dd><a href="index.php?category-view-86">城镇交通运输类其他</a></dd>
+				<dd><a href="index.php?category-view-85">船闸、升船机站</a></dd>
+				<dd><a href="index.php?category-view-84">道班</a></dd>
+				<dd><a href="index.php?category-view-83">道口</a></dd>
+				<dd><a href="index.php?category-view-82">灯塔、导航台</a></dd>
+				<dd><a href="index.php?category-view-81">渡口</a></dd> 
+				<dd><a href="index.php?category-view-88">公路</a></dd>
+				<dd><a href="index.php?category-view-87">公路运输类其他</a></dd>
+				<dd><a href="index.php?category-view-86">管道</a></dd>
+				<dd><a href="index.php?category-view-85">管站</a></dd>
+				<dd><a href="index.php?category-view-84">航空港</a></dd>
+				<dd><a href="index.php?category-view-83">航空与管道运输类其他</a></dd>
+				<dd><a href="index.php?category-view-82">环岛、路口</a></dd>
+				<dd><a href="index.php?category-view-81">火车站</a></dd> 
+				<dd><a href="index.php?category-view-88">加油站</a></dd>
+				<dd><a href="index.php?category-view-87">检查站</a></dd>
+				<dd><a href="index.php?category-view-86">交通运输附属设施类其他</a></dd>
+				<dd><a href="index.php?category-view-85">交通运输设施类其他</a></dd>
+				<dd><a href="index.php?category-view-84">锚地</a></dd>
+				<dd><a href="index.php?category-view-83">桥梁</a></dd>
+				<dd><a href="index.php?category-view-82">收费站</a></dd>
+				<dd><a href="index.php?category-view-81">水上运输类其他</a></dd>
+				<dd><a href="index.php?category-view-85">交通运输设施类其他</a></dd>
+				<dd><a href="index.php?category-view-84">水运港口</a></dd>
+				<dd><a href="index.php?category-view-83">隧道</a></dd>
+				<dd><a href="index.php?category-view-82">索道、扶梯</a></dd>
+				<dd><a href="index.php?category-view-81">铁路</a></dd>
+				<dd><a href="index.php?category-view-82">铁路运输类其他</a></dd>
+				<dd><a href="index.php?category-view-81">有轨交通线路</a></dd>
+				<!-- <dd><a href="index.php?category-view-107">...</a></dd> -->
+            </dl>
+            <dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-67" >水利电力设施类</a></dt>
+                <dd><a href="index.php?category-view-97">发电站</a></dd>
+				<dd><a href="index.php?category-view-96">泵站</a></dd>
+				<dd><a href="index.php?category-view-95">池塘、海塘</a></dd>
+				<dd><a href="index.php?category-view-94">堤堰</a></dd>
+				<dd><a href="index.php?category-view-93">堤堰类其他</a></dd>
+				<dd><a href="index.php?category-view-92">电力设施类其他</a></dd>
+				<dd><a href="index.php?category-view-89">灌区</a></dd>
+				<dd><a href="index.php?category-view-97">涵洞</a></dd>
+				<dd><a href="index.php?category-view-96">井</a></dd>
+				<dd><a href="index.php?category-view-95">排灌设施类其他</a></dd>
+				<dd><a href="index.php?category-view-94">输变电站</a></dd>
+				<dd><a href="index.php?category-view-93">水库</a></dd>
+				<dd><a href="index.php?category-view-92">水利、电力、通信设施类其他</a></dd>
+				<dd><a href="index.php?category-view-91">水渠</a></dd>
+				<dd><a href="index.php?category-view-90">通信基站</a></dd>
+				<dd><a href="index.php?category-view-89">通信设施类其他</a></dd><dd><a href="index.php?category-view-97">发电站</a></dd>
+				<dd><a href="index.php?category-view-96">蓄洪区、泄洪区</a></dd>
+				<dd><a href="index.php?category-view-95">蓄水区类其他</a></dd>
+				<dd><a href="index.php?category-view-94">运河</a></dd>
+				<!-- <dd><a href="index.php?category-view-107">...</a></dd> -->
+			</dl>
+			<dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-65" >纪念地旅游景点类</a></dt>
+                <dd><a href="index.php?category-view-80">纪念地、遗址</a></dd>
+				<dd><a href="index.php?category-view-79">纪念地、遗址类其他</a></dd>
+				<dd><a href="index.php?category-view-78">公园、风景区</a></dd>
+				<dd><a href="index.php?category-view-77">自然保护区</a></dd>
+				<dd><a href="index.php?category-view-76">宗教纪念地</a></dd>
+				<dd><a href="index.php?category-view-75">纪念地、旅游景点类其他</a></dd>
+				<!-- <dd><a href="index.php?category-view-107">...</a></dd> -->
+            </dl>
+            <dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-64" >建筑物类</a></dt>
+                <dd><a href="index.php?category-view-73">广场、体育场</a></dd>
+				<dd><a href="index.php?category-view-72">城堡、墙</a></dd>
+				<dd><a href="index.php?category-view-73">亭、台、碑、塔</a></dd>
+				<dd><a href="index.php?category-view-72">房屋</a></dd> 
+				 <dd><a href="index.php?category-view-73">建筑物类其他</a></dd>
+            </dl>
+
+			<dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-71" >单位类</a></dt>
+				<dd><a href="index.php?category-view-115">单位</a></dd>
+				<dd><a href="index.php?category-view-116">单位类其他</a></dd>
+			</dl>
+            <dl class="i6-ff m-t10 p-b10">
+                <dt><a href="index.php?category-view-67" >陆地水系类</a></dt>
+                <dd><a href="index.php?category-view-97">河流</a></dd>
+				<dd><a href="index.php?category-view-96">河口</a></dd>
+				<dd><a href="index.php?category-view-95">河流类其他</a></dd>
+				<dd><a href="index.php?category-view-94">河滩</a></dd>
+				<dd><a href="index.php?category-view-93">河湾</a></dd>
+				<dd><a href="index.php?category-view-92">河源</a></dd>
+				<dd><a href="index.php?category-view-91">湖泊</a></dd>
+				<dd><a href="index.php?category-view-90">阶地</a></dd>
+				<dd><a href="index.php?category-view-89">陆地岛屿类其他</a></dd>
+				<dd><a href="index.php?category-view-97">陆地水系类其他</a></dd>
+				<dd><a href="index.php?category-view-96">瀑布</a></dd>
+				<dd><a href="index.php?category-view-95">泉</a></dd>
+				<dd><a href="index.php?category-view-94">三角洲</a></dd>
+				<dd><a href="index.php?category-view-93">峡谷</a></dd>
+				<!-- <dd><a href="index.php?category-view-107">...</a></dd> -->
+			</dl>
+		
+		</div>
+<div class="r w-230">
+    <div id="block_right"><div class="columns i6-ff p-b8 rmbq " bid="13">
+	<h2 class="col-h2">热门标签</h2>
+	<ul class="col-ul list-s">
+						<li><a href="http://www.rsteq.com/geowiki/index.php?search-tag-%E6%97%B6%E4%BB%A4%E6%B9%96">时令湖</a></li>
+	        					<li><a href="http://www.rsteq.com/geowiki/index.php?search-tag-%E7%A7%BB%E5%8A%A8%E9%80%9A%E4%BF%A1%E5%A1%94">移动通信塔</a></li>
+	        	</ul>
+</div><div class=" columns i6-ff p-b10 azmsx" bid="14">
+	<h2 class="col-h2">按字母顺序浏览</h2>
+	<ul class="col-ul list-s">
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-A">A</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-B">B</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-C">C</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-D">D</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-E">E</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-F">F</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-G">G</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-H">H</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-I">I</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-J">J</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-K">K</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-L">L</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-M">M</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-N">N</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-O">O</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-P">P</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-Q">Q</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-R">R</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-S">S</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-T">T</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-U">U</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-V">V</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-W">W</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-X">X</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-Y">Y</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-Z">Z</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-0">0</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-1">1</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-2">2</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-3">3</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-4">4</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-5">5</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-6">6</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-7">7</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-8">8</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-9">9</a></li>
+		<li><a href="http://www.rsteq.com/geowiki/index.php?list-letter-*" style="width:auto">其他</a></li>
+	</ul>
+</div></div>
+	<!--ad start -->
+	<div class="ad" id="advlist_7">
+		</div>
+	<!--ad end -->	
+</div>
+<!--ad start -->
+
+
+<!--ad end -->
+<div class="c-b"></div>
+<div id="footer" class="w-950">
+	<p id="footer-p"> Copyright @ <a href="http://sres.whu.edu.cn/" target="_blank">武汉大学</a>  V WIKI_VERSION  ©2015 <a href="http://www.rsteq.com/geowiki/index.php?category#" class="link_black">地理百科</a> | <a href="http://www.rsteq.com/geowiki/index.php?category#">Licensed</a> <br>
+	</p>
+	<br>
+	<p style="color:rgb(87, 87, 87);">ICP: xxx-xxxx</p>
+</div>
+
+
+</body></html>

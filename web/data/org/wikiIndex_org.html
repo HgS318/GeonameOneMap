@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <title> 地理百科 </title>
+
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="generator" content="HDWiki 5.1" />
+    <meta name="author" content="HDWiki Team and Hudong UI team" />
+    <meta name="copyright" content="2005-2013 baike.com" />
+    <link href="../css/hdwiki.css" rel="stylesheet" type="text/css" media="all"/>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="lang/zh/front.js"></script>
+    <script type="text/javascript" src="js/jquery.dialog-0.8.min.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript">
+        $.dialog.setConfig('base', 'http://www.rsteq.com/geowiki/style/default');
+        var g_isLogin, g_isUcenter=false, g_forward = '',g_api_url='', g_regulars = '', g_uname_minlength, g_uname_maxlength;
+        g_regulars = "";
+        g_isLogin = false;
+        g_seo_prefix = "index.php?";
+        g_seo_suffix = "";
+        g_uname_minlength = "3"||3;
+        g_uname_maxlength = "15"||15;
+    </script>
+</head>
+<body>
+<!--编辑异常中断，下次登录提示-->
+
+<div class="bg_book">
+    <a href="http://www.rsteq.com/geowiki" id="logo"><img alt="HDWiki" height="65px" src="style/default/logo.gif"/></a>
+    <form name="searchform" method="post" action="index.php?search-kw">
+        <p id="search">
+            <input name="searchtext" class="btn_txt" maxlength="80" size="42" value="" type="text"/>
+            <input name="default" value="搜索词条" tabindex="2" class="enter_doc" onclick="document.searchform.action='index.php?search-default';document.searchform.submit();" type="button"/>
+            <input name="full" value="1" tabindex="1"   type="hidden"/>
+            <!--<input name="search" value="搜 索" tabindex="1" class="btn_inp sea_doc" type="submit"/>-->
+            <a href="index.php?search-fulltext" class="sea_advanced link_black">高级搜索</a>
+
+            <label>热门搜索：
+                <a href="index.php?doc-innerlink-%E6%97%B6%E4%BB%A4%E6%B9%96" target="_blank">时令湖</a>
+                <a href="index.php?doc-innerlink-%E6%B5%B7%E4%B8%8A%E5%B9%B3%E5%8F%B0" target="_blank">海上平台</a>
+                <a href="index.php?doc-innerlink-%E7%A7%BB%E5%8A%A8%E9%80%9A%E4%BF%A1%E5%A1%94" target="_blank">移动通信塔</a>
+            </label>
+        </p>
+    </form>
+    <div id="nav" class="w-950 bor_b-ccc">
+        <ul>
+            <li><a href="http://www.rsteq.com/geowiki/">首页</a></li>
+            <li><a href="http://www.rsteq.com/geowiki/index.php?category">百科分类</a></li>
+            <li><a href="http://www.rsteq.com/geowiki/index.php?list">排行榜</a></li>
+
+        </ul>
+
+        <!-- 匿名用户 -->
+
+    </div>
+</div>
+
+<!--ad start -->
+
+
+<!--ad end --><script type="text/javascript">
+    $(document).ready(function(){
+        $("#tpbk img,#tjct img").each(function(i){
+            var w = this.width;
+            var h = this.height;
+            if(w > 100 || h > 75){
+                if(w/h>4/3){
+                    this.style.width = "100px"
+                }else{
+                    this.style.height = "75px"
+                }
+            }
+        });
+
+        $("input[name*='searchtext']") .focus();
+    });
+</script>
+
+<div class="l w-710 o-v">
+
+    <div class="l w-270">
+        <div id="block_right"><div id="category" class="columns o-v bor-c_dl category" bid="23">
+            <h2 class="col-h2">词条分类</h2>
+            <dl class="i6-ff p-b10 bor_no">
+                <dt><a href="index.php?category-view-71" >植被与土质</a></dt>
+                <dd><a href="index.php?category-view-115">农林用地</a></dd><dd><a href="index.php?category-view-116">城市绿地</a></dd><dd><a href="index.php?category-view-117">土质</a></dd>                 </dl>
+            <dl class="i6-ff p-b10 bor_no">
+                <dt><a href="index.php?category-view-69" >境界与政区</a></dt>
+                <dd><a href="index.php?category-view-102">国外地区</a></dd><dd><a href="index.php?category-view-103">国家行政区</a></dd><dd><a href="index.php?category-view-104">省级行政区</a></dd><dd><a href="index.php?category-view-105">地级行政区</a></dd><dd><a href="index.php?category-view-106">县级行政区</a></dd><dd><a href="index.php?category-view-107">乡级行政区</a></dd><dd><a href="index.php?category-view-108">其它区域</a></dd>                 </dl>
+            <dl class="i6-ff p-b10 bor_no">
+                <dt><a href="index.php?category-view-70" >地貌</a></dt>
+                <dd><a href="index.php?category-view-109">等高线（广义）</a></dd><dd><a href="index.php?category-view-110">高程注记点</a></dd><dd><a href="index.php?category-view-111">水域等值线</a></dd><dd><a href="index.php?category-view-112">水下注记点</a></dd><dd><a href="index.php?category-view-113">自然地貌</a></dd><dd><a href="index.php?category-view-114">人工地貌</a></dd>                 </dl>
+            <dl class="i6-ff p-b10 bor_no">
+                <dt><a href="index.php?category-view-68" >管线</a></dt>
+                <dd><a href="index.php?category-view-101">城市管线</a></dd><dd><a href="index.php?category-view-100">油、气、水输送主管道</a></dd><dd><a href="index.php?category-view-99">通信线</a></dd><dd><a href="index.php?category-view-98">输电线</a></dd>                 </dl>
+            <dl class="i6-ff p-b10 bor_no">
+                <dt><a href="index.php?category-view-66" >居民地及设施</a></dt>
+                <dd><a href="index.php?category-view-88">其它建筑物及设施</a></dd><dd><a href="index.php?category-view-87">科学观测站</a></dd><dd><a href="index.php?category-view-86">宗教设施</a></dd><dd><a href="index.php?category-view-85">名胜古迹</a></dd><dd><a href="index.php?category-view-84">公共服务及其设施</a></dd><dd><a href="index.php?category-view-83">农业及其设施</a></dd><dd><a href="index.php?category-view-82">工矿及其设施</a></dd><dd><a href="index.php?category-view-81">居民地</a></dd>                 </dl>
+            <dl class="i6-ff p-b10 bor_no">
+                <dt><a href="index.php?category-view-67" >交通</a></dt>
+                <dd><a href="index.php?category-view-97">其它交通设施</a></dd><dd><a href="index.php?category-view-96">空运设施</a></dd><dd><a href="index.php?category-view-95">航道</a></dd><dd><a href="index.php?category-view-94">水运设施</a></dd><dd><a href="index.php?category-view-93">道路构造物及附属设施</a></dd><dd><a href="index.php?category-view-92">乡村道路</a></dd><dd><a href="index.php?category-view-91">城市道路</a></dd><dd><a href="index.php?category-view-90">城际公路</a></dd><dd><a href="index.php?category-view-89">铁路</a></dd>                 </dl>
+            <dl class="i6-ff p-b10 bor_no">
+                <dt><a href="index.php?category-view-64" >定位基础</a></dt>
+                <dd><a href="index.php?category-view-73">数学基础</a></dd><dd><a href="index.php?category-view-72">测量控制点</a></dd>                 </dl>
+            <dl class="i6-ff p-b10 bor_no">
+                <dt><a href="index.php?category-view-65" >水系</a></dt>
+                <dd><a href="index.php?category-view-80">水利及附属设施</a></dd><dd><a href="index.php?category-view-79">其它水系要素</a></dd><dd><a href="index.php?category-view-78">海洋要素</a></dd><dd><a href="index.php?category-view-77">水库（广义）</a></dd><dd><a href="index.php?category-view-76">湖泊（广义）</a></dd><dd><a href="index.php?category-view-75">沟渠</a></dd><dd><a href="index.php?category-view-74">河流</a></dd>                 </dl>
+        </div></div>
+    </div>
+    <div class="w-430 r">
+        <div id="block_ctop2"><div id="tjct" class="columns tjct i6-ff " bid="19">
+            <h2 class="col-h2">推荐词条</h2>
+            <a href="index.php?list-focus" class="more">更多>></a>
+            <div>
+                <div class="jc_tj">
+                    <a href="index.php?doc-view-57"  class="a-img"><img alt="月亮湖" title="月亮湖" src="uploads/201504/1428463138c2zrlgKr_s.jpg"/></a>
+                    <p class="a-c"><a href="index.php?doc-view-57"  title="月亮湖">月亮湖</a></p>
+                </div>
+                <div class="jc_tj">
+                    <a href="index.php?doc-view-60"  class="a-img"><img alt="中国移动通信塔" title="中国移动通信塔" src="uploads/201503/1427790891YxbEFAIB_s.jpg"/></a>
+                    <p class="a-c"><a href="index.php?doc-view-60"  title="中国移动通信塔">中国移动通信塔...</a></p>
+                </div>
+                <div class="jc_tj">
+                    <a href="index.php?doc-view-87"  class="a-img"><img alt="东湖" title="东湖" src="uploads/201609/14730693577e97AypL_s.jpg"/></a>
+                    <p class="a-c"><a href="index.php?doc-view-87"  title="东湖">东湖</a></p>
+                </div>
+            </div>
+            <ul class="col-ul point c-b">
+                <li><a href="index.php?doc-view-91"  title="东湖水闸">东湖水闸</a></li>
+                <li><a href="index.php?doc-view-96"  title="东湖水产养殖场">东湖水产养殖场...</a></li>
+            </ul>
+        </div><div id="jcct" class="columns jcct " bid="22">
+            <h2 class="col-h2">精彩词条</h2>
+            <a href="index.php?list-focus-3"  class="more">更多>></a>
+            <dl class="col-dl">
+                <dd class="l"><a href="index.php?doc-view-80"  class="a-img"><img title="海口港客运站" src="uploads/201609/1473066837ygTMF8wn_s.jpg"/></a></dd>
+                <dt class="h1 a-c bold"><a href="index.php?doc-view-80" title="海口港客运站" >海口港客运站</a></dt>
+                <dd><p>描述信息基本属性  属性名称 值   概念代码460101  概念名称水运港客运站  范例名称海口港客...<a href="index.php?doc-view-80" >阅读全文&gt;&gt;</a></p></dd>
+            </dl>
+            <ul class="col-ul point font-14 link_blue ">
+                <li><a href="index.php?doc-view-89" >西秀海滩</a>: 描述信息基本属性属性名称值&nbsp; 概念代码&nbsp; 250200&nbsp; 概念名称&nbsp;海岸线&nbsp; 范例名称&nbsp; 西秀海滩&n</li>
+                <li><a href="index.php?doc-view-84" >西青区雅士道市政道路地下输电线</a>: 描述信息基本属性&nbsp; 属性名称&nbsp;值&nbsp;&nbsp; 概念代码510102&nbsp; 概念名称地下高压输电线&nbsp; 范例名称西青区</li>
+                <li><a href="index.php?doc-view-85" >西青区雅士道市政道路自来水管线检修井</a>: 描述信息基本属性&nbsp; 属性名称&nbsp;值&nbsp;&nbsp; 概念代码543005&nbsp; 概念名称给水管线检修井&nbsp; 范例名称西青区</li>
+                <li><a href="index.php?doc-view-86" >南湖书城路消火栓</a>: 描述信息基本属性&nbsp; 属性名称&nbsp;值&nbsp;&nbsp; 概念代码543007&nbsp; 概念名称消火栓&nbsp; 范例名称南湖书城路消火</li>
+                <li><a href="index.php?doc-view-88" >果园</a>: 描述信息基本属性&nbsp; 属性名称&nbsp;值&nbsp;&nbsp; 概念代码810401&nbsp; 概念名称果园&nbsp; 范例名称果园&nbsp;</li>
+            </ul>
+        </div></div>
+    </div>
+
+    <!--ad start -->
+
+
+    <!--ad end -->
+</div>
+<div class="r w-230">
+    <div id="block_ctop1"><div id="reci" class="columns  reci " bid="24">
+        <h2 class="col-h2">热门词条</h2>
+        <a href="index.php?list-focus-2" class="more">更多>></a>
+        <dl class="col-dl ">
+            <dt><a href="index.php?doc-view-63"  title="海上平台">海上平台</a></dt>
+            <dd>描述信息基本属性&nbsp; 属性名称&nbsp;值&nbsp[<a href="index.php?doc-view-63"  class="entry">详细</a>]</dd>
+        </dl>
+        <dl class="col-dl ">
+            <dt><a href="index.php?doc-view-61"  title="移动通信塔">移动通信塔</a></dt>
+            <dd>描述信息基本属性&nbsp; 属性名称&nbsp;值&nbsp[<a href="index.php?doc-view-61"  class="entry">详细</a>]</dd>
+        </dl>
+    </div><div id="zjgx" class="columns zjgx o-v " bid="6">
+        <h2 class="col-h2">最近更新</h2>
+        <a href="index.php?list-recentchange" class="more">更多>></a>
+        <ul class="col-ul font-14 ">
+            <li><a href="index.php?doc-view-87"  class="ctm" title="东湖">东湖</a><span>09-05 17:57</span></li>
+            <li><a href="index.php?doc-view-80"  class="ctm" title="海口港客运站">海口港客运站</a><span>09-05 17:23</span></li>
+            <li><a href="index.php?doc-view-109"  class="ctm" title="卫星定位控制点">卫星定位控制点</a><span>07-03 14:39</span></li>
+            <li><a href="index.php?doc-view-110"  class="ctm" title="卫星定位连续运行站点">卫星定位连续运行站点...</a><span>07-03 14:39</span></li>
+            <li><a href="index.php?doc-view-111"  class="ctm" title="卫星定位等级点">卫星定位等级点</a><span>07-03 14:39</span></li>
+            <li><a href="index.php?doc-view-112"  class="ctm" title="其它测量控制点">其它测量控制点</a><span>07-03 14:39</span></li>
+        </ul>
+    </div><div  class="columns i6-ff p-b8 rmbq " bid="21">
+        <h2 class="col-h2">热门标签</h2>
+        <ul class="col-ul list-s">
+            <li><a href="index.php?search-tag-%E6%97%B6%E4%BB%A4%E6%B9%96" >时令湖</a></li>
+            <li><a href="index.php?search-tag-%E7%A7%BB%E5%8A%A8%E9%80%9A%E4%BF%A1%E5%A1%94" >移动通信塔</a></li>
+        </ul>
+    </div></div>
+</div>
+<div class="l w-710 o-v">
+    <div class="l w-270">
+        <div id="block_cbottoml"></div>
+    </div>
+    <div class="w-430 r">
+        <div id="block_cbottomr"></div>
+    </div>
+</div>
+
+
+<div class="c-b"></div>
+
+<div id="block_bottom"><div id="yqlj" class="columns no_col-h2 bg-gray yqlj i6-ff " bid="16">
+    <ul class="col-ul list-s">
+        <li><span class="bold">友情链接:</span></li>
+    </ul>
+</div></div>
+
+<!--ad start -->
+
+
+<!--ad end -->
+<div class="c-b"></div>
+<div id="footer"  class="w-950">
+    <p id="footer-p"> Copyright @ <a href="http://sres.whu.edu.cn/" target="_blank">武汉大学</a>  V WIKI_VERSION  &copy;2015 <a href="#" class="link_black">地理百科</a> | <a href="#">Licensed</a> <br/>
+    </p>
+    <br/>
+    <p style="color:rgb(87, 87, 87);">ICP: xxx-xxxx</p>
+</div>
+
+</body>
+</html>

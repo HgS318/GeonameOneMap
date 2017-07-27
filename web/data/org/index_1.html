@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>地名百科</title>
+    <link rel='icon' href='images/fav.ico ' type=‘image/x-ico’ />
+
+    <!-- Core CSS - Include with every page -->
+    <link href="../../js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Page-Level Plugin CSS - Dashboard -->
+    <!--<link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="css/plugins/timeline/timeline.css" rel="stylesheet">-->
+    <link href="../../css/plugins/social-buttons/social-buttons.css" rel="stylesheet">
+
+    <!-- SB Admin CSS - Include with every page -->
+    <!--<link href="css/sb-admin.css" rel="stylesheet">-->
+
+    <link href="../../css/jquery.autocomplete.css" rel="stylesheet"/>
+    <!--<link href="css/hummingmap.css" rel="stylesheet"/>-->
+    <link href="../../css/kkpager.css" rel="stylesheet"/>
+    <link href="../../css/search.css" rel="stylesheet"/>
+    <!--<link href="js/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet"/>-->
+    <link href="../../css/index.css" rel="stylesheet"/>
+    <link href="../../css/spinkit.css" rel="stylesheet"/>
+    
+	<link rel="stylesheet" href="../../css/jquery.treeview.css" />
+	<link rel="stylesheet" href="../../css/screen.css" />
+
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+	<script src="../../js/jquery.cookie.js"></script>
+	<script src="../../js/jquery.treeview.js" type="text/javascript"></script>
+	<style>
+		.my-map { width: 100%; height: 100%; }
+		/*.my-map .icon { background: url(http://lbs.amap.com/console/public/show/marker.png) no-repeat; }*/
+		/*.my-map .icon-cir { height: 31px; width: 28px; }*/
+		/*.my-map .icon-cir-red { background-position: -11px -5px; }*/
+		.amap-container{height: 100%; width: 100%}
+	</style>
+</head>
+
+<body>
+    <div id="hm_header" class="hmbar-header hmbar-default">
+        <a class="navbar-brand" href="index.html">
+            <img src="images/logo.png" />
+        </a>
+
+        <div class="hm-searchpanel">
+            <div id='hm_searchinput' class="input-group custom-search-form">
+                <input id="autocomplete" title="提示: &quot;输入搜索关键字&quot;" placeholder="地名百科搜索..." class="form-control">
+                                <span class="input-group-btn">
+                                <button id="search" class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                </span>
+            </div>
+        </div>
+    </div>
+    <div id="hm_sidebar" class="hmbar-side hmbar-default ">
+        <div id="infohead" class="hm-infohead">
+            <div id="hm_wikinav" class="headnav-default">
+                <p><i class="fa fa-lg fa-th fa-fw"></i> 行政区划</p>
+            </div>
+            <div id="hm_classnav" class="headnav-default">
+                <p><i class="fa fa-lg fa-th-large fa-fw"></i> 地名分类</p>
+            </div>
+            <div id="hm_favnav" class="headnav-default">
+                <p><i class="fa fa-lg fa-ticket fa-fw"></i> 路径规划</p>
+            </div>
+        </div>
+        <div id="hm_mapInfo" class="hm-mapinfo">
+            <div id="hm_infoClass" class="hm-infoclass">
+			
+  <div id="sidetreecontrol1"> <a href="#">全部收起</a> | <a href="#">全部展开</a> </div>
+
+  <ul class="treeview" id="tree1">
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">行政区域类</a>
+	<ul style="display: none;">
+		<!-- <li><a href="#/enewsletters/index.cfm">行政区域</a></li> -->
+		<li class="last"><a href="#/index.cfm">行政区域</a></li>
+	</ul>
+	</li>
+	
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">非行政区域类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">地片</a></li>
+		<li><a href="#/enewsletters/index.cfm">边贸区、口岸</a></li>
+		<li><a href="#/enewsletters/index.cfm">非行政区域类其他</a></li>
+		<li><a href="#/enewsletters/index.cfm">工业区、开发区</a></li>
+		<li><a href="#/enewsletters/index.cfm">军事区</a></li>
+		<li><a href="#/enewsletters/index.cfm">矿区</a></li>
+		<li><a href="#/enewsletters/index.cfm">农、林、牧、渔区</a></li>
+		<li class="last"><a href="#/index.cfm">区片</a></li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">群众自治组织类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">群众自治组织</a></li>
+		<li class="last"><a href="#/index.cfm">群众自治组织类其他</a></li>
+	</ul>
+	</li>
+	
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">居民点类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">居民点</a></li>
+		<li class="last"><a href="#/index.cfm">居民点类其他</a></li>
+	</ul>
+	</li>
+	
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">交通运输设施类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">街、巷</a></li>
+		<li><a href="#/enewsletters/index.cfm">车站、停车场</a></li>
+		<li><a href="#/enewsletters/index.cfm">城镇交通运输类其他</a></li>
+		<li><a href="#/enewsletters/index.cfm">船闸、升船机站</a></li>
+		<li><a href="#/enewsletters/index.cfm">道班</a></li>
+		<li><a href="#/enewsletters/index.cfm">道口</a></li>
+		<li><a href="#/enewsletters/index.cfm">灯塔、导航台</a></li>
+		<li><a href="#/index.cfm">渡口</a></li>
+		<li><a href="#/index.cfm">公路</a></li>
+		<li><a href="#/index.cfm">公路运输类其他</a></li>
+		<li><a href="#/index.cfm">管道</a></li>
+		<li><a href="#/index.cfm">管站</a></li>
+		<li><a href="#/index.cfm">航空港</a></li>
+		<li class="last"><a href="#/index.cfm">...</a></li>
+	</ul>
+	</li>
+	
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">水利电力设施类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">发电站</a></li>
+		<li><a href="#/enewsletters/index.cfm">泵站</a></li>
+		<li><a href="#/enewsletters/index.cfm">池塘、海塘</a></li>
+		<li><a href="#/enewsletters/index.cfm">堤堰</a></li>
+		<li><a href="#/enewsletters/index.cfm">堤堰类其他</a></li>
+		<li><a href="#/enewsletters/index.cfm">电力设施类其他</a></li>
+		<li><a href="#/enewsletters/index.cfm">渡槽</a></li>
+		<li><a href="#/index.cfm">发电站</a></li>
+		<li><a href="#/index.cfm">灌区</a></li>
+		<li><a href="#/index.cfm">涵洞</a></li>
+		<li><a href="#/index.cfm">排灌设施类其他</a></li>
+		<li><a href="#/index.cfm">输变电站</a></li>
+		<li><a href="#/index.cfm">水库</a></li>
+		<li><a href="#/index.cfm">水利、电力、通信设施类其他</a></li>
+		<li><a href="#/index.cfm">通信基站</a></li>
+		<li><a href="#/index.cfm">通信设施类其他</a></li>
+		<li><a href="#/index.cfm">蓄洪区、泄洪区</a></li>
+		<li><a href="#/index.cfm">蓄水区类其他</a></li>
+		<li class="last"><a href="#/index.cfm">运河</a></li>
+	</ul>
+	</li>
+	
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">纪念地旅游景点类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">纪念地、遗址</a></li>
+		<li><a href="#/enewsletters/index.cfm">纪念地、遗址类其他</a></li>
+		<li><a href="#/enewsletters/index.cfm">公园、风景区</a></li>
+		<li><a href="#/enewsletters/index.cfm">自然保护区</a></li>
+		<li><a href="#/enewsletters/index.cfm">宗教纪念地</a></li>
+		<li class="last"><a href="#/enewsletters/index.cfm">纪念地、旅游景点类其他</a></li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">建筑物类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">广场、体育场</a></li>
+		<li><a href="#/enewsletters/index.cfm">城堡、墙</a></li>
+		<li><a href="#/enewsletters/index.cfm">亭、台、碑、塔</a></li>
+		<li><a href="#/enewsletters/index.cfm">房屋</a></li>
+		<li class="last"><a href="#/enewsletters/index.cfm">建筑物类其他</a></li>
+	</ul>
+	</li>
+	
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">单位类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">单位</a></li>
+		<li class="last"><a href="#/enewsletters/index.cfm">单位类其他</a></li>
+	</ul>
+	</li>
+	
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">陆地水系类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">河流</a></li>
+		<li><a href="#/enewsletters/index.cfm">河口</a></li>
+		<li><a href="#/enewsletters/index.cfm">河滩</a></li>
+		<li><a href="#/enewsletters/index.cfm">河湾</a></li>
+		<li><a href="#/enewsletters/index.cfm">河源</a></li>
+		<li><a href="#/enewsletters/index.cfm">湖泊</a></li>
+		<li><a href="#/enewsletters/index.cfm">阶地</a></li>
+		<li><a href="#/index.cfm">陆地岛屿类其他</a></li>
+		<li><a href="#/index.cfm">陆地水系类其他</a></li>
+		<li><a href="#/index.cfm">瀑布</a></li>
+		<li><a href="#/index.cfm">泉</a></li>
+		<li><a href="#/index.cfm">三角洲</a></li>
+		<li><a href="#/index.cfm">峡谷</a></li>
+		<li class="last"><a href="#/index.cfm">洲、河岛，湖岛，矶</a></li>
+	</ul>
+	</li>
+	
+	<li class="last"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">陆地地形类</a>
+	<ul style="display: none;">
+		<li><a href="#/enewsletters/index.cfm">山</a></li>
+		<li><a href="#/enewsletters/index.cfm">山峰</a></li>
+		<li><a href="#/enewsletters/index.cfm">山谷、谷地</a></li>
+		<li><a href="#/enewsletters/index.cfm">山口、关隘</a></li>
+		<li><a href="#/enewsletters/index.cfm">山坡</a></li>
+		<li><a href="#/enewsletters/index.cfm">山体</a></li>
+		<li><a href="#/enewsletters/index.cfm">洞穴</a></li>
+		<li><a href="#/index.cfm">陆地地形类其他</a></li>
+		<li><a href="#/index.cfm">平原、盆地</a></li>
+		<li><a href="#/index.cfm">丘陵山地</a></li>
+		<li><a href="#/index.cfm">丘陵山地类其他</a></li>
+		<li><a href="#/index.cfm">湿地（沼泽）</a></li>
+		<li><a href="#/index.cfm">台地</a></li>
+		<li><a href="#/index.cfm">苔原</a></li>
+		<li><a href="#/index.cfm">天生桥</a></li>
+		<li class="last"><a href="#/index.cfm">重要陆地景观类其他</a></li>
+	</ul>
+	</li>
+	
+</ul>
+			
+			
+			</div>
+            <div id="hm_favorites" class="hm-favorites"></div>
+            <div id="hm_wikiClass" class="hm-wikiClass">
+
+                <div class="hm-wikiAdv">
+		
+  <div id="sidetreecontrol2"> <a href="#">全部收起</a> | <a href="#">全部展开</a> </div>
+					<!--<ul class="treeview" id="tree2">-->
+
+						<!---->
+					<!--</ul>					-->
+
+	<ul class="treeview" id="tree2">
+
+
+	<li class="expandable">
+		<div class="hitarea expandable-hitarea"></div>
+		<a href="#">武汉市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">江岸区</a>
+		<ul style="display: none;">
+			<li><a href="#/assessment/assessment_faqs.cfm">大智街道</a></li>
+			<li><a href="#/assessment/property_assessment_notices.cfm">一元街道</a></li>
+			<li><a href="#http://www.creb.com/" target="_blank">车站街道</a></li>
+			<li class="last"><a href="#/assessment/supplementary_assessment_tax.cfm">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">江汉区</a>
+		<ul style="display: none;">
+			<li><a href="#/assessment/assessment_faqs.cfm">民族街道</a></li>
+			<li><a href="#/assessment/property_assessment_notices.cfm">花楼街道</a></li>
+			<li><a href="#http://www.creb.com/" target="_blank">水塔街道</a></li>
+			<li class="last"><a href="#/assessment/supplementary_assessment_tax.cfm">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">硚口区</a>
+		<ul style="display: none;">
+			<li><a href="#/assessment/assessment_faqs.cfm">古田街道</a></li>
+			<li><a href="#/assessment/property_assessment_notices.cfm">韩家墩街道</a></li>
+			<li><a href="#http://www.creb.com/" target="_blank">宗关街道</a></li>
+			<li class="last"><a href="#/assessment/supplementary_assessment_tax.cfm">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">汉阳区</a>
+		<ul style="display: none;">
+			<li><a href="#/assessment/assessment_faqs.cfm">翠微街道</a></li>
+			<li><a href="#/assessment/property_assessment_notices.cfm">建桥街道</a></li>
+			<li><a href="#http://www.creb.com/" target="_blank">月湖街道</a></li>
+			<li class="last"><a href="#/assessment/supplementary_assessment_tax.cfm">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">武昌区</a>
+		<ul style="display: none;">
+			<li><a href="#/assessment/assessment_faqs.cfm">积玉桥街道</a></li>
+			<li><a href="#/assessment/property_assessment_notices.cfm">黄鹤楼街道</a></li>
+			<li><a href="#http://www.creb.com/" target="_blank">珞珈山街道</a></li>
+			<li class="last"><a href="#/assessment/supplementary_assessment_tax.cfm">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">洪山区</a>
+		<ul style="display: none;">
+			<li><a href="#/assessment/assessment_faqs.cfm">珞南街道</a></li>
+			<li><a href="#/assessment/property_assessment_notices.cfm">梨园街道</a></li>
+			<li><a href="#http://www.creb.com/" target="_blank">天兴乡</a></li>
+			<li class="last"><a href="#/assessment/supplementary_assessment_tax.cfm">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">...</a>
+		<ul style="display: none;">
+			<li><a href="#http://www.creb.com/" target="_blank">...</a></li>
+			<li class="last"><a href="#/assessment/supplementary_assessment_tax.cfm">...</a></li>
+		</ul>
+		</li>
+
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">恩施土家族苗族自治州</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">恩施市</a>
+		<ul style="display: none;">
+			<li><a href="#">舞阳坝街道</a></li>
+			<li><a href="#">六角亭街道</a></li>
+			<li><a href="#">小渡船街道</a></li>
+			<li><a href="#">龙凤镇</a></li>
+			<li><a href="#">崔家坝镇</a></li>
+			<li><a href="#">板桥镇</a></li>
+			<li><a href="#">白杨坪镇</a></li>
+			<li><a href="#">三岔乡</a></li>
+			<li><a href="#">新塘乡</a></li>
+			<li><a href="#">红土乡</a></li>
+			<li><a href="#">沙地乡</a></li>
+			<li><a href="#">太阳河乡</a></li>
+			<li><a href="#">屯堡乡</a></li>
+			<li><a href="#">白果乡</a></li>
+			<li><a href="#">芭蕉侗族乡</a></li>
+			<li class="last"><a href="#">盛家坝乡</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">利川市</a>
+		<ul style="display: none;">
+			<li><a href="#">都亭街道</a></li>
+			<li><a href="#">汪营镇</a></li>
+			<li><a href="#">凉雾乡</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">建始县</a>
+		<ul style="display: none;">
+			<li><a href="#">业州镇</a></li>
+			<li><a href="#">长梁乡</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">巴东县</a>
+		<ul style="display: none;">
+			<li><a href="#">信陵镇</a></li>
+			<li><a href="#">溪丘湾乡</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">宣恩县</a>
+		<ul style="display: none;">
+			<li><a href="#">珠山镇</a></li>
+			<li><a href="#">长潭河侗族乡</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">咸丰县</a>
+		<ul style="display: none;">
+			<li><a href="#">高乐山镇</a></li>
+			<li><a href="#">丁寨乡</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">来凤县</a>
+		<ul style="display: none;">
+			<li><a href="#">翔凤镇</a></li>
+			<li><a href="#">漫水乡</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+
+		<li class="last"><div class="hitarea expandable-hitarea"></div><a href="#/assessment/index.cfm">鹤峰县</a>
+		<ul style="display: none;">
+			<li><a href="#">容美镇</a></li>
+			<li><a href="#">铁炉白族乡</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄石市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄石港区</a>
+		<ul style="display: none;">
+			<li><a href="#">花湖街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">十堰市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">茅箭区</a>
+		<ul style="display: none;">
+			<li><a href="#">武当路街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">宜昌市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">西陵区</a>
+		<ul style="display: none;">
+			<li><a href="#">西陵街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">襄阳市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">襄城区</a>
+		<ul style="display: none;">
+			<li><a href="#">古城街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">鄂州市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">梁子湖区</a>
+		<ul style="display: none;">
+			<li><a href="#">华容区</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">荆门市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">东宝区</a>
+		<ul style="display: none;">
+			<li><a href="#">龙泉街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">孝感市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">孝南区</a>
+		<ul style="display: none;">
+			<li><a href="#">书院街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">荆州市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">沙市区</a>
+		<ul style="display: none;">
+			<li><a href="#">中山路街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄冈市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄州区</a>
+		<ul style="display: none;">
+			<li><a href="#">赤壁街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">咸宁市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">咸安区</a>
+		<ul style="display: none;">
+			<li><a href="#">温泉街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">随州市</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">曾都区</a>
+		<ul style="display: none;">
+			<li><a href="#">西城街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><a href="#">...</a>
+		<ul style="display: none;">
+			<li class="last"><a href="#">.....</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+	<li class="last"><div class="hitarea expandable-hitarea"></div><a href="#">省直辖县级行政单位</a>
+	<ul style="display: none;">
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">仙桃市</a>
+		<ul style="display: none;">
+			<li><a href="#">沙嘴街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">潜江市</a>
+		<ul style="display: none;">
+			<li><a href="#">园林街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">天门市</a>
+		<ul style="display: none;">
+			<li><a href="#">竟陵街道</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+		<li class="last"><div class="hitarea expandable-hitarea"></div><a href="#">神农架林区</a>
+		<ul style="display: none;">
+			<li><a href="#">松柏镇</a></li>
+			<li class="last"><a href="#">...</a></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+
+
+</ul>
+
+					<!--<li class="expandable">-->
+
+					<!--</li>-->
+
+					<!-- <div id="sidetree"> -->
+  <!-- <div class="treeheader">&nbsp;</div> -->
+<!--</div>-->
+
+                </div>
+            </div>
+        </div>
+        <div id="searchresults" class="SearchResult">
+            <div id="resultitems"></div>
+            <div id="hm_Paginate"></div>
+        </div>
+    </div>
+
+    <div id="hm_content" class="hmbar-content">
+		<!--<div id="wrap" class="my-map">-->
+			<div id="mapContainer"></div>
+		<!--</div>-->
+		<!--        <div id="map"></div>
+                <div id="appbtngroup" class="btn-group hm_boxshadow">
+                    &lt;!&ndash;
+                    <button id="btnMeasureDis" type="button" class="btn btn-default btn-sm"><span class="hm-btn hm-btnMeasureDis"></span>测距</button>
+                    <button id="btnMeasureArea" type="button" class="btn btn-default btn-sm"><span class="hm-btn hm-btnMeasureArea"></span>测面</button>
+                    <button id="btnClear" type="button" class="btn btn-default btn-sm"><span class="hm-btn hm-btnClear"></span>清空</button>
+                     &ndash;&gt;
+                </div>
+                <div id="basemapbtn" class="hm-baseMap">
+                    <div id="hm_vecbase" style="display: none;">
+                        <div class="well hm-baseMapContent hm-vecBaseMap"></div>
+                        <div class="hm-baseMapText">地图</div>
+                    </div>
+                    <div id="hm_satbase">
+                        <div class="well hm-baseMapContent hm-satBaseMap"></div>
+                        <div class="hm-baseMapText">卫星</div>
+                    </div>
+                </div>
+
+                <div id="wikicontentpanel" class="panel panel-default hm-wikicontentpanel hm_boxshadow">
+                    <div style="float: right; margin-top: 5px; margin-right: 15px;"><a href="javascript:closeWikiPanel()"><i class="fa fa-times fa-fw"></i></a></div>
+                    <div class="panel-body">
+                        <div id="hm_tipcontent" class="panel panel-primary hm-tipContent"></div>
+                        <div id="hm_wikicontent" class="panel panel-primary hm-wikiInfoContent hm-wikiInfoPanel"></div>
+                        &lt;!&ndash;<div id="hm_wikirelate" class="panel panel-success hm-wikiInfoPanel"></div>&ndash;&gt;
+                        <div id="hm_wikisimilar" class="panel panel-info  hm-wikiInfoSimilar hm-wikiInfoPanel"></div>
+                    </div>
+                </div>
+                <div id="hm_loader" class="sk-wave" >
+                    <div class="sk-rect sk-rect1"></div>
+                    <div class="sk-rect sk-rect2"></div>
+                    <div class="sk-rect sk-rect3"></div>
+                    <div class="sk-rect sk-rect4"></div>
+                    <div class="sk-rect sk-rect5"></div>
+                </div>-->
+            </div>
+
+
+	<script src="http://webapi.amap.com/maps?v=1.3&key=8325164e247e15eea68b59e89200988b"></script>
+	<!--<script src="js/amapmain.js"></script>-->
+	<script>
+
+	</script>
+
+<!--
+
+    <script type="text/javascript" src=" http://api.tianditu.com/js/maps.js"></script>
+    <script type="text/javascript" src="http://api.tianditu.com/js/maptools.js"></script>
+-->
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ce2cdf09c48f5eda3b45a3ac24ee19ca&plugin=AMap.DistrictSearch"></script>
+    <!--<script type="text/javascript" src="js/json2.js"></script>-->
+    <script type="text/javascript" src="js/echarts/echarts-all.js"></script>
+    <!--<script src="js/proj4.js"></script>-->
+    <script data-main="js/main" src="js/require.js"></script>
+	<script type="text/javascript">
+
+		var testdata = [{
+			id: 'A',
+			name: '六角亭街道',
+			position: [109.478331,30.260945],
+			desc: '数据_1'
+		}, {
+			id: 'B',
+			name: '雷打石',
+			position: [109.302003,30.209475],
+			desc: '数据_2'
+		}, {
+			id: 'C',
+			name: '金桂大道',
+			position: [109.495926,30.31903],
+			desc: '数据_3'
+		}];
+
+
+		var infoWindow, map, level = 11,
+				center = {lng: 114.134152, lat: 30.597797},
+				features = [{type: "Polyline", name: "l1", desc: "l1 content", strokeWeight: 5, strokeColor: "#19A4EB", strokeOpacity: 0.8, lnglat: [{lng: 114.180469, lat: 30.56189}, {lng: 114.158496, lat: 30.558342}, {lng: 114.142703, lat: 30.509845}, {lng: 114.109058, lat: 30.555386}, {lng: 114.099445, lat: 30.560116}]},
+					{type: "Polyline", name: "l2", desc: "l2 content", strokeWeight: 5, strokeColor: "#19A4EB", strokeOpacity: 0.8, lnglat: [{lng: 114.362659, lat: 30.522064}, {lng: 114.362059, lat: 30.522618}, {lng: 114.35929, lat: 30.522489}, {lng: 114.362852, lat: 30.525649}, {lng: 114.358947, lat: 30.526906}]},
+					{type: "Polygon", name: "po1", desc: "po1 content", strokeWeight: 2, strokeColor: "#19A4EB", strokeOpacity: 0.8, fillColor: "red", fillOpacity:0.2, lnglat: [{lng: 114.207297, lat: 30.641819}, {lng: 114.206954, lat: 30.643592}, {lng: 114.222232, lat: 30.65703}, {lng: 114.227382, lat: 30.630742}]},
+					{type: "Polygon", name: "po2", desc: "po2 content", strokeWeight: 2, strokeColor: "#19A4EB", strokeOpacity: 0.8, fillColor: "red", fillOpacity:0.2, lnglat: [{lng: 114.114583, lat: 30.665742}, {lng: 114.141362, lat: 30.64625}, {lng: 114.212773, lat: 30.687593}, {lng: 114.133122, lat: 30.715932}]},
+					{type: "Marker", name: "p1", desc: "p1 content", color: "red", icon: "cir", offset: {x: -9, y: -31}, lnglat: {lng: 114.096387, lat: 30.595433}}];
+
+		function loadFeatures(){
+			for(var feature, data, i = 0, len = features.length, j, jl, path; i < len; i++){
+				data = features[i];
+				switch(data.type){
+					case "Marker":
+						feature = new AMap.Marker({ map: map, position: new AMap.LngLat(data.lnglat.lng, data.lnglat.lat),
+							zIndex: 3, extData: data, offset: new AMap.Pixel(data.offset.x, data.offset.y), title: data.name,
+							content: '<div class="icon icon-' + data.icon + ' icon-'+ data.icon +'-' + data.color +'"></div>' });
+						break;
+					case "Polyline":
+						for(j = 0, jl = data.lnglat.length, path = []; j < jl; j++){
+							path.push(new AMap.LngLat(data.lnglat[j].lng, data.lnglat[j].lat));
+						}
+						feature = new AMap.Polyline({ map: map, path: path, extData: data, zIndex: 2,
+							strokeWeight: data.strokeWeight, strokeColor: data.strokeColor, strokeOpacity: data.strokeOpacity });
+						break;
+					case "Polygon":
+						for(j = 0, jl = data.lnglat.length, path = []; j < jl; j++){
+							path.push(new AMap.LngLat(data.lnglat[j].lng, data.lnglat[j].lat));
+						}
+						feature = new AMap.Polygon({ map: map, path: path, extData: data, zIndex: 1,
+							strokeWeight: data.strokeWeight, strokeColor: data.strokeColor, strokeOpacity: data.strokeOpacity,
+							fillColor: data.fillColor, fillOpacity: data.fillOpacity });
+						break;
+					default: feature = null;
+				}
+				if(feature){ AMap.event.addListener(feature, "click", mapFeatureClick); }
+			}
+		}
+
+		function mapFeatureClick(e){
+			if(!infoWindow){ infoWindow = new AMap.InfoWindow({autoMove: true}); }
+			var extData = e.target.getExtData();
+			infoWindow.setContent("<h5>" + extData.name + "</h5><div>" + extData.desc + "</div>");
+			infoWindow.open(map, e.lnglat);
+		}
+
+		map = new AMap.Map("mapContainer", {center: new AMap.LngLat(center.lng, center.lat), level: level});
+		new AMap.Buildings({map: map, zIndex: 2});
+		loadFeatures();
+
+		map.on('complete', function(){
+			map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
+				map.addControl(new AMap.ToolBar);
+				map.addControl(new AMap.OverView({isOpen: true}));
+				map.addControl(new AMap.Scale);
+			});
+
+		});
+
+//		function loading(){
+//
+//			var whole = document.getElementById("tree2");
+//			var str = '<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">武汉市</a><ul style="display: none;"><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">江岸区</a><ul style="display: none;"><li><a href="#">新华路</a></li><li><a href="#">车站</a></li><li><a href="#">劳动</a></li><li><a href="#">江滩</a></li><li><a href="#">永清</a></li><li><a href="#">后湖</a></li><li><a href="#">台北路</a></li><li><a href="#">百步亭</a></li><li><a href="#">新村</a></li><li><a href="#">三阳路</a></li><li><a href="#">花桥</a></li><li><a href="#">二七</a></li><li><a href="#">竹叶山</a></li><li><a href="#">谌家矶</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">江汉区</a><ul style="display: none;"><li><a href="#">常青</a></li><li><a href="#">新华</a></li><li><a href="#">江汉路</a></li><li><a href="#">建设大道</a></li><li><a href="#">前进</a></li><li><a href="#">西北湖</a></li><li><a href="#">北湖</a></li><li><a href="#">万松</a></li><li><a href="#">友谊路</a></li><li><a href="#">汉口火车站</a></li><li><a href="#">唐家墩</a></li><li><a href="#">常青路</a></li><li><a href="#">民权</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">硚口区</a><ul style="display: none;"><li><a href="#">古田路</a></li><li><a href="#">古田</a></li><li><a href="#">汉正街</a></li><li><a href="#">宗关</a></li><li><a href="#">宝丰</a></li><li><a href="#">崇仁</a></li><li><a href="#">汉中</a></li><li><a href="#">荣华</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">汉阳区</a><ul style="display: none;"><li><a href="#">七里庙</a></li><li><a href="#">汉阳大道</a></li><li><a href="#">钟家村</a></li><li><a href="#">翠微</a></li><li><a href="#">建桥</a></li><li><a href="#">琴断口</a></li><li><a href="#">晴川</a></li><li><a href="#">王家湾</a></li><li><a href="#">五里墩</a></li><li><a href="#">洲头</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">武昌区</a><ul style="display: none;"><li><a href="#">紫阳</a></li><li><a href="#">东亭</a></li><li><a href="#">大东门</a></li><li><a href="#">中华路</a></li><li><a href="#">武珞路</a></li><li><a href="#">中南路</a></li><li><a href="#">武昌火车站</a></li><li><a href="#">阅马场</a></li><li><a href="#">黄鹤楼</a></li><li><a href="#">水果湖</a></li><li><a href="#">司门口</a></li><li><a href="#">东湖路</a></li><li><a href="#">积玉桥</a></li><li><a href="#">中北路</a></li><li><a href="#">粮道街</a></li><li><a href="#">徐家棚</a></li><li><a href="#">首义路</a></li><li><a href="#">小东门</a></li><li><a href="#">余家头</a></li><li><a href="#">丁字桥</a></li><li><a href="#">杨园</a></li><li><a href="#">紫阳路</a></li><li><a href="#">徐东</a></li><li><a href="#">和平大道</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">青山区</a><ul style="display: none;"><li><a href="#">厂前</a></li><li><a href="#">工人村</a></li><li><a href="#">红钢城</a></li><li><a href="#">建设二路</a></li><li><a href="#">建设七路</a></li><li><a href="#">南干渠</a></li><li><a href="#">冶金</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">洪山区</a><ul style="display: none;"><li><a href="#">花山</a></li><li><a href="#">友谊大道</a></li><li><a href="#">珞珈山</a></li><li><a href="#">武泰闸</a></li><li><a href="#">光谷</a></li><li><a href="#">珞南</a></li><li><a href="#">鲁巷</a></li><li><a href="#">街道口</a></li><li><a href="#">关山</a></li><li><a href="#">广埠屯</a></li><li><a href="#">卓刀泉</a></li><li><a href="#">张家湾</a></li><li><a href="#">珞狮南路</a></li><li><a href="#">南湖</a></li><li><a href="#">武东</a></li><li><a href="#">白沙洲</a></li><li><a href="#">白玉山</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">东西湖区</a><ul style="display: none;"><li><a href="#">将军路</a></li><li><a href="#">吴家山</a></li><li><a href="#">长青</a></li><li><a href="#">常青花园</a></li><li><a href="#">东山</a></li><li><a href="#">金银湖</a></li><li><a href="#">三店</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">汉南区</a><ul style="display: none;"><li><a href="#">纱帽</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">蔡甸区</a><ul style="display: none;"><li><a href="#">沌口</a></li><li><a href="#">蔡甸</a></li><li><a href="#">永安</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">江夏区</a><ul style="display: none;"><li><a href="#">金口</a></li><li><a href="#">流芳</a></li><li><a href="#">乌龙泉</a></li><li><a href="#">纸坊</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄陂区</a><ul style="display: none;"><li><a href="#">横店</a></li><li><a href="#">祁家湾</a></li><li><a href="#">前川</a></li><li><a href="#">滠口</a></li><li><a href="#">天河</a></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">新洲区</a><ul style="display: none;"><li><a href="#">潘塘</a></li><li><a href="#">双柳</a></li><li><a href="#">阳逻</a></li><li><a href="#">邾城</a></li></ul></li></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄石市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">十堰市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">宜昌市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">襄阳市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">鄂州市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">荆门市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">孝感市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">荆州市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄冈市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">咸宁市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">随州市</a><ul style="display: none;"></ul></li><li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">恩施土家族苗族自治州</a><ul style="display: none;"></ul></li>';
+//			whole.innerHTML = str;
+//
+//
+//
+//
+//		}
+
+//		var districtSearch = new AMap.DistrictSearch({
+//			level : 'province',
+//			subdistrict : 3
+//		});
+//
+//		districtSearch.search('湖北省',function(status, result) {
+//			var whole = document.getElementById("tree2");
+//			var subDistricts = result.districtList[0].districtList;
+////			var select = document.getElementById('subDistricts');
+//
+////			var para=document.createElement("p");
+////			var node=document.createTextNode("这是新段落。");
+////			para.appendChild(node);
+////
+////			var element=document.getElementById("div1");
+////			element.appendChild(para);
+//
+//			for (var i = 0; i < subDistricts.length; i += 1) {	//	省内各城市
+//				var city = subDistricts[i];
+//				var cityname = city.name;
+//				var citynode = document.createElement("li");
+//				citynode.setAttribute("class", "expandable");
+//				var citydiv = document.createElement("div");
+//				citydiv.setAttribute("class", "hitarea expandable-hitarea");
+//				var citya = document.createElement("a");
+//				citya.setAttribute("href", "#");
+//				citya.setAttribute("class", "");
+//				var citytext = document.createTextNode(cityname);
+//				citya.appendChild(citytext);
+//				citynode.appendChild(citydiv);
+//				citynode.appendChild(citya);
+//				if (!city.districtList) {
+//					whole.appendChild(citynode);
+//					continue;
+//				}
+//				var countylist = document.createElement("ul");
+//				countylist.setAttribute("style", "display: none;");
+//
+//				for (var j = 0; j < city.districtList.length; j++) {//	城市内各区县
+//					var county = city.districtList[j];
+//					var countyname = county.name;
+//					var countynode = document.createElement("li");
+//					countynode.setAttribute("class", "expandable");
+//					var countydiv = document.createElement("div");
+//					countydiv.setAttribute("class", "hitarea expandable-hitarea");
+//					var countya = document.createElement("a");
+//					countya.setAttribute("href", "#");
+//					var countytext = document.createTextNode(countyname);
+//					countya.appendChild(countytext);
+//					countynode.appendChild(countydiv);
+//					countynode.appendChild(countya);
+//					if (county.districtList) {
+//						var streetlist = document.createElement("ul");
+//						streetlist.setAttribute("style", "display: none;");
+//						for (var k = 0; k < county.districtList.length; k++) {	//	区县内各街道
+//							var street = county.districtList[k];
+//							var streetname = street.name;
+//							var streetnode = document.createElement("li");
+//							var streeta = document.createElement("a");
+//							streeta.setAttribute("href", "#");
+//							var streettext = document.createTextNode(streetname);
+//							streeta.appendChild(streettext);
+//							streetnode.appendChild(streeta);
+//							streetlist.appendChild(streetnode);
+//						}
+//						countynode.appendChild(streetlist);
+//						countylist.appendChild(countynode);
+//					}
+//				}
+//				citynode.appendChild(countylist);
+//				whole.appendChild(citynode);
+////				var option = document.createElement('option');
+////				option.value = option.innerHTML = name;
+////				select.appendChild(option);
+//
+//
+////			select.onchange = function(){map.setCity(this.value)};
+////			select.value = subDistricts[0].name;
+////			select.onchange();
+//			}
+//		});
+
+		$("#tree1").treeview({
+			collapsed: true,
+			animated: "fast",
+			control:"#sidetreecontrol1",
+			prerendered: true,
+			persist: "location"
+		});
+		$("#tree2").treeview({
+			collapsed: true,
+			animated: "fast",
+			control:"#sidetreecontrol2",
+			prerendered: true,
+			persist: "location"
+		});
+
+//		$(function() {
+//
+//
+//
+//		})
+
+	</script>
+	<script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
+    <script>
+        window.searchType = 'HMSearch';
+        //var preSelItem = document.getElementById("wiki_search");
+        /*(function() {
+
+        })();*/
+        /*var _loaderControl = null;
+        // 添加Loader控件
+        var loaderObj = document.getElementById("hm_loader");
+        window._loaderControl = new THtmlElementControl(loaderObj);
+
+        function doLogin(){
+            $.ajax({
+                url: "login.php?action=login",
+                data: {
+                    username:$("#hm_user").val(),
+                    password:$("#hm_pwd").val()
+                },
+                type: "POST",
+                dataType: "json",
+                success: function(data) {
+                    if (data.retVal){
+                        $('#hm_login').modal('hide');
+                        location.reload();
+                    }else{
+                        alert("登陆失败！\n请检查用户名和密码是否正确！");
+                    }
+                }
+            });
+        }
+
+        function doLogout(){
+            $.ajax({
+                url: "login.php?action=logout",
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    if (data.retVal){
+                        location.reload();
+                    }
+                }
+            });
+        }*/
+
+        /*function clickLogoNav(t, o){
+            //window.location.reload();  //刷新页面
+            activeLogoNav(t, o);
+            require.config({
+                paths: {
+                    "hummingMap": "hummingMap"
+                }
+            });
+
+            require(['hummingMap'], function(HMMap){
+                HMMap.initSearch();
+                $("#hm_wikinav").click();
+            });
+        }
+
+        function activeLogoNav(t, o){
+            window.searchType = t;
+            if (preSelItem != null){
+                var reg = new RegExp('(\\s|^)' + "active" + '(\\s|$)');
+                preSelItem.className = preSelItem.className.replace(reg, ' ');
+            }
+            o.className += " active";
+            preSelItem = o;
+
+            var tip = "搜索..."
+            if (t == 'HMSearch')
+            {
+                tip = "百科搜索...";
+            }
+            else if (t == 'TDTSearch')
+            {
+                tip = "天地图搜索...";
+            }
+            $("#autocomplete").attr('placeholder',tip);
+        }*/
+
+        // 搜地理百科的内容
+        function searchGeoWiki(e){
+            require(['hummingSearch'], function(HMSearch){
+                HMSearch.searchWikiConcept(e);
+            });
+        }
+
+        function gotoWikiConcept(e){
+            require(['hummingUtil'], function(HMUtil){
+                var wikiUrl = HMUtil.G_WIKISearchUrl;
+                $.ajax({
+                    url: wikiUrl + "doc-concept-" + e,
+                    type: 'GET',
+                    success: function (data) {
+                        if(data == 'none'){
+                            window.open(wikiUrl);
+                        }
+                        else{
+                            window.open( wikiUrl + "doc-view-" + data);
+                        }
+                    }
+                });
+            });
+        }
+
+        // 设置地理百科图层
+        function setGeoWikiLayer(){
+            require(['hummingMap'], function(HMMap){
+                HMMap.setOwnerLayer();
+            });
+        }
+
+        // 获取POI步行指数
+        function getWalkIndex(e){
+            require(['tdtSearch'], function(TDTSearch){
+                TDTSearch.gePOIWalkIndex(e);
+            });
+        }
+
+        // 查看关系计算详情
+        function watchRelationDetail(){
+            require(['hummingMap'], function(HMMap){
+                HMMap.showRelationDetail();
+            });
+        }
+
+        // 添加参加关系计算百科要素
+        function addRelationCalFeature(e){
+            require(['hummingMap'], function(HMMap){
+                HMMap.addRelCalFeature(e);
+            });
+        }
+
+        // 周边关系计算
+        function surRelCalc(e){
+            require(['hummingMap'], function(HMMap){
+                HMMap.surroundingRelCalc(e);
+            });
+        }
+
+        // 地名空间
+        function geoNameSpace(e){
+            require(['hummingMap'], function(HMMap){
+                HMMap.getGeoNameSpace(e);
+            });
+        }
+
+        // 清除地名空间图形
+        function removeGeoNameSpace(){
+            require(['hummingMap'], function(HMMap){
+                HMMap.removeGeoNameSpace();
+            });
+        }
+
+        // 下载要素对应的owl文件
+        function downLoadOwl(e){
+            require(['hummingMap'], function(HMMap){
+                HMMap.downLoadOwlFile(e);
+            });
+        }
+
+        // 关闭查看关系计算详情面板
+        function closeWatchRelationDetailPanel(){
+            $("#hm_relDetail").popover('destroy');
+        }
+
+        // 关闭步行指数计算面板
+        function closeWalkIndexPanel(){
+            $("#hm_walkIndex").popover('destroy');
+        }
+
+        // 关闭关系计算结果面板
+        function closeRelCalPanel(){
+            $("#btnRelCal").popover('destroy');
+        }
+
+        // 关闭视野范围内搜索面板
+        function closeViewPanel(){
+            $("#btnView").popover('hide');
+        }
+
+        // 关闭地理百科内容预览面板
+        function closeWikiPanel(){
+            var wikiPanelObj = document.getElementById("wikicontentpanel");
+            wikiPanelObj.style.display="none";
+        }
+    </script>
+
+</body>
+
+</html>

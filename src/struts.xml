@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="default" extends="struts-default">
+        <action name="hello">
+            <result>
+                /index.jsp
+            </result>
+        </action>
+    </package>
+
+    <package name="p1m" extends="default">
+        <action name="wholeGeonames" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeGeonames" />
+        <action name="easyGeonames" class="com.rs.geonameonemap.controllers.JsonAction01" method="easyGeonames" />
+        <action name="getGeonameByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameByNickname" />
+        <action name="getGeonameInfoByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameInfoByNickname" />
+        <action name="getGeonameFullByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameFullByNickname" />
+        <action name="wholeDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeDists" />
+        <action name="wholeTypes" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeTypes" />
+    </package>
+
+</struts>
