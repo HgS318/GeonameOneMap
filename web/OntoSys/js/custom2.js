@@ -1045,7 +1045,7 @@ $(document).ready(function () {
 	$('#id_tree_dist').tree({
 		lines: true,
 		animate: false,
-		url: 'wholeDists.action',
+		url: 'wholeEasyDists.action',
 		//queryParams: { id: '' },
 		formatter: function (node) {
 			var s = '<p style=\'color:#0000FF; font-size: 14px; line-height: 15px \'>'
