@@ -504,6 +504,8 @@ function simpleSetMarkers(psdata, markers) {
 				strokeStyle: "solid",   //线样式
 				strokeDasharray: [10, 5] //补充线样式
 			});
+			AMap.event.addListener(polyline, "mouseover", markerHighlight);
+			AMap.event.addListener(polyline, "mouseout", markerMouseOut);
 			AMap.event.addListener(polyline, "click", mapFeatureClick);
 			markers.push(polyline);
 		}
@@ -784,14 +786,14 @@ function initmarkers(pdata) {
 	simpleSetMarkers(placedata, markers);
 	if(pdata) {
 		showingPlaces = pdata;
-		showNarkers(pdata);
+		showMarkers(pdata);
 	} else {
 		showingPlaces = placedata;
 	}
 }
 
 //	显示一定量的点标注
-function showNarkers(psdata) {
+function showMarkers(psdata) {
 	simpleSetMarkers(psdata, markers);
 }
 
@@ -831,7 +833,7 @@ function markerMouseOut(e) {
 	if("1" == data.spaType) {
 		fea.setIcon("../images/markers/common_marker.png");
 	} else if("3" == data.spaType) {
-
+		fea.setOptions({strokeColor: "#3366FF"});
 	}
 }
 
@@ -871,7 +873,7 @@ $(function() {
 
 });
 
-// showNarkers(showingPlaces);
+// showMarkers(showingPlaces);
 
 function delInstance(geocode,insnum) {
 	var url="delInstance.action?geocode="+geocode+"&insnum="+insnum;

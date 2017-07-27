@@ -251,7 +251,7 @@
 				});
 				infoWindow.on('complete', function (result) {
 					var overs = map.getAllOverlays();
-//					showNarkers(showingPlaces);
+//					showMarkers(showingPlaces);
 					var oldhtml = showpa.innerHTML;
 					var elems = document.getElementsByClassName("keyword");
 					var srhname = elems[elems.length - 1].value;
@@ -394,7 +394,7 @@
 //				overo.hide();
 //			}
 //			map.remove(overs);
-//			showNarkers(showingPlaces);
+//			showMarkers(showingPlaces);
 			var resultpanel = document.getElementById("pathinfo1");
 			var oldhtml = resultpanel.innerHTML;
 			resultpanel.innerHTML = "";
@@ -784,7 +784,7 @@
 		showingPlaces = placedata;
 
 		initmarkers();
-//		showNarkers(showingPlaces);
+//		showMarkers(showingPlaces);
 		map.setFitView();
 
 	</script>

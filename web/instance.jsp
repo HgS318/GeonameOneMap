@@ -46,7 +46,7 @@
 	<%--<script src="js/jquery.treeview.js" type="text/javascript"></script>--%>
 	<script src="js/jquery.autocomplete.js" type="text/javascript"></script>
 	<%--<script src='data/localdata.js' type='text/javascript'></script>--%>
-	<script src="data/testdata.js" type="text/javascript" charset=”utf-8″></script>
+	<%--<script src="data/testdata.js" type="text/javascript" charset=”utf-8″></script>--%>
 	<script src="js/jquery.treeview.edit.js" type="text/javascript"></script>
 	<%--<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>--%>
 	<script src="http://webapi.amap.com/maps?v=1.3&key=8325164e247e15eea68b59e89200988b&plugin=AMap.Transfer,AMap.Walking,AMap.Driving,AMap.PlaceSearch,AMap.ToolBar,AMap.Marker,AMap.MouseTool,AMap.PolyEditor"></script>
