@@ -1,12 +1,17 @@
 
 var infoWindow, map, level = 12;
-var markers = [];	//	所有点标注
+var markers = [];	//	所有地点标注，包括点、线
+var dists = [];	//	所有地区标注
+var bounds = [];	//	所有界线标注
+var boundMarkers = [];	//	所有界桩、界碑
 var showingPlaces;	//	所有当前显示的地名
 var windata;		//	当前信息窗体中的地名数据
 var orgdata, destdata;	//	信息窗体搜索框中起点，终点的地点数据
 var navMethod = "trans";	//	信息窗体中上一次导航方式
 var entered = false;	//	信息窗体搜索框是否键入过Enter
 var infoWinDown;	//	信息窗体下部搜索框html
+
+var distsInited = false;	//	地区是否已经初始化
 
 
 
@@ -22,6 +27,231 @@ function getQueryString(name) {
         return "";
     }
     return result[1];
+}
+
+$(function() {
+//			setDists();
+//			setTypes();
+	$.ajax({
+		url: 'wholeGeonames.action',
+		type:'get',
+//				data: data,
+		dataType: 'json',
+		success:function(data){
+			// var places = JSON.parse(data.places);
+			// var bounds = JSON.parse(data.bounds);
+			// var bms = JSON.parse(data.boundMarkers);
+			var places = data;
+			map = new AMap.Map('mapContainer',{
+				resizeEnable: true,
+				center: [109.461756,30.285877],
+				zoom:level,
+				keyboardEnable :false,
+			});
+			map.on('complete', function(){
+				map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
+					map.addControl(new AMap.ToolBar);
+					map.addControl(new AMap.OverView({isOpen: true}));
+					map.addControl(new AMap.Scale);
+				});
+			});
+			map.on('rightclick', function(e) {
+				// me.contextMenu.open(map, e.lnglat);
+				// me.contextMenuPositon = e.lnglat; //右键菜单位置
+				var pos = [e.lnglat.lng, e.lnglat.lat];
+				mousePos = pos;
+			});
+			placedata = places;
+			showingPlaces = placedata;
+			initmarkers();
+
+			setAutoComplete();
+			map.setFitView();
+			setRightMenu();
+			$.ajax({
+				url: 'wholeEasyBounds.action',
+				type:'get',
+				dataType: 'json',
+				success:function(bound_data){
+					var boundArrayJson = bound_data;
+					initBounds(boundArrayJson);
+				},
+				error:function(bound_data){
+					console.log(bound_data);
+				}
+			});
+			$.ajax({
+				url: 'wholeEasyBoundMarkers.action',
+				type:'get',
+				dataType: 'json',
+				success:function(bm_data){
+					var bmArrayJson = bm_data;
+					initBoundMarkers(bmArrayJson);
+				},
+				error:function(bm_data){
+					console.log(bm_data);
+				}
+			});
+		},
+		error:function(data){
+			console.log(data);
+		}
+	})
+
+
+
+});
+
+function createDistPolygon(distjson, dists) {
+	if(!distjson.path) {
+		return;
+	}
+	var pathArr = JSON.parse(distjson.path);
+	var polygon = new AMap.Polygon({
+		zIndex: 40,
+		extData: distjson,
+		path: pathArr,//设置多边形边界路径
+		strokeColor: "#FF33FF", //线颜色
+		strokeOpacity: 0.05, //线透明度
+		strokeWeight: 0,    //线宽
+		fillColor: "#1791fc", //填充色
+		fillOpacity: 0.35//填充透明度
+	});
+	// polygon.setMap(map);
+	dists.push(polygon);
+}
+
+function showDists(distpolygons) {
+	if(dists != distpolygons) {
+		for(var i = 0; i < dists.length; i++) {
+			var old = dists[i];
+			old.setMap(null);
+		}
+	}
+	for(var i = 0; i < distpolygons.length; i++) {
+		var polygon = distpolygons[i];
+		polygon.setMap(map);
+	}
+}
+
+function initBounds(boundArrayJson) {
+	for(var i = 0; i < boundArrayJson.length; i++) {
+		var boundjson = boundArrayJson[i];
+		createBoundPolyline(boundjson, bounds);
+	}
+	showBounds(bounds);
+}
+
+function createBoundPolyline(boundjson, bounds) {
+	if(!boundjson.path) {
+		return;
+	}
+	var lineArr = JSON.parse(boundjson.path);
+	var polyline = new AMap.Polyline({
+		zIndex: 50,
+		extData: boundjson,
+		path: lineArr,//设置多边形边界路径
+		strokeColor: "#FF33FF", //线颜色
+		strokeOpacity: 0.9,       //线透明度
+		strokeWeight: 3,        //线宽
+		strokeStyle: "solid",   //线样式
+		strokeDasharray: [10, 5] //补充线样式
+	});
+	// polyline.setMap(map);
+	bounds.push(polyline);
+}
+
+function showBounds(boundPylylines) {
+	if(bounds != boundPylylines) {
+		for(var i = 0; i < bounds.length; i++) {
+			var old = bounds[i];
+			old.setMap(null);
+		}
+	}
+	for(var i = 0; i < boundPylylines.length; i++) {
+		var polyline = boundPylylines[i];
+		polyline.setMap(map);
+	}
+}
+
+function initBoundMarkers(bmArrayJson) {
+	for(var i = 0; i < bmArrayJson.length; i++) {
+		var bmjson = bmArrayJson[i];
+		createBoundMarkers(bmjson, boundMarkers);
+	}
+	showBoundMarkers(boundMarkers);
+}
+
+function createBoundMarkers(bmjson, boundMarkers) {
+	if(!bmjson.position) {
+		return;
+	}
+	var marker = new AMap.Marker({
+		// map: map,
+		position: bmjson.position,
+		zIndex: 180,
+		extData: bmjson,
+		title: bmjson.name,
+		icon: "../images/markers/boundmarker_blue.png",
+	});
+	// marker.setMap(map);
+	boundMarkers.push(marker);
+}
+
+function showBoundMarkers(bmMarkers) {
+	if(boundMarkers != bmMarkers) {
+		for(var i = 0; i < boundMarkers.length; i++) {
+			var old = boundMarkers[i];
+			old.setMap(null);
+		}
+	}
+	for(var i = 0; i < bmMarkers.length; i++) {
+		var marker = bmMarkers[i];
+		marker.setMap(map);
+	}
+}
+
+function simpleSetMarkers(psdata, markers) {
+	for (var i = 0; i < psdata.length; i++) {
+		var data = psdata[i];
+		data["selected"] = false;
+		if ("1" == data.spaType) {
+			var marker = new AMap.Marker({
+				map: map,
+				position: data.position,
+				zIndex: 100,
+				extData: data,
+				title: data.name,
+				icon: "../images/markers/common_marker.png",
+			});
+			AMap.event.addListener(marker, "mouseover", markerHighlight);
+			AMap.event.addListener(marker, "mouseout", markerMouseOut);
+			AMap.event.addListener(marker, "click", mapFeatureClick);
+			markers.push(marker);
+		} else if("3" == data.spaType) {
+			var lineArr = JSON.parse(data.path);
+			var polyline = new AMap.Polyline({
+				map: map,
+				zIndex: 95,
+				extData: data,
+				path: lineArr,          //设置线覆盖物路径
+				strokeColor: "#3366FF", //线颜色
+				strokeOpacity: 1,       //线透明度
+				strokeWeight: 5,        //线宽
+				strokeStyle: "solid",   //线样式
+				strokeDasharray: [10, 5] //补充线样式
+			});
+			AMap.event.addListener(polyline, "mouseover", markerHighlight);
+			AMap.event.addListener(polyline, "mouseout", markerMouseOut);
+			AMap.event.addListener(polyline, "click", mapFeatureClick);
+			markers.push(polyline);
+		}
+	}
+}
+
+function setRightMenu() {
+	context.init({preventDoubleContext: false});
+	context.attach('#mapContainer', test_menu);
 }
 
 //	生成信息窗体的内容
@@ -476,45 +706,6 @@ function setNewMarkers(newdata) {
 	map.setFitView();
 }
 
-function simpleSetMarkers(psdata, markers) {
-	for (var i = 0; i < psdata.length; i++) {
-		var data = psdata[i];
-		data["selected"] = false;
-		if ("1" == data.spaType) {
-			var marker = new AMap.Marker({
-				map: map,
-				position: data.position,
-				zIndex: 3,
-				extData: data,
-				title: data.name,
-				icon: "../images/markers/common_marker.png",
-			});
-			AMap.event.addListener(marker, "mouseover", markerHighlight);
-			AMap.event.addListener(marker, "mouseout", markerMouseOut);
-			AMap.event.addListener(marker, "click", mapFeatureClick);
-			markers.push(marker);
-		} else if("3" == data.spaType) {
-			var lineArr = JSON.parse(data.path);
-			var polyline = new AMap.Polyline({
-				map: map,
-				zIndex: 3,
-				extData: data,
-				title: data.name,
-				path: lineArr,          //设置线覆盖物路径
-				strokeColor: "#3366FF", //线颜色
-				strokeOpacity: 1,       //线透明度
-				strokeWeight: 5,        //线宽
-				strokeStyle: "solid",   //线样式
-				strokeDasharray: [10, 5] //补充线样式
-			});
-			AMap.event.addListener(polyline, "mouseover", markerHighlight);
-			AMap.event.addListener(polyline, "mouseout", markerMouseOut);
-			AMap.event.addListener(polyline, "click", mapFeatureClick);
-			markers.push(polyline);
-		}
-	}
-}
-
 //	在左边结果栏显示若干条结果，muldata为json
 function setResultItems(muldata, divname) {
 
@@ -840,54 +1031,6 @@ function markerMouseOut(e) {
 	}
 }
 
-$(function() {
-//			setDists();
-//			setTypes();
-	$.ajax({
-		url: 'easyGeonames.action',
-		type:'get',
-//				data: data,
-		dataType: 'json',
-		success:function(data){
-			map = new AMap.Map('mapContainer',{
-				resizeEnable: true,
-				center: [109.461756,30.285877],
-				zoom:level,
-				keyboardEnable :false,
-			});
-			map.on('complete', function(){
-				map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
-					map.addControl(new AMap.ToolBar);
-					map.addControl(new AMap.OverView({isOpen: true}));
-					map.addControl(new AMap.Scale);
-				});
-			});
-			map.on('rightclick', function(e) {
-				// me.contextMenu.open(map, e.lnglat);
-				// me.contextMenuPositon = e.lnglat; //右键菜单位置
-				var pos = [e.lnglat.lng, e.lnglat.lat];
-				mousePos = pos;
-			});
-			placedata = data;
-
-			showingPlaces = placedata;
-			initmarkers();
-			setAutoComplete();
-			map.setFitView();
-
-			context.init({preventDoubleContext: false});
-//    context.attach('#PNG_JPG', test_menu);
-//    context.attach('#NO_OPTIONS', test_menu);
-//    context.attach('#notDynamic', test_menu2);
-			context.attach('#mapContainer', test_menu);
-		},
-		error:function(data){
-			console.log(data);
-		}
-	})
-
-});
-
 // showMarkers(showingPlaces);
 
 function delInstance(geocode,insnum) {
@@ -912,9 +1055,15 @@ $(document).ready(function () {
 			// } else if (node.exsit == false) {
 			// 	s = '<span style=\'color:#a79696;\'>' + s + '</span>';
 			// }
+			if(!distsInited) {
+				var polygon = createDistPolygon(node, dists);
+				// dists.push(polygon);
+			}
 			return s;
 		},
 		onLoadSuccess: function () {
+			distsInited = true;
+			showDists(dists);
 			if ($('#id_tree_dist').tree('getRoots').length > 0 && k) {
 //				V($('#id_tree').tree('getRoots')[0].id);
 				k = false;
