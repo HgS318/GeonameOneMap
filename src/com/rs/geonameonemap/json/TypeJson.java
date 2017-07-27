@@ -81,8 +81,8 @@ public class TypeJson extends ObjectJson {
 		ObjectJson.consColumnNames(columns, TypeJson.columnNames);
 	}
 
-	public static void consVolumnNames(String tbName) {
-		ObjectJson.consColumnNames(tbName, TypeJson.columnNames);
+	public static void consVolumnNames(String dbType, String tbName) {
+		ObjectJson.consColumnNames(dbType, tbName, TypeJson.columnNames);
 	}
 
 }

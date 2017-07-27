@@ -129,8 +129,8 @@ public class DistJson extends ObjectJson {
 		ObjectJson.consColumnNames(columns, DistJson.columnNames);
 	}
 
-	public static void consColumnNames(String tbName) {
-		ObjectJson.consColumnNames(tbName, DistJson.columnNames);
+	public static void consColumnNames(String dbType, String tbName) {
+		ObjectJson.consColumnNames(dbType, tbName, DistJson.columnNames);
 	}
 
 

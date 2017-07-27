@@ -1,19 +1,18 @@
-package com.rs.geonameonemap.db.ms.queries;
+package com.rs.geonameonemap.db.mysql.queries;
 
-import com.rs.geonameonemap.db.DbUse;
-import com.rs.geonameonemap.db.ms.SQLArgs.*;
+import com.rs.geonameonemap.db.mysql.connections.*;
 import com.rs.geonameonemap.json.DistJson;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/23 0023.
  */
-public class DistQuery extends MSQuery {
+public class DistQuery extends MySQLQuery {
 
     public static final String tbName = "ENSHIDISTS";
     public static String[] columns = null;
@@ -22,7 +21,7 @@ public class DistQuery extends MSQuery {
     public static String getTotalDistInfo() {
         DistJson.consColumnNames(dbType, tbName);
         String sql = "SELECT * from " + tbName + " order by Id";
-        ResultSet rs = LocalConnection.executeQuery(sql);
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         List<DistJson> ds = new LinkedList<DistJson>();
         try {
             while (rs.next()) {

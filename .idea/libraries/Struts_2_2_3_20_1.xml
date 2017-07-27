@@ -45,6 +45,7 @@
       <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/struts2-core.jar!/" />
       <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/xmlbeans-2.3.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/xwork-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mysql-connector-java-5.1.34-bin.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

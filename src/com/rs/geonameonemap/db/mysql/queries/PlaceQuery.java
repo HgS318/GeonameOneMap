@@ -1,13 +1,15 @@
-package com.rs.geonameonemap.db.ms.queries;
+package com.rs.geonameonemap.db.mysql.queries;
 
-import com.rs.geonameonemap.db.ms.SQLArgs.*;
+import com.rs.geonameonemap.db.mysql.connections.*;
 import com.rs.geonameonemap.json.PlaceJson;
-import org.jetbrains.annotations.Nullable;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
-public class PlaceQuery extends MSQuery {
+public class PlaceQuery extends MySQLQuery {
 
     public static final String tbName = "PN";
 //    public static String[] columns = null;
@@ -50,7 +52,7 @@ public class PlaceQuery extends MSQuery {
     public static String getGeonameInfoByNickname(String val){
         PlaceJson.consColumnNames(dbType, tbName);
         String sql = "SELECT * from " + tbName +" where nickname = '" + val +"'";
-        ResultSet rs = LocalConnection.executeQuery(sql);
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         PlaceJson dj = null;
         try {
             if (rs.next()) {
@@ -92,14 +94,14 @@ public class PlaceQuery extends MSQuery {
 
     public static List<PlaceJson> searchFuzzy(String val) {
         String sql = "SELECT * from " + tbName + " where name like '%" + val + "' ";
-        ResultSet rs = LocalConnection.executeQuery(sql);
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         List<PlaceJson> ps = searchPlaces(sql);
         return ps;
     }
 
     public static List<PlaceJson> searchPlaces(String sql) {
         PlaceJson.consColumnNames(dbType, tbName);
-        ResultSet rs = LocalConnection.executeQuery(sql);
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         List<PlaceJson> ps = new LinkedList<PlaceJson>();
         try {
             while (rs.next()) {

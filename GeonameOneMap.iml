@@ -28,7 +28,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="C Tomcat 7.0.571" level="application_server_libraries" />
     <orderEntry type="library" name="Struts 2-2.3.20.1" level="project" />
     <orderEntry type="module-library">
       <library>
@@ -39,5 +38,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 7.0.571" level="application_server_libraries" />
   </component>
 </module>

@@ -1,6 +1,7 @@
 package com.rs.geonameonemap.controllers;
 
-import com.rs.geonameonemap.db.ms.queries.*;
+//import com.rs.geonameonemap.db.ms.queries.*;
+import com.rs.geonameonemap.db.mysql.queries.*;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;

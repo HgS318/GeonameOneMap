@@ -1,19 +1,21 @@
-package com.rs.geonameonemap.db.ms.SQLArgs;
+package com.rs.geonameonemap.db.mysql.connections;
 
 import java.sql.*;
-
-public class LocalConnection {
-    public static final String dbDriver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    public static final String dbAddr = "jdbc:sqlserver://10.5.220.20:1433";
-    public static String account = "sa", password = "111";
+/**
+ * Created by Administrator on 2017/7/27 0027.
+ */
+public class MysqlLocalConnection {
+    public static final String dbDriver = "com.mysql.jdbc.Driver";
+    public static final String dbAddr = "jdbc:mysql://localhost:3306/";
+    public static String account = "root", password = "cartolab";
     protected String dbName = null;
-    public static String defDbName = "P1M_arcgis";
-    protected static LocalConnection instance = null;
+    public static String defDbName = "geoname";
+    protected static MysqlLocalConnection instance = null;
     protected Connection conn = null;
 
-    public static LocalConnection getInstance() {
+    public static MysqlLocalConnection getInstance() {
         if(instance == null) {
-            instance = new LocalConnection();
+            instance = new MysqlLocalConnection();
         }
         return  instance;
     }
@@ -29,7 +31,7 @@ public class LocalConnection {
     public static ResultSet executeQuery(String sql) {
         Statement st = null;
         ResultSet rs = null;
-        Connection con = LocalConnection.getConnection();
+        Connection con = MysqlLocalConnection.getConnection();
         try {
             st = con.createStatement();
             rs = st.executeQuery(sql);
@@ -40,7 +42,7 @@ public class LocalConnection {
     }
 
     private Connection newConn() throws SQLException{
-        String connStr = dbAddr + "; DatabaseName=" + dbName;
+        String connStr = dbAddr + dbName;
         conn = DriverManager.getConnection(connStr, account, password);
         System.out.println("数据库连接成功");
         return conn;
@@ -60,7 +62,7 @@ public class LocalConnection {
 
     public Connection getConn() {
         if(dbName == null || "".equals(dbName)) {
-            setDbName(LocalConnection.defDbName);
+            setDbName(MysqlLocalConnection.defDbName);
         }
         return ensureConnection();
     }
@@ -83,24 +85,26 @@ public class LocalConnection {
         }
     }
 
-    protected LocalConnection() {
+    protected MysqlLocalConnection() {
         init();
     }
 
-    protected LocalConnection(String _dbName) {
+    protected MysqlLocalConnection(String _dbName) {
         setDbName(_dbName);
         init();
     }
 
 
     public static Connection getConnection() {
-        LocalConnection lc = LocalConnection.getInstance();
+        MysqlLocalConnection lc = MysqlLocalConnection.getInstance();
         Connection conn = lc.getConn();
         return conn;
     }
 
+
     public static void main(String[] args) {
-        LocalConnection.getConnection();
+        MysqlLocalConnection.getConnection();
     }
+
 
 }

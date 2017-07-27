@@ -150,8 +150,8 @@ public class PlaceJson extends ObjectJson {
 		ObjectJson.consColumnNames(columns, PlaceJson.columnNames);
 	}
 
-	public static void consColumnNames(String tbName) {
-		ObjectJson.consColumnNames(tbName, PlaceJson.columnNames);
+	public static void consColumnNames(String dbType, String tbName) {
+		ObjectJson.consColumnNames(dbType, tbName, PlaceJson.columnNames);
 	}
 
 }

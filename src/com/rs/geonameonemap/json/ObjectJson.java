@@ -1,6 +1,7 @@
 package com.rs.geonameonemap.json;
 
 import com.rs.geonameonemap.db.ms.SQLArgs.LocalConnection;
+import com.rs.geonameonemap.db.mysql.connections.MysqlLocalConnection;
 
 import java.sql.ResultSet;
 import java.util.*;
@@ -302,16 +303,23 @@ public class ObjectJson {
 		}
 	}
 
-	public static void consColumnNames(String tbName, Map<Integer, String> columnNames) {
+	public static void consColumnNames(String dbType, String tbName, Map<Integer, String> columnNames) {
 		if(columnNames == null || columnNames.size() > 0) {
 			return;
 		}
-		String sql = "Select Name FROM SysColumns Where id=Object_Id('" + tbName + "')";
-		ResultSet rs = LocalConnection.executeQuery(sql);
+		String sql = null;
+		ResultSet rs = null;
+		if("mysql".equalsIgnoreCase(dbType)) {
+			sql = "SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name='" + tbName + "'";
+			rs = MysqlLocalConnection.executeQuery(sql);
+		} else {
+			sql = "Select Name FROM SysColumns Where id=Object_Id('" + tbName + "')";
+			rs = LocalConnection.executeQuery(sql);
+		}
 		int i = 0;
 		try {
 			while (rs.next()) {
-				String columnName = rs.getString("Name");
+				String columnName = rs.getString(1);
 				columnNames.put(i, columnName);
 				i++;
 			}
