@@ -1,12 +1,10 @@
 package com.rs.geonameonemap.controllers;
 
-import com.rs.geonameonemap.db.ms.queries.*;
-//import com.rs.geonameonemap.db.mysql.queries.*;
+//import com.rs.geonameonemap.db.ms.queries.*;
+import com.rs.geonameonemap.db.mysql.queries.*;
 import java.io.*;
-import java.net.URLEncoder;
 import java.util.*;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.*;
 
 import org.apache.struts2.ServletActionContext;
@@ -15,6 +13,18 @@ import net.sf.json.*;
 
 public class JsonAction01 {
 
+//    public String homeAction() {
+//        String placeStr = PlaceQuery.getTotalGeonameInfo();
+//        String boundStr = BoundQuery.getEasyBoundsInfo();
+//        String bmStr = "''";
+//        String outStr = "{" +
+//                    "places: \"" + placeStr + "\", " +
+////                    "bounds: " + boundStr + ", " +
+////                    "boundMarkers: " + bmStr +
+//                "}";
+//        toBeJson(outStr);
+//        return null;
+//    }
 
     public String wholeGeonames() {
         String str = PlaceQuery.getTotalGeonameInfo();
@@ -75,6 +85,12 @@ public class JsonAction01 {
         return null;
     }
 
+    public String wholeEasyDists() {
+        String str = DistQuery.getEasyDistInfo();
+        toBeJson("[" + str + "]");
+        return null;
+    }
+
     public String wholeTypes() {
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -99,6 +115,17 @@ public class JsonAction01 {
         }
     }
 
+    public String wholeEasyBounds() {
+        String str = BoundQuery.getEasyBoundsInfo();
+        toBeJson(str);
+        return null;
+    }
+
+    public String wholeEasyBoundMarkers() {
+        String str = BoundMarkerQuery.getEasyBoundMarkersInfo();
+        toBeJson(str);
+        return null;
+    }
 
     public String defInstanceJson() {
         return null;

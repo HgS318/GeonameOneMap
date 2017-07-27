@@ -9,12 +9,14 @@ import com.rs.geonameonemap.db.ms.SQLArgs.LocalConnection;
 
 public class ArcGISdataTest {
 
+	static String tbName = "ENSHIDISTS_copy1";
+
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		Connection conn = LocalConnection.getConnection();
 		Statement st = conn.createStatement();
 		ResultSet r = null;
-		r = st.executeQuery("select Id, shapeCopy from PN_LINE");
+		r = st.executeQuery("select Id, shapeCopy from " + tbName);
 		
 		while(r.next()) {
 			long id =r.getInt(1);
@@ -24,11 +26,11 @@ public class ArcGISdataTest {
 				if(geoStr != null && !"".equals(geoStr)) {
 					SpatialAttr sa = new SpatialAttr(geoStr);
 					String path = sa.path;
-					String sql = "update PN_LINE set path = '" + path +"' where Id = " + id;
+					String sql = "update " + tbName + " set path = '" + path +"' where Id = " + id;
 					PreparedStatement ps = null;
 					ps = conn.prepareStatement(sql);
 					ps.executeUpdate();
-					System.out.println("update " + id);
+					System.out.println("updated " + id);
 					ps.close();
 				}
 			}

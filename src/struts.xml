@@ -15,13 +15,18 @@
     </package>
 
     <package name="p1m" extends="default">
+        <!--<action name="homeAction" class="com.rs.geonameonemap.controllers.JsonAction01" method="homeAction" />-->
         <action name="wholeGeonames" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeGeonames" />
         <action name="easyGeonames" class="com.rs.geonameonemap.controllers.JsonAction01" method="easyGeonames" />
         <action name="getGeonameByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameByNickname" />
         <action name="getGeonameInfoByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameInfoByNickname" />
         <action name="getGeonameFullByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameFullByNickname" />
         <action name="wholeDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeDists" />
+        <action name="wholeEasyDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyDists" />
         <action name="wholeTypes" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeTypes" />
+        <action name="wholeEasyBounds" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyBounds" />
+        <action name="wholeEasyBoundMarkers" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyBoundMarkers" />
+
     </package>
 
 </struts>

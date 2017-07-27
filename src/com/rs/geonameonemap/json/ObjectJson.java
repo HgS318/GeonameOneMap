@@ -4,6 +4,8 @@ import com.rs.geonameonemap.db.ms.SQLArgs.LocalConnection;
 import com.rs.geonameonemap.db.mysql.connections.MysqlLocalConnection;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -16,8 +18,8 @@ public class ObjectJson {
 	public boolean open = false;
 //	public Map<Integer, String> columnNames = new HashMap<Integer, String>();
 
-	public static String[] numKeys = new String[]{"id", "position", "TSCG", "DXCG", "SJCG", "SJQJ", "SJHR",
-			"SJDJ", "SJDS", "YGCG", "YGDS", "SWCG", "LTCG", "SYCG", "SPCG"};
+	public static String[] numKeys = new String[]{"id", "position", "X", "Y", "TSCG", "DXCG", "SJCG",
+			"SJQJ", "SJHR", "SJDJ", "SJDS", "YGCG", "YGDS", "SWCG", "LTCG", "SYCG", "SPCG"};
 
 	public ObjectJson() {
 		
@@ -259,6 +261,17 @@ public class ObjectJson {
 		return str;
 	}
 
+	public static String toJson(ObjectJson[] ojs) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("[");
+		for(ObjectJson oj : ojs) {
+			String str = oj.toJson();
+			sb.append(str).append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append("]");
+		return sb.toString();
+	}
 	
 	public String jsonKeyValue(String key, String value) {
 		boolean flag = false;
@@ -327,6 +340,36 @@ public class ObjectJson {
 		} catch (Exception se) {
 			se.printStackTrace();
 			System.err.println("产生列名失败！！！");
+		}
+	}
+
+	public static ResultSet consColumnNamesBySql(String dbType, String sql, Map<Integer, String> columnNames) {
+		ResultSet rs = null;
+		if("mysql".equalsIgnoreCase(dbType)) {
+			rs = MysqlLocalConnection.executeQuery(sql);
+		} else {
+			rs = LocalConnection.executeQuery(sql);
+		}
+		try {
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int count = rsmd.getColumnCount();
+			if(columnNames != null && count == columnNames.size()) {
+				return null;
+			}
+			for (int i = 0; i < count; i++) {
+				String columnName = rsmd.getColumnName(i + 1);
+				if(columnNames != null && columnNames.containsValue(columnName)) {
+					continue;
+				} else {
+					int num = columnNames.size();
+					columnNames.put(num, columnName);
+				}
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+			System.err.println("产生列名失败！！！");
+		} finally {
+			return rs;
 		}
 	}
 

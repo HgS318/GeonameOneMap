@@ -48,6 +48,8 @@ public class DistJson extends ObjectJson {
 			if(tmpValue == null || "".equals(tmpValue)) {
 				continue;
 			}
+			String value = tmpValue.replace('\"', '\'');
+			value = tmpValue.replace("\n", "<br/>");
 			dbValue2Attr(tmpValue, key);
 		}
 	}
@@ -133,6 +135,9 @@ public class DistJson extends ObjectJson {
 		ObjectJson.consColumnNames(dbType, tbName, DistJson.columnNames);
 	}
 
+	public static ResultSet consColumnNamesBySql(String dbType, String sql) {
+		return ObjectJson.consColumnNamesBySql(dbType, sql, DistJson.columnNames);
+	}
 
 	public static DistJson findObj(List<DistJson> data, int _id) {
 		for(DistJson jo : data) {

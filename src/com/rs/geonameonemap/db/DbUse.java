@@ -34,6 +34,18 @@ public class DbUse {
         return str;
     }
 
+    public static int getResultSetRowNum(ResultSet resultSet) {
+        int rowCount = -1;
+        try {
+            resultSet.last();
+            rowCount = resultSet.getRow();
+            resultSet.first();
+        } catch (Exception e) {
+            System.out.println("获取ResultSet行数失败...");
+            e.printStackTrace();
+        }
+        return rowCount;
+    }
 
     public static String getFileSuffix(String fileName) {
         int dId = fileName.lastIndexOf('.');
