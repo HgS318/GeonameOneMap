@@ -68,8 +68,11 @@ public class PlaceJson extends ObjectJson {
 				continue;
 			}
 			tmpValue = tmpValue.replace('\"', '\'');
-			String value = null;
-			value = tmpValue.replace("\n", "<br/>");
+			String value = tmpValue;
+			if(tmpValue.contains("\n")) {
+				value = tmpValue.replace("\n", "<br/>");
+			}
+//			String value = tmpValue.replace("\n", "<br/>");
 			if(key.equals("position")) {
 				value = "[" + value +"]";
 			}

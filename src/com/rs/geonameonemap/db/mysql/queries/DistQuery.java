@@ -15,6 +15,10 @@ public class DistQuery extends MySQLQuery {
 
     public static final String tbName = "ENSHIDISTS";
     public static String[] columns = null;
+    public static String[] easyColumnNames = new String[]{
+            "id", "name", "nickname", "大类", "小类", "position", "spaType", "path",
+            "所在跨行政区", "dist", "citycode", "ChnSpell", "brif"
+    };
 
 
     public static String getEasyDistInfo() {
@@ -27,7 +31,10 @@ public class DistQuery extends MySQLQuery {
 
     public static String getTotalDistInfo() {
         String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
-                tbName +".PNid = " + PlaceQuery.tbName + ".id order by " + tbName + ".id";
+                tbName +".PNid = " + PlaceQuery.tbName
+//                + ".id"
+                + ".id order by " + tbName + ".id"
+                ;
         ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
         String str = getDistsInfoFromResultSet(rs);
         return str;

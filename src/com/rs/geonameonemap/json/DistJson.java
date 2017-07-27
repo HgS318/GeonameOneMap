@@ -48,16 +48,16 @@ public class DistJson extends ObjectJson {
 			if(tmpValue == null || "".equals(tmpValue)) {
 				continue;
 			}
-			String value = tmpValue.replace('\"', '\'');
-			value = tmpValue.replace("\n", "<br/>");
 			dbValue2Attr(tmpValue, key);
 		}
 	}
 	
 	private void dbValue2Attr(String dbValue, String key) {
 		String tmpValue = dbValue.replace('\"', '\'');
-		String value = null;
-		value = tmpValue.replace("\n", "<br/>");
+		String value = tmpValue;
+		if(tmpValue.contains("\r\n")) {
+			value = tmpValue.replace("\r\n", "<br/>");
+		}
 		if(key.equals("position")) {
 			value = "[" + value +"]";
 		}
@@ -125,6 +125,17 @@ public class DistJson extends ObjectJson {
 //		}
 //		System.out.print("]");
 
+	}
+
+	public static String toJson(List<DistJson> ps, String[] useColumns) {
+		StringBuffer sb = new StringBuffer();
+		sb.append('[');
+		for(DistJson pj : ps) {
+			String pjStr = pj.toJson(useColumns);
+			sb.append(pjStr).append(",");
+		}
+		sb.replace(sb.length() - 1, sb.length(), "]");
+		return sb.toString();
 	}
 
 	public static void consColumnNames(List<String> columns) {
