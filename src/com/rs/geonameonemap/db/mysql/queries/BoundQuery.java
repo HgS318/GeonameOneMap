@@ -24,6 +24,10 @@ public class BoundQuery extends MySQLQuery {
         return str;
     }
 
+//    public static String getBoundsInfoByAttr(String attr, String val) {
+//
+//    }
+
     protected static String getBoundsInfoFromResultSet(ResultSet rs) {
         int num = DbUse.getResultSetRowNum(rs);
         if(num < 1) {
