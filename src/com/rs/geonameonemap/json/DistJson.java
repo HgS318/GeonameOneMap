@@ -58,6 +58,7 @@ public class DistJson extends ObjectJson {
 		if(tmpValue.contains("\r\n")) {
 			value = tmpValue.replace("\r\n", "<br/>");
 		}
+		value = value.replace("\n", "<br/>");
 		if(key.equals("position")) {
 			value = "[" + value +"]";
 		}

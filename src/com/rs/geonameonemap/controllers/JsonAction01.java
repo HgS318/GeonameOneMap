@@ -1,12 +1,15 @@
 package com.rs.geonameonemap.controllers;
 
 //import com.rs.geonameonemap.db.ms.queries.*;
+import com.rs.geonameonemap.db.ms.queries.*;
 import com.rs.geonameonemap.db.mysql.queries.*;
 import java.io.*;
 import java.util.*;
 
 import javax.servlet.http.*;
 
+import com.rs.geonameonemap.db.mysql.queries.DistQuery;
+import com.rs.geonameonemap.db.mysql.queries.PlaceQuery;
 import org.apache.struts2.ServletActionContext;
 
 import net.sf.json.*;
@@ -88,6 +91,19 @@ public class JsonAction01 {
     public String wholeEasyDists() {
         String str = DistQuery.getEasyDistInfo();
         toBeJson("[" + str + "]");
+        return null;
+    }
+
+    public String getDistInfoByNickname() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String name = new String(request.getParameter("name").getBytes("iso-8859-1"));
+            String str = DistQuery.getDistInfoByAttr("nickname" ,name);
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
         return null;
     }
 

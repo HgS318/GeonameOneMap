@@ -23,6 +23,7 @@
         <action name="getGeonameFullByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameFullByNickname" />
         <action name="wholeDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeDists" />
         <action name="wholeEasyDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyDists" />
+        <action name="getDistInfoByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getDistInfoByNickname" />
         <action name="wholeTypes" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeTypes" />
         <action name="wholeEasyBounds" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyBounds" />
         <action name="wholeEasyBoundMarkers" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyBoundMarkers" />

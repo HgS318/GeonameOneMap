@@ -10,4 +10,7 @@ public class MySQLQuery {
     public static Connection conn = null;
     public static String dbType = "mysql";
 
+
+
+
 }

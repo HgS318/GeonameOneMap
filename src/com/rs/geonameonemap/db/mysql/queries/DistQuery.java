@@ -31,16 +31,29 @@ public class DistQuery extends MySQLQuery {
 
     public static String getTotalDistInfo() {
         String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
-                tbName +".PNid = " + PlaceQuery.tbName
-//                + ".id"
-                + ".id order by " + tbName + ".id"
-                ;
+                tbName +".PNid = " + PlaceQuery.tbName + ".id order by " + tbName + ".id";
         ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
         String str = getDistsInfoFromResultSet(rs);
         return str;
     }
 
-    protected static String getDistsInfoFromResultSet(ResultSet rs) {
+    public static String getDistInfoByAttr(String attr, String val) {
+        String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
+                tbName +".PNid = " + PlaceQuery.tbName + ".id where " + attr + " = '" + val +"'";
+        ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
+        String str = getDistsInfoFromResultSet(rs);
+        return str;
+    }
+
+    public static List<DistJson> serachDistByAttr(String attr, String val) {
+        String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
+                tbName +".PNid = " + PlaceQuery.tbName + ".id where " + attr + " = " + val;
+        ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
+        List<DistJson> ds = getDistsFromResultSet(rs);
+        return ds;
+    }
+
+    protected  static List<DistJson> getDistsFromResultSet(ResultSet rs) {
         List<DistJson> ds = new LinkedList<DistJson>();
         try {
             while (rs.next()) {
@@ -54,6 +67,14 @@ public class DistQuery extends MySQLQuery {
         if(ds.size() < 1) {
             return null;
         }
+        return ds;
+    }
+
+    protected static String getDistsInfoFromResultSet(ResultSet rs) {
+        List<DistJson> ds = getDistsFromResultSet(rs);
+        if(ds == null) {
+            return null;
+        }
         for(DistJson pj : ds) {
             DistJson par = DistJson.findObj(ds, pj.parcode);
             if(par!=null) {
@@ -61,6 +82,13 @@ public class DistQuery extends MySQLQuery {
             }
         }
         return ds.get(0).toFullJson();
+    }
+
+    public static List<DistJson> searchDists(String sql) {
+        DistJson.consColumnNames(dbType, tbName);
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        List<DistJson> ds = getDistsFromResultSet(rs);
+        return ds;
     }
 
     public static void main(String[] args) {
