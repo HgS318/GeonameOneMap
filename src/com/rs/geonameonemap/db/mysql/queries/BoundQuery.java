@@ -24,9 +24,14 @@ public class BoundQuery extends MySQLQuery {
         return str;
     }
 
-//    public static String getBoundsInfoByAttr(String attr, String val) {
-//
-//    }
+    public static String getBoundInfoByNum(String attr, String val) {
+        BoundJson bj = searchBoundInfoByNum(attr, val);
+        if(bj != null) {
+            return bj.toJson();
+        } else {
+            return null;
+        }
+    }
 
     protected static String getBoundsInfoFromResultSet(ResultSet rs) {
         int num = DbUse.getResultSetRowNum(rs);
@@ -49,5 +54,21 @@ public class BoundQuery extends MySQLQuery {
         return str;
     }
 
+
+    public static BoundJson searchBoundInfoByNum(String attr, String val) {
+        BoundJson.consColumnNames(dbType, tbName);
+        String sql = "SELECT * from " + tbName +" where " + attr +" = " + val;
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        BoundJson bj = null;
+        try {
+            if (rs.next()) {
+                bj = new BoundJson(rs);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } finally {
+            return bj;
+        }
+    }
 
 }

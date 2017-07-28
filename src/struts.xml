@@ -21,12 +21,19 @@
         <action name="getGeonameByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameByNickname" />
         <action name="getGeonameInfoByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameInfoByNickname" />
         <action name="getGeonameFullByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameFullByNickname" />
+
         <action name="wholeDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeDists" />
         <action name="wholeEasyDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyDists" />
         <action name="getDistInfoByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getDistInfoByNickname" />
+        <action name="getDistInfoByNum" class="com.rs.geonameonemap.controllers.JsonAction01" method="getDistInfoByNum" />
+
         <action name="wholeTypes" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeTypes" />
+
         <action name="wholeEasyBounds" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyBounds" />
+        <action name="getBoundInfoById" class="com.rs.geonameonemap.controllers.JsonAction01" method="getBoundInfoById" />
+
         <action name="wholeEasyBoundMarkers" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyBoundMarkers" />
+        <action name="getBoundMarkerInfoById" class="com.rs.geonameonemap.controllers.JsonAction01" method="getBoundMarkerInfoById" />
 
     </package>
 

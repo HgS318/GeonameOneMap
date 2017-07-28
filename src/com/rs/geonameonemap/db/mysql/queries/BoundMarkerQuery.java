@@ -22,6 +22,15 @@ public class BoundMarkerQuery extends MySQLQuery {
         return str;
     }
 
+    public static String getBoundMarkerInfoByNum(String attr, String val) {
+        BoundMarkerJson bj = searchBoundInfoByNum(attr, val);
+        if(bj != null) {
+            return bj.toJson();
+        } else {
+            return null;
+        }
+    }
+
     protected static String getBoundsInfoFromResultSet(ResultSet rs) {
         int num = DbUse.getResultSetRowNum(rs);
         if(num < 1) {
@@ -43,6 +52,22 @@ public class BoundMarkerQuery extends MySQLQuery {
         return str;
     }
 
+
+    public static BoundMarkerJson searchBoundInfoByNum(String attr, String val) {
+        BoundMarkerJson.consColumnNames(dbType, tbName);
+        String sql = "SELECT * from " + tbName +" where " + attr +" = " + val;
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        BoundMarkerJson bj = null;
+        try {
+            if (rs.next()) {
+                bj = new BoundMarkerJson(rs);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } finally {
+            return bj;
+        }
+    }
 
 
 }

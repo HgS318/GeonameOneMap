@@ -16,18 +16,6 @@ import net.sf.json.*;
 
 public class JsonAction01 {
 
-//    public String homeAction() {
-//        String placeStr = PlaceQuery.getTotalGeonameInfo();
-//        String boundStr = BoundQuery.getEasyBoundsInfo();
-//        String bmStr = "''";
-//        String outStr = "{" +
-//                    "places: \"" + placeStr + "\", " +
-////                    "bounds: " + boundStr + ", " +
-////                    "boundMarkers: " + bmStr +
-//                "}";
-//        toBeJson(outStr);
-//        return null;
-//    }
 
     public String wholeGeonames() {
         String str = PlaceQuery.getTotalGeonameInfo();
@@ -107,6 +95,19 @@ public class JsonAction01 {
         return null;
     }
 
+    public String getDistInfoByNum() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
+            String str = DistQuery.getDistInfoByNum("Id", idStr);
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
+        return null;
+    }
+
     public String wholeTypes() {
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -137,9 +138,37 @@ public class JsonAction01 {
         return null;
     }
 
+    public String getBoundInfoById() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
+//            int id = Integer.parseInt(idStr);
+            String str = BoundQuery.getBoundInfoByNum("Id", idStr);
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
+        return null;
+    }
+
     public String wholeEasyBoundMarkers() {
         String str = BoundMarkerQuery.getEasyBoundMarkersInfo();
         toBeJson(str);
+        return null;
+    }
+
+    public String getBoundMarkerInfoById() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
+//            int id = Integer.parseInt(idStr);
+            String str = BoundMarkerQuery.getBoundMarkerInfoByNum("Id", idStr);
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
         return null;
     }
 

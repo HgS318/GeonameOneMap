@@ -45,7 +45,24 @@ public class DistQuery extends MySQLQuery {
         return str;
     }
 
-    public static List<DistJson> serachDistByAttr(String attr, String val) {
+    public static List<DistJson> serachDistsByAttr(String attr, String val) {
+        String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
+                tbName +".PNid = " + PlaceQuery.tbName + ".id where " + attr + " = '" + val +"'";
+        ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
+        List<DistJson> ds = getDistsFromResultSet(rs);
+        return ds;
+    }
+
+    public static String getDistInfoByNum(String attr, String val) {
+        String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
+                tbName +".PNid = " + PlaceQuery.tbName + ".Id where "
+                + tbName + "." + attr + " = " + val;
+        ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
+        String str = getDistsInfoFromResultSet(rs);
+        return str;
+    }
+
+    public static List<DistJson> serachDistsByNum(String attr, String val) {
         String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
                 tbName +".PNid = " + PlaceQuery.tbName + ".id where " + attr + " = " + val;
         ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
@@ -77,7 +94,7 @@ public class DistQuery extends MySQLQuery {
         }
         for(DistJson pj : ds) {
             DistJson par = DistJson.findObj(ds, pj.parcode);
-            if(par!=null) {
+            if(par != null) {
                 pj.setParent(par);
             }
         }
