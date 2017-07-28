@@ -102,8 +102,12 @@
 
 	function consDetailedContent(data, attaname, divname) {
 		if(data[attaname]) {
-			document.getElementById(divname).innerHTML ="&nbsp;&nbsp;&nbsp;&nbsp;" + data[attaname];
+//			document.getElementById(divname).innerHTML ="&nbsp;&nbsp;&nbsp;&nbsp;" + data[attaname];
+			var org = data[attaname];
+			var str = org.replace(/\<br\/\>/g,"\r\n &nbsp;&nbsp;&nbsp;&nbsp;");
+			document.getElementById(divname).innerHTML ="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + str;
 		}
+
 	}
 
 	function consMainContent(data) {

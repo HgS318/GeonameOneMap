@@ -315,7 +315,7 @@ function consMainContent(data) {
     document.title = name + " - 地名编辑";
     var bc = data['大类'],sc = data['小类'];
     document.getElementById("name0").setAttribute("value", name);
-    document.getElementById("doctitle").innerHTML = name;
+    document.getElementById("doctitle").innerHTML = "编辑地名：" + name;
     document.getElementById("bigclass1").innerHTML = bc;
     document.getElementById("smallclass1").innerHTML = sc;
     document.getElementById("bigclass2").innerHTML = bc;
