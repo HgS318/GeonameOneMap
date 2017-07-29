@@ -14,6 +14,9 @@ import java.util.*;
 public class BoundQuery extends MySQLQuery {
 
     public static final String tbName = "enshidivid";
+    public static final String[] boundPathColumns = new String[] {
+            "OBJECTID", "Id", "path", "Name", "AdminGrade", "Grade", "LeftName", "RightName"
+    };
 
 
     public static String getEasyBoundsInfo() {
@@ -23,6 +26,15 @@ public class BoundQuery extends MySQLQuery {
         String str = getBoundsInfoFromResultSet(rs);
         return str;
     }
+
+    public static String getBoundPathsInfo() {
+        BoundJson.consColumnNames(dbType, tbName);
+        String sql = "SELECT "+ DbUse.columnsToSQL(boundPathColumns) +" from " + tbName;
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        String str = getBoundsInfoFromResultSet(rs);
+        return str;
+    }
+
 
     public static String getBoundInfoByNum(String attr, String val) {
         BoundJson bj = searchBoundInfoByNum(attr, val);

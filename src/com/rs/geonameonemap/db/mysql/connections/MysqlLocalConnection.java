@@ -29,7 +29,7 @@ public class MysqlLocalConnection {
     }
 
     public static ResultSet executeQuery(String sql) {
-        Statement st = null;
+        Statement st;
         ResultSet rs = null;
         Connection con = MysqlLocalConnection.getConnection();
         try {
@@ -39,6 +39,20 @@ public class MysqlLocalConnection {
             de.printStackTrace();
         }
         return rs;
+    }
+
+    public static boolean excuteUpdate(String sql) {
+        Statement st;
+        Connection con = MysqlLocalConnection.getConnection();
+        boolean success = false;
+        try {
+            st = con.createStatement();
+            success = st.execute(sql);
+        } catch ( Exception de) {
+            de.printStackTrace();
+        } finally {
+            return success;
+        }
     }
 
     private Connection newConn() throws SQLException{

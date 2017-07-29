@@ -29,6 +29,29 @@ public class DistQuery extends MySQLQuery {
         return str;
     }
 
+    public static String getEasyDistInfoWithZeroChilds() {
+        DistJson.consColumnNames(dbType, tbName);
+        String sql = "SELECT * from " + tbName + " order by Id";
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        List<DistJson> ds = getDistsFromResultSet(rs);
+        if(ds == null) {
+            return null;
+        }
+        for(DistJson pj : ds) {
+            DistJson par = DistJson.findObj(ds, pj.parcode);
+            if(par != null) {
+                pj.setParent(par);
+            }
+        }
+        for(DistJson pj : ds) {
+            if(pj.needsZeroChild()) {
+                pj.addZeroChild();
+            }
+        }
+        DistJson root = ds.get(0);
+        return root.toFullJson();
+    }
+
     public static String getTotalDistInfo() {
         String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
                 tbName +".PNid = " + PlaceQuery.tbName + ".id order by " + tbName + ".id";
@@ -70,7 +93,7 @@ public class DistQuery extends MySQLQuery {
         return ds;
     }
 
-    protected  static List<DistJson> getDistsFromResultSet(ResultSet rs) {
+    protected static List<DistJson> getDistsFromResultSet(ResultSet rs) {
         List<DistJson> ds = new LinkedList<DistJson>();
         try {
             while (rs.next()) {
@@ -109,8 +132,52 @@ public class DistQuery extends MySQLQuery {
     }
 
     public static void main(String[] args) {
-        getTotalDistInfo();
+//        getTotalDistInfo();
+//        createZeroIds();
     }
+
+    private void createZeroIds() {
+        DistJson.consColumnNames(dbType, tbName);
+        String sql = "SELECT * from " + tbName + " order by Id";
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        List<DistJson> ds = getDistsFromResultSet(rs);
+        if(ds == null) {
+            return;
+        }
+        for(DistJson pj : ds) {
+            DistJson par = DistJson.findObj(ds, pj.parcode);
+            if(par != null) {
+                pj.setParent(par);
+            }
+        }
+        DistJson root = ds.get(0);
+        root.setChildIds();
+        for(DistJson dj : ds) {
+            String OBJECTID = dj.getAttr("OBJECTID");
+//            if(dj.getParent() != null) {
+//                String parid = dj.getParent().getAttr("id");
+//                sql = "update " + tbName + " set parent = " + parid + " where OBJECTID = " + OBJECTID;
+//                MysqlLocalConnection.excuteUpdate(sql);
+//            }
+            String childid = dj.getAttr("childid");
+            if(childid != null) {
+                sql = "update " + tbName + " set childid = " + childid + " where OBJECTID = " + OBJECTID;
+                MysqlLocalConnection.excuteUpdate(sql);
+            }
+            String pchildid = dj.getAttr("pchildid");
+            if(pchildid != null) {
+                sql = "update " + tbName + " set pchildid = " + pchildid + " where OBJECTID = " + OBJECTID;
+                MysqlLocalConnection.excuteUpdate(sql);
+            }
+            String gpchildid = dj.getAttr("gpchildid");
+            if(gpchildid != null) {
+                sql = "update " + tbName + " set gpchildid = " + gpchildid + " where OBJECTID = " + OBJECTID;
+                MysqlLocalConnection.excuteUpdate(sql);
+            }
+
+        }
+    }
+
 
 
 }

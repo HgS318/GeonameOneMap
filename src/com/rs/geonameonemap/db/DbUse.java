@@ -47,6 +47,18 @@ public class DbUse {
         return rowCount;
     }
 
+    public static String columnsToSQL(String[] columns) {
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < columns.length; i++) {
+            sb.append(" ").append(columns[i]);
+            if(i != columns.length - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append(" ");
+        return sb.toString();
+    }
+
     public static String getFileSuffix(String fileName) {
         int dId = fileName.lastIndexOf('.');
         if(dId < 0) {

@@ -67,7 +67,11 @@ public class ObjectJson {
 	public void setName(String _name) {
 		name = _name;
 	}
-	
+
+	public boolean containsAttr(String attrName) {
+		return this.attr.containsKey(attrName);
+	}
+
 	public String getAttr(String attrName) {
 		return this.attr.get(attrName);
 	}
@@ -80,7 +84,17 @@ public class ObjectJson {
 		this.attr.put(attrName, String.valueOf(intValue));
 	}
 	
-	
+	public ObjectJson getParent() {
+		return parent;
+	}
+
+	public String getParentName() {
+		if(parent != null) {
+			return parent.getName();
+		}
+		return getAttr("parent");
+	}
+
 	public void setParent(ObjectJson par) {
 		this.simpleSetParent(par);
 		par.simpleSetSub(this);
@@ -301,6 +315,61 @@ public class ObjectJson {
 		}
 		return this.parent == jo.parent;
 		
+	}
+
+
+	public void setChildIds() {
+		if(subclasses.size() < 1) {
+			return;
+		}
+		boolean hasZero = false;
+		for(int i = 0; i < this.subclasses.size(); i++) {
+			ObjectJson child = subclasses.get(i);
+			if(child.containsAttr("childid")) {
+				String cidStr = child.getAttr("childid");
+				if("0".equals(cidStr)) {
+					hasZero = true;
+				}
+			} else {
+				child.setAttr("childid", i + 1);
+			}
+			child.setAttr("parentId", this.getAttr("id"));
+			if(this.containsAttr("childid")) {
+				child.setAttr("pchildid", this.getAttr("childid"));
+			}
+			if(this.containsAttr("pchildid")) {
+				child.setAttr("gpchildid", this.getAttr("pchildid"));
+			}
+			child.setChildIds();
+		}
+		if(!hasZero) {
+			addZeroChild();
+		}
+	}
+
+	public void addZeroChild() {
+		ObjectJson zeroChild = new ObjectJson();
+		zeroChild.setAttr("name", "");
+		zeroChild.setName("");
+		zeroChild.setParent(this);
+		this.subclasses.add(0, zeroChild);
+	}
+
+	public boolean needsZeroChild() {
+		if(subclasses.size() < 1) {
+			return false;
+		}
+		boolean hasZero = false;
+		for(int i = 0; i < this.subclasses.size(); i++) {
+			ObjectJson child = subclasses.get(i);
+			if (child.containsAttr("childid")) {
+				String cidStr = child.getAttr("childid");
+				if ("0".equals(cidStr)) {
+					hasZero = true;
+				}
+			}
+		}
+		return !hasZero;
 	}
 
 

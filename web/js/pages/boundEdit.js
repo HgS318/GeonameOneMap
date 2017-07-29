@@ -110,12 +110,9 @@ function setChildIds(treedata) {
 
 function initSelectLists() {
     //获取json数据
-    var url = "wholeEasyDists.action";
-
+    var url = "getEasyDistInfoWithZeroChilds.action";
     $.getJSON(url, function(data) {
-
-        setChildIds(data[0]);
-
+        // setChildIds(data[0]);
         allDistJson = data;
         // province();
         var i = 0;
@@ -139,37 +136,48 @@ function initSelectLists() {
             var city = function(){
                 temp_html = "";
                 var n = oProvince.get(0).selectedIndex;
-                $.each(areaJson[n].children,function(i,city){
-                    temp_html+="<option value='"+city.name+"'>"+city.name+"</option>";
-                });
+                var provinceChildren = areaJson[n].children;
+                if(provinceChildren) {
+                    $.each(provinceChildren,function(i,city){
+                        temp_html+="<option value='"+city.name+"'>"+city.name+"</option>";
+                    });
+                }
                 oCity.html(temp_html);
-                district();
+                county();
             };
             //赋值县
-            var district = function(){
+            var county = function(){
                 temp_html = "";
                 var m = oProvince.get(0).selectedIndex;
                 var n = oCity.get(0).selectedIndex;
-                if(typeof(areaJson[m].children[n].children) == "undefined"){
-                    oDistrict.css("display","none");
-                }else{
-                    oDistrict.css("display","inline");
-                    $.each(areaJson[m].children[n].children,function(i,district){
-                        temp_html+="<option value='"+district.name+"'>"+district.name+"</option>";
-                    });
+                // if(typeof(areaJson[m].children[n].children) == "undefined"){
+                    // oDistrict.css("display","none");
+                if(m < 0 || n < 0){
                     oDistrict.html(temp_html);
-                };
-                if(inited) {
-                    changeDist(num);
+                } else {
+                    oDistrict.css("display","inline");
+                    var cityChildren = areaJson[m].children[n].children;
+                    if(cityChildren) {
+                        $.each(cityChildren,function(i,district){
+                            temp_html+="<option value='"+district.name+"'>"+district.name+"</option>";
+                        });
+                    }
+                    oDistrict.html(temp_html);
                 }
             };
             //选择省改变市
             oProvince.change(function(e){
                 city();
+                if(inited) {
+                    changeDist(num);
+                }
             });
             //选择市改变县
             oCity.change(function(e){
-                district();
+                county();
+                if(inited) {
+                    changeDist(num);
+                }
             });
             oDistrict.change(function(e){
                 if(inited) {
@@ -177,10 +185,9 @@ function initSelectLists() {
                 }
             });
             province();
-            toSelect(orgDist1, 1);
-            toSelect(orgDist2, 2);
         });
-
+        toSelect(orgDist1, 1);
+        toSelect(orgDist2, 2);
     });
 
 }
@@ -189,18 +196,21 @@ function changeDist(num) {
     var cityDiv = $("#city" + num)[0];
     var countyDiv = $("#county" + num)[0];
     var streetDiv = $("#street" + num)[0];
-    var cityname = cityDiv.options[cityDiv.selectedIndex].innerText;
-    var countyName = countyDiv.options[countyDiv.selectedIndex].innerText;
-    var streetName = streetDiv.options[streetDiv.selectedIndex].innerText;
+    var cii = cityDiv.selectedIndex;
+    var coi = countyDiv.selectedIndex;
+    var sti = streetDiv.selectedIndex;
+    var cityname = cii < 0 ? "" : cityDiv.options[cii].innerText;
+    var countyName = coi < 0 ? "" : countyDiv.options[coi].innerText;
+    var streetName = sti < 0 ? "" : streetDiv.options[sti].innerText;
 
-    if(cityname && countyName && streetName) {
+    // if(cityname && countyName && streetName) {
         var distJson = findDist(cityname, countyName, streetName);
         if(num == 1) {
             setDistPolygon(distJson, "left");
         } else if(num == 2) {
             setDistPolygon(distJson, "right");
         }
-    }
+    // }
 
 }
 
@@ -225,10 +235,10 @@ function findMatch(singledata, alldata) {
     return null;
 }
 
-function toSelect(origindist, num) {
+function toSelect(dist, num) {
     // var cityname, countyname, streetname;
     var cityci, countyci, streetci;
-    var dist = findMatch(origindist ,allDistJson[0]);
+    // var dist = findMatch(origindist ,allDistJson[0]);
     if(dist.AdminGrade == "5") {
         streetci = dist.childid;
         countyci = dist.pchildid;
@@ -279,6 +289,9 @@ function findDist(cityname, countyname, streetname) {
 }
 
 function findSubDist(superDist, subname) {
+    if(subname == null || "" == subname) {
+        return superDist;
+    }
     for(var i = 0; i < superDist.children.length; i++) {
         var json = superDist.children[i];
         if(subname == json.name) {
@@ -461,10 +474,11 @@ function mapInit(data) {
     editor.closeEditLine = function(){
         editor._lineEditor.close();
     }
-    map.setFitView();
 
     setDistPolygons();
-    
+
+    map.setFitView();
+
 }
 
 function lineEdit() {

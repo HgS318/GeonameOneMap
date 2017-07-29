@@ -761,4 +761,17 @@ overflow:hidden;position:absolute;right:10px;width:50px;top:12px;}
     margin-bottom: 4px;
     cursor: pointer;
 }
-
+.button-bound {
+    height: 20px;
+    line-height: 20px;
+    background-color: #0D9BF2;
+    color: #FFF;
+    border: 0;
+    outline: none;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 3px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}

@@ -6,6 +6,7 @@ import com.rs.geonameonemap.json.BoundMarkerJson;
 import com.rs.geonameonemap.json.ObjectJson;
 
 import java.sql.*;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/7/28 0028.
@@ -29,6 +30,36 @@ public class BoundMarkerQuery extends MySQLQuery {
         } else {
             return null;
         }
+    }
+
+    public static String getBoundMarkerRelatedDists(String idStr) {
+        Map<String, String> dists = new HashMap<String, String>();
+        String sql = "select " + tbName + ".id as mid, " + BoundQuery.tbName +
+                ".Id as bid, LeftName, RightName FROM " + tbName +
+                " INNER JOIN " + BoundQuery.tbName + " on " +
+                BoundQuery.tbName + ".Id = " + tbName +".Bound1ID or " +
+                BoundQuery.tbName + ".Id = " + tbName + ".Bound2ID or " +
+                BoundQuery.tbName + ".Id = " + tbName + ".Bound3ID or " +
+                BoundQuery.tbName + ".Id = " + tbName + ".Bound4ID or " +
+                BoundQuery.tbName + ".Id = " + tbName + ".Bound5ID " +
+                " where " + tbName + ".Id = " + idStr;
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        try {
+            while (rs.next()) {
+                String ln = rs.getString("LeftName");
+                String rn = rs.getString("RightName");
+                dists.put(ln, "");
+                dists.put(rn, "");
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        Set<String> strs = dists.keySet();
+        String str = strs.toString();
+        str = str.replace("[", "\"");
+        str = str.replace("]", "\"");
+        return str;
+
     }
 
     protected static String getBoundsInfoFromResultSet(ResultSet rs) {

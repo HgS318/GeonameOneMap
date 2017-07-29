@@ -82,6 +82,12 @@ public class JsonAction01 {
         return null;
     }
 
+    public String getEasyDistInfoWithZeroChilds() {
+        String str = DistQuery.getEasyDistInfoWithZeroChilds();
+        toBeJson("[" + str + "]");
+        return null;
+    }
+
     public String getDistInfoByNickname() {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
@@ -138,6 +144,12 @@ public class JsonAction01 {
         return null;
     }
 
+    public String wholeBoundPaths() {
+        String str = BoundQuery.getBoundPathsInfo();
+        toBeJson(str);
+        return null;
+    }
+
     public String getBoundInfoById() {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
@@ -164,6 +176,20 @@ public class JsonAction01 {
             String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
 //            int id = Integer.parseInt(idStr);
             String str = BoundMarkerQuery.getBoundMarkerInfoByNum("Id", idStr);
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
+        return null;
+    }
+
+    public String getBoundMarkerRelateDistsById() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
+//            int id = Integer.parseInt(idStr);
+            String str = BoundMarkerQuery.getBoundMarkerRelatedDists(idStr);
             toBeJson(str);
         } catch (Exception ex) {
             ex.printStackTrace();
