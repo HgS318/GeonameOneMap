@@ -32,11 +32,11 @@
 	<link href="css/jquery.autocomplete.css" rel="stylesheet"/>
 	<link href="css/jquery.treeview.css" rel="stylesheet" />
 	<link href="css/screen.css" rel="stylesheet" />
-	<link href="css/inline.style.sheet4.css" rel="stylesheet" />
+	<link href="css/pages/inline.style.sheet4.css" rel="stylesheet" />
+	<link href="css/pages/g1m-mainpage.css" rel="stylesheet" />
 
 	<link href="css/plugins/right-menu/context.standalone.css" rel="stylesheet" type="text/css" />
 	<link href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" rel="stylesheet" type="text/css" />
-
 
 	<%--<script src="OntoSys/js/easyui/jquery-1.44-min.js" type="text/javascript"></script>--%>
 	<%--<script src="js/jquery.js" type="text/javascript"></script>--%>
@@ -55,6 +55,8 @@
 	<script src="http://webapi.amap.com/maps?v=1.3&key=8325164e247e15eea68b59e89200988b&plugin=AMap.Transfer,AMap.Walking,AMap.Driving,AMap.PlaceSearch,AMap.ToolBar,AMap.Marker,AMap.MouseTool,AMap.PolyEditor"></script>
 	<script src="http://webapi.amap.com/js/marker.js"></script>
 	<script src="http://webapi.amap.com/demos/js/liteToolbar.js" type="text/javascript"></script>
+	<script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.10"></script>
+	<script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
 
 
     <!--  <script src="OntoSys/js/easyui/jquery-1.44-min.js" type="text/javascript"></script> -->
@@ -66,6 +68,7 @@
 	<script src="OntoSys/js/easyResponsiveTabs.js" type="text/javascript"></script>
 	<%--<script src="OntoSys/js/easyui/jquery.iDialog.js"></script>--%>
 	<script src="OntoSys/js/custom2.js"></script>
+	<script src="js/pages/g1m-mainpage-map.js"></script>
 	<%--<script src="OntoSys/js/my/instanceLoad.js" type="text/javascript" charset="utf-8"></script>--%>
 
 	<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
@@ -74,7 +77,7 @@
 	<script src="js/plugins/right-menu/context.js"></script>
     
 </head>
-<body class="easyui-layout"">
+<body class="easyui-layout">
     <div id="northDiv" data-options="region:'north',border:false">
         <span><img id="icon" src="OntoSys/img/knowledge.png" /></span>
         <span>地名一张图管理系统</span>
@@ -338,7 +341,14 @@
         </div>
         
         <div id="mapContainer" style="width:100%; height: 85%"></div>
-        
+		<div class='button-group' style="background-color: #0d9bf2;right: 20px">
+			<input type="checkbox" onclick="toggleScale(this)"/>地名
+			<input type="checkbox" id="toolbar" onclick="toggleToolBar(this)"/>行政区
+			<input type="checkbox" id="toolbarDirection" disabled onclick="toggleToolBarDirection(this)"/>行政界线
+			<input type="checkbox" id="toolbarRuler" disabled onclick="toggleToolBarRuler(this)"/>界桩、界碑
+			<input type="checkbox" id="overview" onclick="toggleOverViewShow(this)"/>显示鹰眼
+			<input type="checkbox" id="overviewOpen" disabled onclick="toggleOverViewOpen(this)"/>展开鹰眼
+		</div>
       <!--  <div id="divContainer">  -->  
         <div id="divContainer1">
         	

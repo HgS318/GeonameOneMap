@@ -133,72 +133,76 @@ function consUploaders(data) {
 }
 
 function mapInit(data) {
-    map = new AMap.Map('mapContainer',{
-        resizeEnable: true,
-        center: data.position,
-        zoom:15,
-        keyboardEnable :false,
-    });
-    map.on('complete', function(){
-        map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
-            map.addControl(new AMap.ToolBar);
-            map.addControl(new AMap.OverView({isOpen: true}));
-            map.addControl(new AMap.Scale);
-        });
-    });
-    spaType = data.spaType;
-    consBasicCotent(data, "X", "xpos");
-    consBasicCotent(data, "Y", "ypos");
-    consBasicCotent(data, "path", "pathtext");
+    AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
 
-    if ("1" == spaType) {
-        var marker = new AMap.Marker({
-            map: map,
-            position: data.position,
-            zIndex: 3,
-            extData: data,
-            title: data.name,
-            draggable: false,
-            icon: '../images/markers/new_marker.png',
+        map = new AMap.Map('mapContainer', {
+            resizeEnable: true,
+            center: data.position,
+            zoom: 15,
+            keyboardEnable: false,
         });
-        orgX = data.X;
-        orgY = data.Y;
-        feature = marker;
-        AMap.event.addListener(feature, "dragging", markerDrag);
-        AMap.event.addListener(feature, "dragend", markerDrag);
-    } else if("3" == spaType) {
-        var lineArr = JSON.parse(data.path);
-        orgPath = lineArr;
-        editor = {};
-        editor._line = (function(){
-            var lineArr = JSON.parse(data.path);
-            orgPath = lineArr;
-            var polyline = new AMap.Polyline({
+        map.on('complete', function () {
+            map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function () {
+                map.addControl(new AMap.ToolBar);
+                map.addControl(new AMap.OverView({isOpen: true}));
+                map.addControl(new AMap.Scale);
+                map.addControl(new BasicControl.LayerSwitcher({position: 'rt'}));
+            });
+        });
+        spaType = data.spaType;
+        consBasicCotent(data, "X", "xpos");
+        consBasicCotent(data, "Y", "ypos");
+        consBasicCotent(data, "path", "pathtext");
+
+        if ("1" == spaType) {
+            var marker = new AMap.Marker({
                 map: map,
+                position: data.position,
                 zIndex: 3,
                 extData: data,
                 title: data.name,
-                path: lineArr,          //设置线覆盖物路径
-                extData: data,
-                strokeColor: "#0000ff", //线颜色
-                strokeOpacity: 1,       //线透明度
-                strokeWeight: 5,        //线宽
-                strokeStyle: "solid",   //线样式
-                strokeDasharray: [10, 5] //补充线样式
+                draggable: false,
+                icon: '../images/markers/new_marker.png',
             });
-            return polyline;
-        })();
-        feature = editor._line;
-        AMap.event.addListener(feature, "change", lineEdit);
-        editor._lineEditor= new AMap.PolyEditor(map, editor._line);
-        editor.startEditLine = function(){
-            editor._lineEditor.open();
+            orgX = data.X;
+            orgY = data.Y;
+            feature = marker;
+            AMap.event.addListener(feature, "dragging", markerDrag);
+            AMap.event.addListener(feature, "dragend", markerDrag);
+        } else if ("3" == spaType) {
+            var lineArr = JSON.parse(data.path);
+            orgPath = lineArr;
+            editor = {};
+            editor._line = (function () {
+                var lineArr = JSON.parse(data.path);
+                orgPath = lineArr;
+                var polyline = new AMap.Polyline({
+                    map: map,
+                    zIndex: 3,
+                    extData: data,
+                    title: data.name,
+                    path: lineArr,          //设置线覆盖物路径
+                    extData: data,
+                    strokeColor: "#0000ff", //线颜色
+                    strokeOpacity: 1,       //线透明度
+                    strokeWeight: 5,        //线宽
+                    strokeStyle: "solid",   //线样式
+                    strokeDasharray: [10, 5] //补充线样式
+                });
+                return polyline;
+            })();
+            feature = editor._line;
+            AMap.event.addListener(feature, "change", lineEdit);
+            editor._lineEditor = new AMap.PolyEditor(map, editor._line);
+            editor.startEditLine = function () {
+                editor._lineEditor.open();
+            }
+            editor.closeEditLine = function () {
+                editor._lineEditor.close();
+            }
         }
-        editor.closeEditLine = function(){
-            editor._lineEditor.close();
-        }
-    }
-    map.setFitView();
+        map.setFitView();
+    });
 }
 
 //	点击标注Marker时

@@ -427,51 +427,52 @@ function consUploaders(data) {
 
 function mapInit(data) {
 
-    map = new AMap.Map('mapContainer', {
-        resizeEnable: true,
-        center: data.position,
-        zoom: 11,
-        keyboardEnable: false,
-    });
-    map.on('complete',
-        function() {
-            map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"],
-                function() {
-                    map.addControl(new AMap.ToolBar);
-                    map.addControl(new AMap.OverView({
-                        isOpen: true
-                    }));
-                    map.addControl(new AMap.Scale);
-                });
+    AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
+
+        map = new AMap.Map('mapContainer', {
+            resizeEnable: true,
+            center: data.position,
+            zoom: 11,
+            keyboardEnable: false,
         });
-    consBasicCotent(data, "X", "xpos");
-    consBasicCotent(data, "Y", "ypos");
+        map.on('complete',
+            function () {
+                map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"],
+                    function () {
+                        map.addControl(new AMap.ToolBar);
+                        map.addControl(new AMap.OverView({isOpen: true}));
+                        map.addControl(new AMap.Scale);
+                        map.addControl(new BasicControl.LayerSwitcher({position: 'rt'}));
+                    });
+            });
+        consBasicCotent(data, "X", "xpos");
+        consBasicCotent(data, "Y", "ypos");
 
-    var marker = new AMap.Marker({
-        map: map,
-        position: data.position,
-        zIndex: 50,
-        extData: data,
-        title: data.name,
-        draggable: false,
-        icon: '../images/markers/boundmarker_blue.png',
-    });
-    orgX = data.X;
-    orgY = data.Y;
-    feature = marker;
-    AMap.event.addListener(feature, "dragging", markerDrag);
-    AMap.event.addListener(feature, "dragend", markerDrag);
+        var marker = new AMap.Marker({
+            map: map,
+            position: data.position,
+            zIndex: 50,
+            extData: data,
+            title: data.name,
+            draggable: false,
+            icon: '../images/markers/boundmarker_blue.png',
+        });
+        orgX = data.X;
+        orgY = data.Y;
+        feature = marker;
+        AMap.event.addListener(feature, "dragging", markerDrag);
+        AMap.event.addListener(feature, "dragend", markerDrag);
 
 
-    for(var i = 0; i < boundPolylines.length; i++) {
-        var boundline = boundPolylines[i];
-        if(boundline) {
-            boundline.setMap(map);
+        for (var i = 0; i < boundPolylines.length; i++) {
+            var boundline = boundPolylines[i];
+            if (boundline) {
+                boundline.setMap(map);
+            }
         }
-    }
 
-    map.setFitView();
-
+        map.setFitView();
+    });
 }
 
 function markerDrag(e) {

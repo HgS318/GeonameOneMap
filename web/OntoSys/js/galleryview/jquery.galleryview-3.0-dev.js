@@ -557,7 +557,7 @@ if (typeof Object.create !== 'function') {
 				panel,
 				playing = false;
 				
-			// don't go out of bounds
+			// don't go out of boundPolylines
 			if(i >= this.numImages) {
 				i = i % this.numImages;
 			} else if(i < 0) {

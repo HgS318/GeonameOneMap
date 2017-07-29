@@ -426,59 +426,63 @@ function consUploaders(data) {
 
 function mapInit(data) {
     inited = false;
-    map = new AMap.Map('mapContainer',{
-        resizeEnable: true,
-        center: data.position,
-        zoom:15,
-        keyboardEnable :false,
-    });
-    map.on('complete', function(){
-        map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
-            map.addControl(new AMap.ToolBar);
-            map.addControl(new AMap.OverView({isOpen: true}));
-            map.addControl(new AMap.Scale);
-        });
-    });
-    spaType = data.spaType;
-    // consBasicCotent(data, "X", "xpos");
-    // consBasicCotent(data, "Y", "ypos");
-    consBasicCotent(data, "path", "pathtext");
 
-    var lineArr = JSON.parse(data.path);
-    orgPath = lineArr;
-    editor = {};
-    editor._line = (function(){
+    AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
+
+        map = new AMap.Map('mapContainer', {
+            resizeEnable: true,
+            center: data.position,
+            zoom: 15,
+            keyboardEnable: false,
+        });
+        map.on('complete', function () {
+            map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function () {
+                map.addControl(new AMap.ToolBar);
+                map.addControl(new AMap.OverView({isOpen: true}));
+                map.addControl(new AMap.Scale);
+                map.addControl(new BasicControl.LayerSwitcher({position: 'rt'}));
+            });
+        });
+        spaType = data.spaType;
+        // consBasicCotent(data, "X", "xpos");
+        // consBasicCotent(data, "Y", "ypos");
+        consBasicCotent(data, "path", "pathtext");
+
         var lineArr = JSON.parse(data.path);
         orgPath = lineArr;
-        var polyline = new AMap.Polyline({
-            map: map,
-            zIndex: 3,
-            extData: data,
-            title: data.name,
-            path: lineArr,          //设置线覆盖物路径
-            extData: data,
-            strokeColor: "#0000FF", //线颜色
-            strokeOpacity: 1,       //线透明度
-            strokeWeight: 5,        //线宽
-            strokeStyle: "solid",   //线样式
-            strokeDasharray: [10, 5] //补充线样式
-        });
-        return polyline;
-    })();
-    feature = editor._line;
-    AMap.event.addListener(feature, "change", lineEdit);
-    editor._lineEditor= new AMap.PolyEditor(map, editor._line);
-    editor.startEditLine = function(){
-        editor._lineEditor.open();
-    }
-    editor.closeEditLine = function(){
-        editor._lineEditor.close();
-    }
+        editor = {};
+        editor._line = (function () {
+            var lineArr = JSON.parse(data.path);
+            orgPath = lineArr;
+            var polyline = new AMap.Polyline({
+                map: map,
+                zIndex: 3,
+                extData: data,
+                title: data.name,
+                path: lineArr,          //设置线覆盖物路径
+                extData: data,
+                strokeColor: "#0000FF", //线颜色
+                strokeOpacity: 1,       //线透明度
+                strokeWeight: 5,        //线宽
+                strokeStyle: "solid",   //线样式
+                strokeDasharray: [10, 5] //补充线样式
+            });
+            return polyline;
+        })();
+        feature = editor._line;
+        AMap.event.addListener(feature, "change", lineEdit);
+        editor._lineEditor = new AMap.PolyEditor(map, editor._line);
+        editor.startEditLine = function () {
+            editor._lineEditor.open();
+        }
+        editor.closeEditLine = function () {
+            editor._lineEditor.close();
+        }
 
-    setDistPolygons();
+        setDistPolygons();
 
-    map.setFitView();
-
+        map.setFitView();
+    });
 }
 
 function lineEdit() {

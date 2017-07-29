@@ -916,7 +916,7 @@
 				
 			} else if ( indexOctant < -1 && this.parent instanceof THREE.OctreeNode ) {
 				
-				// if object lies outside bounds, add to parent node
+				// if object lies outside boundPolylines, add to parent node
 				
 				this.parent.addObject( object );
 				
@@ -1129,7 +1129,7 @@
 					
 				} else {
 				
-					// lies across bounds between octants
+					// lies across boundPolylines between octants
 					
 					objectsRemaining.push( object );
 					

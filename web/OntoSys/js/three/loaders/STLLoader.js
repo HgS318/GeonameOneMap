@@ -334,7 +334,7 @@ if ( typeof DataView === 'undefined'){
 
 			if (length < 0 || byteOffset + length > this.byteLength) {
 
-				throw new Error('DataView length or (byteOffset+length) value is out of bounds');
+				throw new Error('DataView length or (byteOffset+length) value is out of boundPolylines');
 
 			}
 
