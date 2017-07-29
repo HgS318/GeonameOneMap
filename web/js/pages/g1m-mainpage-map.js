@@ -1,9 +1,11 @@
 
-var infoWindow, map, level = 12;
+var infoWindow, map, level = 13;
 var markers = [];	//	所有地点标注，包括点、线
+var showingMarkers = [];
 var distPolygons = [];	//	所有行政区标注
 var boundPolylines = [];	//	所有界线标注
 var boundMarkers = [];	//	所有界桩、界碑
+var placedata;
 var showingPlaces;	//	所有当前显示的地名
 var windata;		//	当前信息窗体中的地名数据
 var orgdata, destdata;	//	信息窗体搜索框中起点，终点的地点数据
@@ -18,30 +20,19 @@ var mousePos;
 
 
 $(function() {
-//			setDists();
-//			setTypes();
+
     $.ajax({
         url: 'wholeGeonames.action',
         type:'get',
-//				data: data,
         dataType: 'json',
         success:function(data){
-            // var places = JSON.parse(data.places);
-            // var boundPolylines = JSON.parse(data.boundPolylines);
-            // var bms = JSON.parse(data.boundMarkers);
             var places = data;
-
             AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
-
-                // var layerCtrl1 = new BasicControl.LayerSwitcher({
-                // 	position: 'lb'
-                // });
                 map = new AMap.Map('mapContainer',{
                     resizeEnable: true,
                     center: [109.461756,30.285877],
-                    zoom:level,
+                    zoom: level,
                     keyboardEnable :false,
-                    // layers: layerCtrl1.getEnabledLayers()
                 });
                 map.on('complete', function(){
                     map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
@@ -60,35 +51,12 @@ $(function() {
                 placedata = places;
                 showingPlaces = placedata;
                 initmarkers();
-
                 setAutoComplete();
-                map.setFitView();
+                // map.setFitView();
                 setRightMenu();
                 initTrees();
-                $.ajax({
-                    url: 'wholeEasyBounds.action',
-                    type:'get',
-                    dataType: 'json',
-                    success:function(bound_data){
-                        var boundArrayJson = bound_data;
-                        initBounds(boundArrayJson);
-                    },
-                    error:function(bound_data){
-                        console.log(bound_data);
-                    }
-                });
-                $.ajax({
-                    url: 'wholeEasyBoundMarkers.action',
-                    type:'get',
-                    dataType: 'json',
-                    success:function(bm_data){
-                        var bmArrayJson = bm_data;
-                        initBoundMarkers(bmArrayJson);
-                    },
-                    error:function(bm_data){
-                        console.log(bm_data);
-                    }
-                });
+                initBounds();
+                initBoundMarkers();
             });
 
         },
@@ -110,35 +78,70 @@ function createDistPolygon(distjson, dists) {
         zIndex: 40,
         extData: distjson,
         path: pathArr,//设置多边形边界路径
-        strokeColor: "#FF33FF", //线颜色
-        strokeOpacity: 0.05, //线透明度
-        strokeWeight: 0,    //线宽
+        strokeColor: "#FF44FF", //线颜色
+        strokeOpacity: 0.3, //线透明度
+        strokeWeight: 1.5,    //线宽
         fillColor: "#1791fc", //填充色
         fillOpacity: 0.35//填充透明度
     });
+    AMap.event.addListener(polygon, "dblclick", distDbClick);
     // polygon.setMap(map);
     dists.push(polygon);
 }
 
+function distDbClick(e) {
+    var distPolygon = e.target;
+    // var nickname = distPolygon.getExtData()['nickname'];
+    var id = distPolygon.getExtData()['id'];
+    window.open("html/distEdit.html?id=" + id);
+}
+
+function boundDbClick(e) {
+    var boundline = e.target;
+    var id = boundline.getExtData()['Id'];
+    window.open("html/boundEdit.html?id=" + id);
+}
+
+function bdmarkDbClick(e) {
+    var boundMarker = e.target;
+    // var nickname = distPolygon.getExtData()['nickname'];
+    var id = boundMarker.getExtData()['Id'];
+    window.open("html/boundMarkerEdit.html?id=" + id);
+}
+
 function showDists(distpolygons) {
-    if(distPolygons != distpolygons) {
-        for(var i = 0; i < distPolygons.length; i++) {
-            var old = distPolygons[i];
-            old.setMap(null);
-        }
-    }
+    // if(distPolygons != distpolygons) {
+    //     for(var i = 0; i < distPolygons.length; i++) {
+    //         var old = distPolygons[i];
+    //         old.setMap(null);
+    //     }
+    // }
     for(var i = 0; i < distpolygons.length; i++) {
         var polygon = distpolygons[i];
         polygon.setMap(map);
+        polygon.show();
     }
 }
 
-function initBounds(boundArrayJson) {
-    for(var i = 0; i < boundArrayJson.length; i++) {
-        var boundjson = boundArrayJson[i];
-        createBoundPolyline(boundjson, boundPolylines);
-    }
-    showBounds(boundPolylines);
+function initBounds() {
+    $.ajax({
+        url: 'wholeEasyBounds.action',
+        type:'get',
+        dataType: 'json',
+        success:function(bound_data){
+            var boundArrayJson = bound_data;
+            // initBounds(boundArrayJson);
+            for(var i = 0; i < boundArrayJson.length; i++) {
+                var boundjson = boundArrayJson[i];
+                createBoundPolyline(boundjson, boundPolylines);
+            }
+        },
+        error:function(bound_data){
+            console.log(bound_data);
+        }
+    });
+
+    // showBounds(boundPolylines);
 }
 
 function createBoundPolyline(boundjson, bounds) {
@@ -156,29 +159,44 @@ function createBoundPolyline(boundjson, bounds) {
         strokeStyle: "solid",   //线样式
         strokeDasharray: [10, 5] //补充线样式
     });
+    AMap.event.addListener(polyline, "dblclick", boundDbClick);
     // polyline.setMap(map);
     bounds.push(polyline);
 }
 
 function showBounds(boundPylylines) {
-    if(boundPolylines != boundPylylines) {
-        for(var i = 0; i < boundPolylines.length; i++) {
-            var old = boundPolylines[i];
-            old.setMap(null);
-        }
-    }
+    // if(boundPolylines != boundPylylines) {
+    //     for(var i = 0; i < boundPolylines.length; i++) {
+    //         var old = boundPolylines[i];
+    //         old.setMap(null);
+    //     }
+    // }
     for(var i = 0; i < boundPylylines.length; i++) {
         var polyline = boundPylylines[i];
         polyline.setMap(map);
+        polyline.show();
     }
 }
 
 function initBoundMarkers(bmArrayJson) {
-    for(var i = 0; i < bmArrayJson.length; i++) {
-        var bmjson = bmArrayJson[i];
-        createBoundMarkers(bmjson, boundMarkers);
-    }
-    showBoundMarkers(boundMarkers);
+    $.ajax({
+        url: 'wholeEasyBoundMarkers.action',
+        type:'get',
+        dataType: 'json',
+        success:function(bm_data){
+            var bmArrayJson = bm_data;
+            // initBoundMarkers(bmArrayJson);
+            for(var i = 0; i < bmArrayJson.length; i++) {
+                var bmjson = bmArrayJson[i];
+                createBoundMarkers(bmjson, boundMarkers);
+            }
+        },
+        error:function(bm_data){
+            console.log(bm_data);
+        }
+    });
+
+    // showBoundMarkers(boundMarkers);
 }
 
 function createBoundMarkers(bmjson, boundMarkers) {
@@ -193,20 +211,22 @@ function createBoundMarkers(bmjson, boundMarkers) {
         title: bmjson.name,
         icon: "../images/markers/boundmarker_blue.png",
     });
+    AMap.event.addListener(marker, "dblclick", bdmarkDbClick);
     // marker.setMap(map);
     boundMarkers.push(marker);
 }
 
 function showBoundMarkers(bmMarkers) {
-    if(boundMarkers != bmMarkers) {
-        for(var i = 0; i < boundMarkers.length; i++) {
-            var old = boundMarkers[i];
-            old.setMap(null);
-        }
-    }
+    // if(boundMarkers != bmMarkers) {
+    //     for(var i = 0; i < boundMarkers.length; i++) {
+    //         var old = boundMarkers[i];
+    //         old.setMap(null);
+    //     }
+    // }
     for(var i = 0; i < bmMarkers.length; i++) {
         var marker = bmMarkers[i];
         marker.setMap(map);
+        marker.show();
     }
 }
 
@@ -216,7 +236,7 @@ function simpleSetMarkers(psdata, markers) {
         data["selected"] = false;
         if ("1" == data.spaType) {
             var marker = new AMap.Marker({
-                map: map,
+                // map: map,
                 position: data.position,
                 zIndex: 100,
                 extData: data,
@@ -230,7 +250,7 @@ function simpleSetMarkers(psdata, markers) {
         } else if("3" == data.spaType) {
             var lineArr = JSON.parse(data.path);
             var polyline = new AMap.Polyline({
-                map: map,
+                // map: map,
                 zIndex: 95,
                 extData: data,
                 path: lineArr,          //设置线覆盖物路径
@@ -269,7 +289,7 @@ function setNewMarkers(newdata) {
 //				AMap.event.addListener(marker, "click", mapFeatureClick);
 //				markers.push(marker);
 //			}
-    simpleSetMarkers(newdata, markers);
+    simpleSetMarkers(newdata, showingMarkers);
     map.setFitView();
 }
 
@@ -320,18 +340,18 @@ function consPlaceResult(place, order) {
 
 //	初始化所有点标注
 function initmarkers(pdata) {
-    simpleSetMarkers(placedata, markers);
     if(pdata) {
         showingPlaces = pdata;
-        showMarkers(pdata);
     } else {
         showingPlaces = placedata;
     }
+    showMarkers(showingPlaces);
 }
 
 //	显示一定量的点标注
 function showMarkers(psdata) {
-    simpleSetMarkers(psdata, markers);
+    simpleSetMarkers(psdata, showingMarkers);
+    placesShow();
 }
 
 //	点击标注Marker时
@@ -674,71 +694,87 @@ function distIn(sub, par) {
     return true;
 }
 
-function lacesShow() {
-
+function placesShow() {
+    for(var i = 0; i < showingMarkers.length; i++) {
+        var marker = showingMarkers[i];
+        marker.setMap(map);
+        marker.show();
+    }
 }
 
 function placesHide() {
-
+    for(var i = 0; i < showingMarkers.length; i++) {
+        var marker = showingMarkers[i];
+        marker.hide();
+    }
 }
 
 function distsShow() {
-    
+    showDists(distPolygons);
 }
 
 function distsHide() {
-    
+    for(var i = 0; i < distPolygons.length; i++) {
+        var dist = distPolygons[i];
+        dist.hide();
+    }
 }
 
 function boundsShow() {
-    
+    showBounds(boundPolylines);
 }
 
 function boundsHide() {
-    
+    for(var i = 0; i < boundPolylines.length; i++) {
+        var bound = boundPolylines[i];
+        bound.hide();
+    }
 }
 
 function bdmarksShow() {
-    
+    showBoundMarkers(boundMarkers);
 }
 
 function bdmarksHide() {
-    
+    for(var i = 0; i < boundMarkers.length; i++) {
+        var boundMarker = boundMarkers[i];
+        boundMarker.hide();
+    }
 }
 
 //  地名 checkbox
 function placesCheckBox(checkbox) {
     if (checkbox.checked) {
-
+        placesShow();
     } else {
-
+        placesHide();
     }
 }
 
 //  行政区 checkbox
 function distsCheckBox(checkbox) {
     if (checkbox.checked) {
-
+        distsShow();
     } else {
-
+        distsHide();
     }
 }
 
 //  行政界线 checkbox
 function boundsCheckBox(checkbox) {
     if (checkbox.checked) {
-
+        boundsShow();
     } else {
-
+        boundsHide();
     }
 }
 
 //  界桩界碑 checkbox
 function boundMarksCheckBox(checkbox) {
     if (checkbox.checked) {
-
+        bdmarksShow();
     } else {
-
+        bdmarksHide();
     }
 }
 

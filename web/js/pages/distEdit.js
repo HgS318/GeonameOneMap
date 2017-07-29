@@ -1,5 +1,5 @@
 
-var placenickname;
+var placenickname = null;
 var orgX, orgY, orgPath;
 var orgData;
 var spaType;
@@ -36,15 +36,24 @@ function getQueryString(name) {
 $(function() {
 
     var placename = getQueryString("name");
-    placenickname = placename;
+    var url;
+    if(placename && ""!= placename) {
+        url = 'getDistInfoByNickname.action?name=' + placename;
+        placenickname = placename;
+    } else {
+        var idst = getQueryString("id");
+        url = 'getDistInfoByNum.action?id=' + idst;
+    }
 
     $.ajax({
-        url: 'getDistInfoByNickname.action?name=' + placename,
+        url: url,
         type: 'get',
         dataType: 'json',
         success: function (data) {
             orgData = data;
-
+            if(placenickname == null) {
+                placenickname = data.nickname;
+            }
             consPicsListContent(placename, data);
             // mapInit(data);
             consMainContent(data);

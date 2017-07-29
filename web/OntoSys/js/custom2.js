@@ -108,7 +108,9 @@ function openInfoWindow(e) {
 	content.push("<img src='images/contentdemopic.jpg'>"
 		+ "<strong>地名含义：</strong>" + extData.brif);
 	content.push("<strong>行政区：</strong>" + extData['所在跨行政区']);
-	content.push("<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>");
+	content.push("<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
+		"&nbsp;&nbsp;&nbsp;<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
+	// content.push("<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
 	closeInfoWindow();
 	infoWindow = new AMap.InfoWindow({
 		isCustom: true,  //使用自定义窗体
@@ -382,7 +384,7 @@ function initTrees() {
 	$('#id_tree_dist').tree({
 		lines: true,
 		animate: false,
-		url: 'wholeEasyDists.action',
+		url: 'wholeDists.action',
 		//queryParams: { id: '' },
 		formatter: function (node) {
 			var s = '<p style=\'color:#0000FF; font-size: 14px; line-height: 15px \'>'
@@ -400,7 +402,7 @@ function initTrees() {
 		},
 		onLoadSuccess: function () {
 			distsInited = true;
-			showDists(distPolygons);
+			// showDists(distPolygons);
 			if ($('#id_tree_dist').tree('getRoots').length > 0 && k) {
 //				V($('#id_tree').tree('getRoots')[0].id);
 				k = false;

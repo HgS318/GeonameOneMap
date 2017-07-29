@@ -342,12 +342,12 @@
         
         <div id="mapContainer" style="width:100%; height: 85%"></div>
 		<div class='button-group' style="background-color: #0d9bf2;right: 20px">
-			<input type="checkbox" onclick="toggleScale(this)"/>地名
-			<input type="checkbox" id="toolbar" onclick="toggleToolBar(this)"/>行政区
-			<input type="checkbox" id="toolbarDirection" disabled onclick="toggleToolBarDirection(this)"/>行政界线
-			<input type="checkbox" id="toolbarRuler" disabled onclick="toggleToolBarRuler(this)"/>界桩、界碑
-			<input type="checkbox" id="overview" onclick="toggleOverViewShow(this)"/>显示鹰眼
-			<input type="checkbox" id="overviewOpen" disabled onclick="toggleOverViewOpen(this)"/>展开鹰眼
+			<input type="checkbox" checked="checked" onclick="placesCheckBox(this)"/>地名
+			<input type="checkbox" id="toolbar" onclick="distsCheckBox(this)"/>行政区
+			<input type="checkbox" id="toolbarDirection" onclick="boundsCheckBox(this)"/>行政界线
+			<input type="checkbox" id="toolbarRuler" onclick="boundMarksCheckBox(this)"/>界桩、界碑
+			<input type="checkbox" id="overview" disabled/>显示鹰眼
+			<input type="checkbox" id="overviewOpen" disabled />展开鹰眼
 		</div>
       <!--  <div id="divContainer">  -->  
         <div id="divContainer1">

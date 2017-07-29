@@ -576,7 +576,7 @@ function consMainContent(data) {
     // document.getElementById("smallclass3").innerHTML = sc;
 
     consBasicCotent(data, "name", "stdname");
-    consBasicCotent(data, "AdminGrade", "admingrade");
+    consBasicCotent(data, "Grade", "admingrade");
     consBasicCotent(data, "markNum", "marknum");
     consBasicCotent(data, "createTime","createtime");
     consBasicCotent(data, "updateTime","updatetime");

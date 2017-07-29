@@ -595,7 +595,7 @@ function consMainContent(data) {
     document.getElementById("name2").innerHTML = name;
     // document.getElementById("smallclass3").innerHTML = sc;
     consBasicCotent(data, "name", "stdname");
-    consBasicCotent(data, "AdminGrade", "admingrade");
+    consBasicCotent(data, "Grade", "admingrade");
     consBasicCotent(data, "TypeName", "TypeName");
     consBasicCotent(data, "inBounds", "inBounds");
     consBasicCotent(data, "relatedDists", "relatedDists");
