@@ -185,7 +185,7 @@ function toPathString(pathdata) {
 function startEdit() {
     if(orgData.newdist) {
         editorTool.close(true);
-        var drawPolyline = editorTool.polygon(); //用鼠标工具画折线
+        var drawPolygon = editorTool.polygon(); //用鼠标工具画折线
     } else {
         $('#pathtext').attr("disabled",false);
         editor.startEditPolygon();

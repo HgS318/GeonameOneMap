@@ -84,211 +84,148 @@
         <div id="tabsDiv" class="easyui-tabs" data-options="fit:true" style="cursor:pointer">
             <div title="地名" data-options="iconCls:'icon-category',tools:'#p-tools'">
 				<ul id="id_tree_type" style="margin-top: 10px;"></ul>
-
-				<%--<div class="hm-wikiAdv">--%>
-
-					<%--<table>--%>
-						<%--<tr>--%>
-							<%--<!--<td><wb:share-button appkey='2943998357' addition='simple' type='icon'></wb:share-button></td>-->--%>
-							<%--<td>--%>
-								<%--<div id="sidetreecontrol2"> &nbsp; <a href="#">全部收起</a> | <a href="#">全部展开</a> </div>--%>
-							<%--</td>--%>
-						<%--</tr>--%>
-					<%--</table>--%>
-					<%--<table>--%>
-						<%--<tr>--%>
-							<%--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>--%>
-							<%--<td>--%>
-								<%--<ul class="treeview" id="tree2">--%>
-						<%--<li class="expandable" id="folder2">--%>
-							<%--<div class="hitarea expandable-hitarea"></div><a href="#" onclick="gotoBigType('行政区域类')">行政区域类</a>--%>
-							<%--<ul style="display: none;">--%>
-								<%--<li class="last">--%>
-									<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a>--%>
-								<%--</li>--%>
-							<%--</ul>--%>
-						<%--</li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#" onclick="gotoBigType('非行政区域类')">非行政区域类</a></li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">群众自治组织类</a></li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">居民点类</a></li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">交通运输设施类</a></li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">水利电力设施类</a></li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">纪念地旅游景点类</a></li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">建筑物类</a></li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">单位类</a></li>--%>
-						<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">陆地水系类</a></li>--%>
-						<%--<li class="last"><div class="hitarea expandable-hitarea"></div><a href="#/index.cfm">陆地地形类</a></li>--%>
-					<%--</ul>--%>
-							<%--</td>--%>
-						<%--</tr>--%>
-					<%--</table>--%>
-				<%--</div>--%>
-                
-                
             </div>
 
 			<div title="区划" data-options="iconCls:'icon-category',tools:'#p-tools'">
 				<ul id="id_tree_dist" style="margin-top: 10px;"></ul>
-
-				<%--<div class="hm-wikiAdv">--%>
-					<%--<table>--%>
-						<%--<tr>--%>
-							<%--<!--<td><wb:share-button appkey='2943998357' addition='simple' type='icon'></wb:share-button></td>-->--%>
-							<%--<td>--%>
-								<%--<div id="sidetreecontrol1">&nbsp; <a href="#">全部收起</a> | <a href="#">全部展开</a></div>--%>
-							<%--</td>--%>
-						<%--</tr>--%>
-					<%--</table>--%>
-					<%--<!--<div class="weiboicondiv">-->--%>
-						<%--<!--<wb:share-button appkey='2943998357' addition='simple' type='icon'></wb:share-button>-->--%>
-					<%--<!--</div>-->--%>
-					<%--<!--<div id="sidetreecontrol1" style="width:200px;height:20px;margin: 0 0 0 80px;">-->--%>
-						<%--<!--<a href="#">全部收起</a> | <a href="#">全部展开</a>-->--%>
-					<%--<!--</div>-->--%>
-					<%--<table>--%>
-						<%--<tr>--%>
-							<%--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>--%>
-							<%--<td>--%>
-								<%--<ul class="treeview" id="tree1">--%>
-							<%--<li class="expandable" id="folder1">--%>
-								<%--<div class="hitarea expandable-hitarea"></div>--%>
-								<%--<a href="#">湖北省</a>--%>
-								<%--<ul>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">武汉市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-												<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul>--%>
-									<%--</li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄石市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">十堰市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">宜昌市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">襄阳市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">鄂州市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">荆门市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">孝感市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">荆州市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">黄冈市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">咸宁市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">随州市</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="expandable"><div class="hitarea expandable-hitarea"></div><a href="#">恩施土家族苗族自治州</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-									<%--<li class="last"><div class="hitarea expandable-hitarea"></div><a href="#">省直辖县级行政单位</a>--%>
-										<%--<ul style="display: none;"><li class="last">--%>
-											<%--<a href="#" onclick="gotoSmallType('行政区域类', '行政区域')">行政区域</a></li></ul></li>--%>
-								<%--</ul>--%>
-							<%--</li>--%>
-						<%--</ul>--%>
-							<%--</td>--%>
-						<%--</tr>--%>
-					<%--</table>--%>
-				<%--</div>--%>
-            
             </div>
 
 			<div id="listTab" title="检索" data-options="iconCls:'icon-search'">
-               <div id="searchDiv">
-              	<form id="ClassCheckbox" class="otherFonts" action="searchInstance.action">
-	                <h2>概念名称：<input id="input_GNMC" name="input_GNMC" type="text" /></h2>
-	                <h2>分类代码：<input id="input_FLDM" name="input_FLDM" type="text" /></h2>
-	        		<!--    <h2>范例名称：<input id="input_FLMC" type="text" ></input></h2>  --> 
-	                <h2>负责单位：</h2><br>
-	                <div class="styleDiv">
-	                <select name="department" class="otherFonts">
-	                    <option value="不选择">不选择</option>
-	                    <option value="武汉大学">武汉大学</option>
-	                    <option value="国家测绘地理信息局海南基础地理信息中心">国家测绘地理信息局海南基础地理信息中心</option>
-	                    <option value="陕西测绘地理信息局">陕西测绘地理信息局</option>
-	                    <option value="天津市测绘院">天津市测绘院</option>
-	                </select>
-	                </div>
 
-	                <h2>采&nbsp;集&nbsp;人：</h2>
-	                  <div class="styleDiv">
-	                    <td>
-	                        <select name="principal" class="otherFonts">
-		                        <option value="">不选择</option>
-		                        <optgroup label="武汉大学">
-		                          <option value="罗恒">罗恒</option>
-		                          <option value="雷媛">雷媛</option>
-		                          <option value="颜芬">颜芬</option>
-		                        </optgroup>
-		                        <optgroup label="国家测绘地理信息局海南基础地理信息中心">
-		                          <option value="王蓉">王蓉</option>
-		                        </optgroup>
-		                        <optgroup label="陕西测绘地理信息局">
-		                          <option value="张三">张三</option>
-		                        </optgroup>
-		                        <optgroup label="天津市测绘院">
-		                          <option value="王磊">王磊</option>
-		                        </optgroup>
-	                        </select>
-	                    </td>
-	                  </div>
+               <div id="searchDiv" class="searchDiv">
 
-	                <h2>范例类型：</h2><br>
-	                <input class="subClassCheckbox" id="TSCG" name="TSCG" type="checkbox" value="exsit">图式图像</input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                <input class="subClassCheckbox" id="DXCG" name="DXCG" type="checkbox" value="exsit">地形图</input><br>
-	                <input class="subClassCheckbox" id="SJCG" name="SJCG" type="checkbox" value="exsit">实景常规</input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                <input class="subClassCheckbox" id="SJQJ" name="SJQJ" type="checkbox" value="exsit">全景</input><br>
-	                <input class="subClassCheckbox" id="SJHR" name="SJHR" type="checkbox" value="exsit">实景环绕</input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                <input class="subClassCheckbox" id="SJDJ" name="SJDJ" type="checkbox" value="exsit">实景多角度</input><br>
-	                <input class="subClassCheckbox" id="SJDS" name="SJDS" type="checkbox" value="exsit">实景多时相</input>&nbsp;&nbsp;
-	                <input class="subClassCheckbox" id="YGCG" name="YGCG" type="checkbox" value="exsit">遥感常规</input><br>
-	                <input class="subClassCheckbox" id="YGDS" name="YGDS" type="checkbox" value="exsit">遥感多时相</input>&nbsp;&nbsp;
-	                <input class="subClassCheckbox" id="SWCG" name="SWCG" type="checkbox" value="exsit">三维</input><br>
-	                <input class="subClassCheckbox" id="LTCG" name="LTCG" type="checkbox" value="exsit">立体</input>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                <input class="subClassCheckbox" id="SYCG" name="SYCG" type="checkbox" value="exsit">示意</input><br>
-	                <input class="subClassCheckbox" id="SPCG" name="SPCG" type="checkbox" value="exsit">视频</input><br>
-                </form>
-                </h2>
+				   <form id="ClassCheckbox1" class="ClassCheckbox" action="searchInstance.action">
+
+					   <div id="highsearch">
+						   <div id="mapextent">
+							   <h3><input type="checkbox" id="mapextentcheckbox" onclick="toChooseMapExtent(this)"/>&nbsp;选择地图范围</h3>
+								<div id="mapextentdone" class="nextTab">范围未选择</div>
+						   </div>
+						   <div id="choosegrade">
+							   <h3><input type="checkbox" id="gradecheckbox" onclick=""/>行政等级</h3>
+							   <div id="gradecheckboxes" class="nextTab">
+								   <input type="checkbox" id="provincecheckbox" checked="checked" onclick=""/>省级
+								   <input type="checkbox" id="citycheckbox" checked="checked" onclick=""/>地级
+								   <input type="checkbox" id="countycheckbox" checked="checked" onclick=""/>县级
+								   <input type="checkbox" id="streetcheckbox" checked="checked" onclick=""/>街道、乡镇级
+							   </div>
+						   </div>
+
+						   <div id="choosedists">
+
+								<h3><input type="checkbox" id="distscheckbox" onclick=""/>&nbsp;所在地区</h3>
+							   <div id="distscheckboxes" class="nextTab">
+								   <input type="checkbox" id="whcheckbox" onclick=""/>武汉市 &nbsp;
+								   <input type="checkbox" id="hscheckbox" onclick=""/>黄石市 &nbsp;
+								   <input type="checkbox" id="sycheckbox" onclick=""/>十堰市<br/>
+								   <input type="checkbox" id="yccheckbox" onclick=""/>宜昌市 &nbsp;
+								   <input type="checkbox" id="xycheckbox" onclick=""/>襄阳市 &nbsp;
+								   <input type="checkbox" id="ezcheckbox" onclick=""/>鄂州市<br/>
+								   <input type="checkbox" id="jmcheckbox" onclick=""/>荆门市 &nbsp;
+								   <input type="checkbox" id="xgcheckbox" onclick=""/>孝感市 &nbsp;
+								   <input type="checkbox" id="jzcheckbox" onclick=""/>荆州市<br/>
+								   <input type="checkbox" id="hgcheckbox" onclick=""/>黄冈市 &nbsp;
+								   <input type="checkbox" id="xjcheckbox" onclick=""/>咸宁市 &nbsp;
+								   <input type="checkbox" id="szcheckbox" onclick=""/>随州市<br/>
+								   <input type="checkbox" id="escheckbox" onclick=""/>恩施土家族苗族自治州<br/>
+								   <input type="checkbox" id="zxcheckbox" onclick=""/>省直辖县级行政单位
+							   </div>
+						   </div>
+
+						   <div id="choosetime">
+							   <h3><input type="checkbox" id="timecheckbox" onclick=""/>&nbsp;时间</h3>
+							   <div id="choosetimeitmes" class="nextTab">
+								   <%--入库时间<input id="intotimeinput" type="text"/>--%>
+								   <%--更新时间<input id="updatetimeinput" type="text" />--%>
+									   <p>起始时间 <input id="starttime" type="text" class="easyui-datebox" required="required"></p>
+									   <p>截止时间 <input id="endtime" type="text" class="easyui-datebox" required="required"></p>
+							   </div>
+
+						   </div>
+
+						   <div id="geonamesearch">
+							   <h3><input type="checkbox" id="geonamecheckbox" checked="checked" onclick=""/>&nbsp;地名</h3>
+							   <div id="geoitems" class="nextTab">
+								   <p>关键词：<input id="geonameword" type="text" class="innerWord" /></p>
+								   <p>地名类型
+								   <select id="bigtype" class="otherFonts" size="1" onChange="chooseType(this.options.selectedIndex)">
+									   <option value="">行政区域类</option>
+									   <option value="">非行政区域类</option>
+									   <option value="">群众自治组织类</option>
+									   <option value="">居民点类</option>
+									   <option value="">交通运输设施类</option>
+									   <option value="">交通运输设施类</option>
+									   <option value="">纪念地旅游景点类</option>
+									   <option value="">建筑物类</option>
+									   <option value="">单位类</option>
+									   <option value="">陆地水系类</option>
+									   <option value="">陆地地形类</option>
+								   </select>
+									   </p>
+								   <p><input type="checkbox" id="geonamemmcheckbox" onclick=""/>包含多媒体信息</p>
+							   </div>
+
+						   </div>
+
+						   <div id="distsearch">
+							   <h3><input type="checkbox" id="distcheckbox" onclick=""/>&nbsp;行政区</h3>
+							   <div id="distitems" class="nextTab">
+								   <p>关键词：<input id="distword" class="innerWord"/></p>
+								   <p><input type="checkbox" id="distmmcheckbox" checked="checked" onclick=""/>包含多媒体信息</p>
+							   </div>
+						   </div>
+
+						   <div id="boundsearch">
+							   <h3><input type="checkbox" id="boundcheckbox" onclick=""/>&nbsp;界线</h3>
+							   <div id="bounditems" class="nextTab">
+								   <p>关键词：<input id="boundword" class="innerWord" /></p>
+								   <p><input type="checkbox" id="boundmmcheckbox" checked="checked" onclick=""/>包含多媒体信息</p>
+							   </div>
+						   </div>
+
+						   <div id="boundmarkersearch">
+							   <h3><input type="checkbox" id="boundmarkercheckbox" onclick=""/>&nbsp;界桩、界碑</h3>
+							   <div id="boundmarkeritems" class="nextTab">
+								   <p>关键词：<input id="boundmarkerword" class="innerWord" /></p>
+								   <p>类型：
+
+									   <input type="checkbox" id="stonecheckbox" checked="checked" onclick=""/>界桩 &nbsp;
+									   <input type="checkbox" id="tabletcheckbox" checked="checked" onclick=""/>界碑
+
+								   </p>
+								   <input type="checkbox" id="boundmarkermmcheckbox" checked="checked" onclick=""/>包含多媒体信息
+							   </div>
+
+						   </div>
+					   </div>
+
+
+				   </form>
+
+				   <%--<div id="tb" style="margin-bottom: 4px; padding:2px;">--%>
+					   <%--<input id="id_search" />--%>
+				   <%--</div>--%>
+
+				   <%--<table id="id_searchresult" class="easyui-datagrid" data-options="toolbar:'#tb'">--%>
+					   <%--<thead>--%>
+					   <%--<tr>--%>
+						   <%--<th data-options="field:'Geo_Code',width:100" align="center">分类<br>代码</th>--%>
+						   <%--<th data-options="field:'InstanceName'" align="center">范例名称</th>--%>
+						   <%--<th data-options="field:'InstanceId'" align="center">范例<br>序号</th>--%>
+						   <%--<th data-options="field:'Del'" align="center" >删除</th>--%>
+					   <%--</tr>--%>
+					   <%--</thead>--%>
+				   <%--</table>--%>
                 <button id="searchStart" type="button">开始检索</button>
               </div>  
             </div>
             
             <div title="列表" data-options="iconCls:'icon-category',tools:'#p-tools'">
 
-				<div id="tb" style="margin-bottom: 4px; padding:2px;">
-					<input id="id_search" />
-				</div>
-
 				<div id="searchresults">
 					<div id="resultitems"></div>
 					<div id="hm_Paginate"></div>
 				</div>
-
-
-               	<table id="id_searchresult" class="easyui-datagrid" data-options="toolbar:'#tb'">
-                     <thead>
-                        <tr>
-                            <th data-options="field:'Geo_Code',width:100" align="center">分类<br>代码</th>
-                            <th data-options="field:'InstanceName'" align="center">范例名称</th>
-                            <th data-options="field:'InstanceId'" align="center">范例<br>序号</th>
-                            <th data-options="field:'Del'" align="center" >删除</th>
-                        </tr>
-                    </thead>
-				</table>
 
 				<div id="hiddendiv" class="hiddendiv"></div>
 

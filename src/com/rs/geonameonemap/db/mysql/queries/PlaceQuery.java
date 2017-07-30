@@ -51,7 +51,8 @@ public class PlaceQuery extends MySQLQuery {
 
     public static String getGeonameInfoByNickname(String val){
         PlaceJson.consColumnNames(dbType, tbName);
-        String sql = "SELECT * from " + tbName +" where nickname = '" + val +"'";
+        String sql = "SELECT * from " + tbName +" where nickname = '" + val +
+                "' or ChnSpell = '" + val +"' or name = '" + val + "'";
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         PlaceJson dj = null;
         try {

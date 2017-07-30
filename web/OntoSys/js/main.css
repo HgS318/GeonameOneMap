@@ -187,18 +187,32 @@ div.tabContainer{
     margin-right:60px;
 }
 
-#searchDiv{
+.searchDiv{
 	float:left;
-	
-	overflow: hidden;
+	/*overflow: hidden;*/
+    font-family: 'Microsoft YaHei';
+    font-size: 12pt;
 	
 }
-#searchDiv h2{
+.searchDiv h2{
 	color: #4357CA;
 	font-family: 'Microsoft YaHei';
 	font-size: 13pt;
-	
 }
+ .searchDiv h3{
+     color: #0a06ca;
+     font-family: 'Microsoft YaHei';
+     font-size: 14pt;
+     line-height: 15px;
+ }
+ .searchDiv p {
+     line-height: 14px;
+ }
+ /*.searchDiv text {*/
+     /*height: 20px;*/
+     /*width: 100px;*/
+ /*}*/
+
 .otherFonts{
 	color: black;
 	font-family: 'Microsoft YaHei';
@@ -206,9 +220,9 @@ div.tabContainer{
 	font-weight:normal;
 }
 
-#ClassCheckbox{
-	padding-left:20px;
-	padding-top:10px;
+.ClassCheckbox{
+	/*padding-left:10px;*/
+	/*padding-top:5px;*/
 }
 .styleDiv{
 	padding-left:10px;
@@ -248,3 +262,13 @@ div.tabContainer{
 	margin-top: 20px;
 }
 
+.nextTab {
+    position: relative;
+    left: 20px;
+    margin-right: 2px;
+
+}
+.innerWord {
+    height: 20px;
+    width: 160px;
+}

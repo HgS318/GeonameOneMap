@@ -33,8 +33,9 @@ public class JsonAction01 {
     public String getGeonameByNickname() {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
-            String name = new String(request.getParameter("name").getBytes("iso-8859-1"));
-            String str = PlaceQuery.getGeonameInfoByNickname(name);
+            String nameStr = request.getParameter("name");
+            String name = new String(nameStr.getBytes("iso-8859-1"));
+            String str = PlaceQuery.getGeonameInfoByNickname(nameStr);
             toBeJson(str);
         } catch (Exception ex) {
             ex.printStackTrace();

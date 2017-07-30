@@ -122,7 +122,7 @@ function openInfoWindow(e) {
 
 	content.push("<img src='images/contentdemopic.jpg'>"
 		+ "<strong>地名含义：</strong>" + extData.brif);
-	content.push("<strong>行政区：</strong>" + "<a href='html/wikiContent_fitall.html?id=" + extData['dist'] +
+	content.push("<strong>行政区：</strong>" + "<a href='html/wikiContent_fitall.html?name=" + extData['所在跨行政区'] +
 		"' target='_blank'>" + extData['所在跨行政区'] + "</a>");
 	// content.push("<p></p>");
 	content.push("<strong>使用时间：</strong>" + extData['使用时间']);
@@ -573,7 +573,7 @@ function initTrees() {
 	// 	height: '30px'
 	// });
 
-	$("#tabsDiv").tabs("select",1);
+	$("#tabsDiv").tabs("select", 2);
 
 }
 
@@ -581,76 +581,77 @@ $(document).ready(function () {
 
 
 	
-	var p = $('#id_searchresult').datagrid('getPager');
-	$(p).pagination({
-		pageSize: 10,//每页显示的记录条数，默认为10 
-		pageList: [10, 20, 25, 35, 50, 100],
-		beforePageText: '第',
-		afterPageText: '页 共{pages}页',
-		displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
-        onBeforeRefresh:function(){
-	        $(p).pagination('loading');
-//	        alert('before refresh');
-	        $(p).pagination('loaded');
-	    },
-		onRefresh:function(pageNumber,pageSize){  
-//	    	alert(pageNumber);  
-//	    	alert(pageSize);  
-	    },
-	    onSelectPage:function(pageNumber,pageSize){    
-//	    	alert(pageNumber);
-//	    	alert(pageSize);
-			$('#id_searchresult').datagrid({
-				fitColumns: true,
-				striped: true,
-				nowrap: true,
-				width: '100%',
-				height: '100%',
-				url: 'getEasyInstances.action?startpage=' + pageNumber
-						+ '&pagerows' + pageSize,
-				columns:[[
-					{field:'Geo_Code',title:'分类代码'},
-					//{field:'Name',title:'概念名称'},
-					{field:'InstanceName',title:'范例名称'},
-					{field:'InstanceId',title:'范例序号'},
-					{field:'Del',title:'删除',
-						formatter:function(value,row,index){
-							return  "<p href='"+row.Geo_Code+"' target='_blank'>删除</p>";
-						} }
-					]],
-				singleSelect: true,
-				method: 'get',
-				rownumbers: true,
-				pagination: true,
-				pageSize: 10,
-				loadMsg: '查询中,请稍后…',
-				pagePosition: 'bottom',
-				remoteSort: false,
-				onLoadSuccess: function(data){
-					$('#id_searchresult').datagrid("autoMergeCells");
-//					V($('#id_tree').tree('getRoots')[0].id);
-					var rows = $('#id_searchresult').datagrid('getRows');
-					if(rows.length>0) {
-						V(rows[0].Geo_Code,rows[0].InstanceId);
-					}
-		        },
-				onClickCell: function (index, field, val) {
-					var rows = $('#id_searchresult').datagrid('getRows');
-					if(field!='Del'){
-						R=false;
-						V(rows[index].Geo_Code,rows[index].InstanceId);
-					}else{
-						$.messager.confirm('确认','确认删除？',function(row){
-							if(row) {
-								delInstance(rows[index].Geo_Code,rows[index].InstanceId);
-							}
-						})
-					}
-				}
-			},'reload');
-			$("#tabsDiv").tabs("select",2);
-	    }
-	});
+// 	var p = $('#id_searchresult').datagrid('getPager');
+// 	$(p).pagination({
+// 		pageSize: 10,//每页显示的记录条数，默认为10
+// 		pageList: [10, 20, 25, 35, 50, 100],
+// 		beforePageText: '第',
+// 		afterPageText: '页 共{pages}页',
+// 		displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+//         onBeforeRefresh:function(){
+// 	        $(p).pagination('loading');
+// //	        alert('before refresh');
+// 	        $(p).pagination('loaded');
+// 	    },
+// 		onRefresh:function(pageNumber,pageSize){
+// //	    	alert(pageNumber);
+// //	    	alert(pageSize);
+// 	    },
+// 	    onSelectPage:function(pageNumber,pageSize){
+// //	    	alert(pageNumber);
+// //	    	alert(pageSize);
+// 			$('#id_searchresult').datagrid({
+// 				fitColumns: true,
+// 				striped: true,
+// 				nowrap: true,
+// 				width: '100%',
+// 				height: '100%',
+// 				url: 'getEasyInstances.action?startpage=' + pageNumber
+// 						+ '&pagerows' + pageSize,
+// 				columns:[[
+// 					{field:'Geo_Code',title:'分类代码'},
+// 					//{field:'Name',title:'概念名称'},
+// 					{field:'InstanceName',title:'范例名称'},
+// 					{field:'InstanceId',title:'范例序号'},
+// 					{field:'Del',title:'删除',
+// 						formatter:function(value,row,index){
+// 							return  "<p href='"+row.Geo_Code+"' target='_blank'>删除</p>";
+// 						} }
+// 					]],
+// 				singleSelect: true,
+// 				method: 'get',
+// 				rownumbers: true,
+// 				pagination: true,
+// 				pageSize: 10,
+// 				loadMsg: '查询中,请稍后…',
+// 				pagePosition: 'bottom',
+// 				remoteSort: false,
+// 				onLoadSuccess: function(data){
+// 					$('#id_searchresult').datagrid("autoMergeCells");
+// //					V($('#id_tree').tree('getRoots')[0].id);
+// 					var rows = $('#id_searchresult').datagrid('getRows');
+// 					if(rows.length>0) {
+// 						V(rows[0].Geo_Code,rows[0].InstanceId);
+// 					}
+// 		        },
+// 				onClickCell: function (index, field, val) {
+// 					var rows = $('#id_searchresult').datagrid('getRows');
+// 					if(field!='Del'){
+// 						R=false;
+// 						V(rows[index].Geo_Code,rows[index].InstanceId);
+// 					}else{
+// 						$.messager.confirm('确认','确认删除？',function(row){
+// 							if(row) {
+// 								delInstance(rows[index].Geo_Code,rows[index].InstanceId);
+// 							}
+// 						})
+// 					}
+// 				}
+// 			},'reload');
+// 			$("#tabsDiv").tabs("select",2);
+// 	    }
+// 	});
+
 	window.addEventListener('resize', onWindowResize, false);
 });
 

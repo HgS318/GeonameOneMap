@@ -5,6 +5,7 @@ var showingMarkers = [];
 var distPolygons = [];	//	所有行政区标注
 var boundPolylines = [];	//	所有界线标注
 var boundMarkers = [];	//	所有界桩、界碑
+var mouseTool;
 var placedata;
 var showingPlaces;	//	所有当前显示的地名
 var windata;		//	当前信息窗体中的地名数据
@@ -47,6 +48,11 @@ $(function() {
                     // me.contextMenuPositon = e.lnglat; //右键菜单位置
                     var pos = [e.lnglat.lng, e.lnglat.lat];
                     mousePos = pos;
+                });
+                mouseTool = new AMap.MouseTool(map);
+                AMap.event.addListener( mouseTool,'draw',function(e){ //添加事件
+                    $("#mapextentdone")[0].innerHTML = "已选择地图范围";
+                    mouseTool.close(false);
                 });
                 placedata = places;
                 showingPlaces = placedata;
@@ -878,3 +884,13 @@ function boundMarksCheckBox(checkbox) {
     }
 }
 
+function toChooseMapExtent(checkbox) {
+    if(checkbox.checked) {
+        alert('请在地图中勾画需要查询的范围!');
+        mouseTool.polygon();
+    } else {
+        mouseTool.close(true);
+        $("#mapextentdone")[0].innerHTML = "范围未选择";
+    }
+
+}
