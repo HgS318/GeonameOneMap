@@ -1,7 +1,7 @@
 .button-group {
     position: absolute;
     bottom: 60px;
-    right: 200px;
+    right: 1000px;
     font-size: 12px;
     padding: 10px;
 }
@@ -9,7 +9,7 @@
 .button-group .button {
     height: 28px;
     line-height: 28px;
-    background-color: #0D9BF2;
+    background-color: #aee8f2;
     color: #FFF;
     border: 0;
     outline: none;

@@ -21,6 +21,7 @@
         <action name="getGeonameByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameByNickname" />
         <action name="getGeonameInfoByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameInfoByNickname" />
         <action name="getGeonameFullByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameFullByNickname" />
+        <action name="getGeonameFullById" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameFullById" />
 
         <action name="wholeDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeDists" />
         <action name="wholeEasyDists" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeEasyDists" />

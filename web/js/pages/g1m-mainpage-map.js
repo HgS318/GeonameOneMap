@@ -73,6 +73,7 @@ function createDistPolygon(distjson, dists) {
     if(!distjson.path) {
         return;
     }
+    distjson['overlay'] = "dist";
     var pathArr = JSON.parse(distjson.path);
     var polygon = new AMap.Polygon({
         zIndex: 40,
@@ -82,9 +83,12 @@ function createDistPolygon(distjson, dists) {
         strokeOpacity: 0.3, //线透明度
         strokeWeight: 1.5,    //线宽
         fillColor: "#1791fc", //填充色
-        fillOpacity: 0.35//填充透明度
+        fillOpacity: 0.3//填充透明度
     });
-    AMap.event.addListener(polygon, "dblclick", distDbClick);
+    // AMap.event.addListener(polygon, "dblclick", distDbClick);
+    AMap.event.addListener(polygon, "mouseover", overlayHighlight);
+    AMap.event.addListener(polygon, "mouseout", overlayMouseOut);
+    AMap.event.addListener(polygon, "click", overlayFeatureClick);
     // polygon.setMap(map);
     dists.push(polygon);
 }
@@ -133,6 +137,7 @@ function initBounds() {
             // initBounds(boundArrayJson);
             for(var i = 0; i < boundArrayJson.length; i++) {
                 var boundjson = boundArrayJson[i];
+                boundjson['selected'] = false;
                 createBoundPolyline(boundjson, boundPolylines);
             }
         },
@@ -148,6 +153,7 @@ function createBoundPolyline(boundjson, bounds) {
     if(!boundjson.path) {
         return;
     }
+    boundjson['overlay'] = "bound";
     var lineArr = JSON.parse(boundjson.path);
     var polyline = new AMap.Polyline({
         zIndex: 50,
@@ -159,7 +165,10 @@ function createBoundPolyline(boundjson, bounds) {
         strokeStyle: "solid",   //线样式
         strokeDasharray: [10, 5] //补充线样式
     });
-    AMap.event.addListener(polyline, "dblclick", boundDbClick);
+    // AMap.event.addListener(polyline, "dblclick", boundDbClick);
+    AMap.event.addListener(polyline, "mouseover", overlayHighlight);
+    AMap.event.addListener(polyline, "mouseout", overlayMouseOut);
+    AMap.event.addListener(polyline, "click", overlayFeatureClick);
     // polyline.setMap(map);
     bounds.push(polyline);
 }
@@ -188,6 +197,7 @@ function initBoundMarkers(bmArrayJson) {
             // initBoundMarkers(bmArrayJson);
             for(var i = 0; i < bmArrayJson.length; i++) {
                 var bmjson = bmArrayJson[i];
+                bmjson['selected'] = false;
                 createBoundMarkers(bmjson, boundMarkers);
             }
         },
@@ -203,6 +213,7 @@ function createBoundMarkers(bmjson, boundMarkers) {
     if(!bmjson.position) {
         return;
     }
+    bmjson['overlay'] = "boundmarker";
     var marker = new AMap.Marker({
         // map: map,
         position: bmjson.position,
@@ -211,7 +222,10 @@ function createBoundMarkers(bmjson, boundMarkers) {
         title: bmjson.name,
         icon: "../images/markers/boundmarker_blue.png",
     });
-    AMap.event.addListener(marker, "dblclick", bdmarkDbClick);
+    // AMap.event.addListener(marker, "dblclick", bdmarkDbClick);
+    AMap.event.addListener(marker, "mouseover", overlayHighlight);
+    AMap.event.addListener(marker, "mouseout", overlayMouseOut);
+    AMap.event.addListener(marker, "click", overlayFeatureClick);
     // marker.setMap(map);
     boundMarkers.push(marker);
 }
@@ -270,9 +284,15 @@ function simpleSetMarkers(psdata, markers) {
 
 //	新的点标注
 function setNewMarkers(newdata) {
-    while (markers.length > 0) {
-        map.remove(markers);
-        markers.pop();
+    // while (markers.length > 0) {
+    //     map.remove(markers);
+    //     markers.pop();
+    // }
+    for(var i = 0; i < showingMarkers.length; i++) {
+        var marker = showingMarkers[i];
+        marker.hide();
+        marker.setMap(null);
+        map.remove(marker);
     }
     closeInfoWindow();
 //			for(var i = 0; i < newdata.length; i++) {
@@ -289,8 +309,9 @@ function setNewMarkers(newdata) {
 //				AMap.event.addListener(marker, "click", mapFeatureClick);
 //				markers.push(marker);
 //			}
+    showingMarkers = [];
     simpleSetMarkers(newdata, showingMarkers);
-    map.setFitView();
+    // map.setFitView();
 }
 
 //	在左边结果栏显示若干条结果，muldata为json
@@ -350,7 +371,9 @@ function initmarkers(pdata) {
 
 //	显示一定量的点标注
 function showMarkers(psdata) {
-    simpleSetMarkers(psdata, showingMarkers);
+    // placesHide();
+    // simpleSetMarkers(psdata, showingMarkers);
+    setNewMarkers(psdata);
     placesShow();
 }
 
@@ -393,6 +416,76 @@ function markerMouseOut(e) {
         fea.setOptions({strokeColor: "#3366FF"});
     }
 }
+
+function overlayFeatureClick(e){
+    openSimpleInfoWindow(e);
+}
+
+function overlayHighlight(e) {
+    var fea = e.target;
+    var data = fea.getExtData();
+    var type = data['overlay'];
+    if("dist" == type) {
+        fea.setOptions({
+            fillColor: "#00FFFF", //填充色
+            fillOpacity: 0.5//填充透明度
+        });
+    } else if("bound" == type) {
+        fea.setOptions({
+            strokeColor: "#FF3322",
+            strokeOpacity: 1,       //线透明度
+            strokeWeight: 7,        //线宽
+         });
+    } else if("boundmarker" == type) {
+        fea.setIcon("../images/markers/boundmarker_red.png");
+    }
+
+}
+
+function overlayUnhighlight(e) {
+    var fea = e.target;
+    var data = fea.getExtData();
+    var type = data['overlay'];
+    data["selected"] = false;
+    if("dist" == type) {
+        fea.setOptions({
+            fillColor: "#1791fc", //填充色
+            fillOpacity: 0.3//填充透明度
+        });
+    } else if("bound" == type) {
+        fea.setOptions({
+            strokeColor: "#FF33FF",
+            strokeOpacity: 0.9,       //线透明度
+            strokeWeight: 3,        //线宽
+        });
+    } else if("boundmarker" == type) {
+        fea.setIcon("../images/markers/boundmarker_blue.png");
+    }
+}
+
+function overlayMouseOut(e) {
+    var fea = e.target;
+    var data = fea.getExtData();
+    var type = data['overlay'];
+    if(data["selected"]) {
+        return;
+    }
+    if("dist" == type) {
+        fea.setOptions({
+            fillColor: "#1791fc", //填充色
+            fillOpacity: 0.3//填充透明度
+        });
+    } else if("bound" == type) {
+        fea.setOptions({
+            strokeColor: "#FF33FF",
+            strokeOpacity: 0.9,       //线透明度
+            strokeWeight: 3,        //线宽
+        });
+    } else if("boundmarker" == type) {
+        fea.setIcon("../images/markers/boundmarker_blue.png");
+    }
+}
+
 
 //	附近搜索
 function srhpoi() {
@@ -587,7 +680,8 @@ function toChangeHead(oid) {
 function gotoAll() {
     var tmpdata = placedata;
     showingPlaces = tmpdata;
-    setNewMarkers(tmpdata);
+    // setNewMarkers(tmpdata);
+    showMarkers(tmpdata);
     setResultItems(tmpdata, "searchresults");
 }
 
@@ -602,7 +696,8 @@ function gotoBigType(bigtype) {
     }
     if(tmpdata.length > 0) {
         showingPlaces = tmpdata;
-        setNewMarkers(tmpdata);
+        // setNewMarkers(tmpdata);
+        showMarkers(tmpdata);
         setResultItems(tmpdata, "searchresults");
     } else {
         alert("暂无 " + bigtype + " 相关数据...");
@@ -621,7 +716,8 @@ function gotoSmallType(bigtype, smalltype) {
     }
     if(tmpdata.length > 0) {
         showingPlaces = tmpdata;
-        setNewMarkers(tmpdata);
+        // setNewMarkers(tmpdata);
+        showMarkers(tmpdata);
         setResultItems(tmpdata, "searchresults");
     } else {
         alert("暂无 " + bigtype +"-" + smalltype + " 相关数据...");
@@ -642,7 +738,8 @@ function gotoDist(dictcode) {
     }
     if(tmpdata.length > 0) {
         showingPlaces = tmpdata;
-        setNewMarkers(tmpdata);
+        // setNewMarkers(tmpdata);
+        showMarkers(tmpdata);
         setResultItems(tmpdata, "searchresults");
     } else {
         alert("暂无 " + dictcode + " 地区相关数据...");
@@ -700,12 +797,15 @@ function placesShow() {
         marker.setMap(map);
         marker.show();
     }
+    map.setFitView();
 }
 
 function placesHide() {
     for(var i = 0; i < showingMarkers.length; i++) {
         var marker = showingMarkers[i];
         marker.hide();
+        marker.setMap(null);
+        map.remove(marker);
     }
 }
 

@@ -73,6 +73,13 @@ public class PlaceQuery extends MySQLQuery {
         return str;
     }
 
+    public static String getGeonameInfoByNum(String attr, String numVal){
+        String sql = "SELECT * from " + tbName + " where " + attr + " = " + numVal;
+        List<PlaceJson> ps = searchPlaces(sql);
+        String str = PlaceJson.toJson(ps);
+        return str;
+    }
+
     public static String getGeonameFullByAttr(String attr, String val){
         String sql = "SELECT * from " + tbName + " where " + attr + " = '" + val + "'";
         List<PlaceJson> ps = searchPlaces(sql);

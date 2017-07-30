@@ -70,6 +70,20 @@ public class JsonAction01 {
         return null;
     }
 
+    public String getGeonameFullById() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
+            String str = PlaceQuery.getGeonameInfoByNum("id" ,idStr);
+            String outStr = str.substring(1, str.length() - 1);
+            toBeJson(outStr);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
+        return null;
+    }
+
     public String wholeDists() {
         String str = DistQuery.getTotalDistInfo();
         toBeJson("[" + str + "]");
@@ -174,7 +188,6 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
-//            int id = Integer.parseInt(idStr);
             String str = BoundMarkerQuery.getBoundMarkerInfoByNum("Id", idStr);
             toBeJson(str);
         } catch (Exception ex) {

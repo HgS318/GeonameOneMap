@@ -17,12 +17,18 @@ function setRightMenu() {
 }
 
 //	生成信息窗体的内容
-function constructInfoWindow(title, content) {
+function constructInfoWindow(title, content, height) {
 	var info = document.createElement("div");
 	info.className = "info";
 
 	//可以通过下面的方式修改自定义窗体的宽高
-	//info.style.width = "400px";
+	if(height) {
+		info.style.width = height + "px";
+	} else {
+		info.style.width = "300px";
+	}
+	// info.style.width = "300px";
+	// info.style.height = "200px";
 	// 定义顶部标题
 	var top = document.createElement("div");
 	var titleD = document.createElement("div");
@@ -43,7 +49,7 @@ function constructInfoWindow(title, content) {
 	info.appendChild(middle);
 
 	//	添加下部内容（搜索框）
-	info.appendChild(infoWinDown);
+	// info.appendChild(infoWinDown);
 
 	// 定义底部内容
 	var bottom = document.createElement("div");
@@ -105,11 +111,37 @@ function openInfoWindow(e) {
 	var title = extData.name + '<span style="font-size:11px;color:#F00;">&nbsp;&nbsp;' + extData['小类'] + '</span>';
 	//var title = '华荣正街' + '<span style="font-size:11px;color:#F00;">&nbsp;&nbsp;' + '街道' + '</span>';
 	var content = [];
+	var objdesc = extData['地理实体描述'], showobj = "";
+	if(objdesc) {
+		showobj = objdesc.replace("<br/>","：  ");
+		if(showobj.length > 29) {
+			showobj = showobj.substring(0, 27) + "...";
+		}
+	}
+	// var mean = extData['所在跨行政区'], showmean = indist;
+
 	content.push("<img src='images/contentdemopic.jpg'>"
 		+ "<strong>地名含义：</strong>" + extData.brif);
-	content.push("<strong>行政区：</strong>" + extData['所在跨行政区']);
-	content.push("<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
-		"&nbsp;&nbsp;&nbsp;<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
+	content.push("<strong>行政区：</strong>" + "<a href='html/wikiContent_fitall.html?id=" + extData['dist'] +
+		"' target='_blank'>" + extData['所在跨行政区'] + "</a>");
+	// content.push("<p></p>");
+	content.push("<strong>使用时间：</strong>" + extData['使用时间']);
+	content.push("<strong>地理实体描述：</strong>" + showobj +
+		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+		"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
+		"&nbsp;&nbsp;&nbsp;&nbsp" +
+		"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
+
+	// content.push("<strong>资料来源及出处：</strong>" + showfrom +
+	// 	"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+	// 	"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
+	// 	"&nbsp;&nbsp;&nbsp;&nbsp" +
+	// 	"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
+
+	// content.push("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+	// 	"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
+	// 	"&nbsp;&nbsp;&nbsp;&nbsp" +
+	// 	"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
 	// content.push("<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
 	closeInfoWindow();
 	infoWindow = new AMap.InfoWindow({
@@ -134,6 +166,63 @@ function openInfoWindow(e) {
 	infoWindow.open(map, extData.position);
 
 
+}
+
+function openSimpleInfoWindow(e) {
+	overlayHighlight(e);
+	var extData = e.target.getExtData();
+	var type = extData['overlay'], tpname = type;
+	var winheight = 220;
+	extData["selected"] = true;
+	var content = [];
+	if("dist" == type) {
+		tpname = "行政区域";
+		winheight = 220;
+		content.push("<strong>行政等级：</strong>" + extData['Grade']);
+		content.push("<strong>上级行政区：</strong>" + extData['上级行政区']);
+		content.push("<strong>下级行政区：</strong>" + extData['下级行政区']);
+		if(extData['政府驻地']) {
+			content.push("<strong>政府驻地：</strong>" + extData['政府驻地']);
+			content.push("<strong>总面积：</strong>" + extData['总面积'] +
+				"&nbsp;&nbsp;&nbsp;&nbsp;" + "<strong>总人口：</strong>" + extData['总人口']);
+			// content.push("<strong>总人口：</strong>" + extData['总人口']);
+			content.push("<strong>地理位置：</strong>" + extData['地理位置']);
+		}
+		content.push("<a href='html/distEdit.html?id=" + extData['id'] +
+			"' target='_blank'>详情</a>");
+	} else if("bound" == type) {
+		tpname = "行政界线";
+		winheight = 220;
+		content.push("<strong>行政等级：</strong>" + extData['Grade']);
+		content.push("<strong>相关行政区：</strong>" + extData['LeftName'] + ", " + extData['RightName']);
+		content.push("<a href='html/boundEdit.html?id=" + extData['Id'] +
+			"' target='_blank'>详情</a>");
+	} else if("boundmarker" == type) {
+		tpname = "界桩界碑";
+		winheight = 240;
+		content.push("<strong>行政等级：</strong>" + extData['Grade']);
+		content.push("<strong>类型：</strong>" + extData['TypeName']);
+		content.push("<strong>相关行政区：</strong>" + extData['relatedDists']);
+		content.push("<a href='html/boundMarkerEdit.html?id=" + extData['Id'] +
+			"' target='_blank'>详情</a>");
+	}
+	var title = extData.name + '<span style="font-size:11px;color:#F00;">&nbsp;&nbsp;' + tpname + '</span>';
+	closeInfoWindow();
+	infoWindow = new AMap.InfoWindow({
+		isCustom: true,  //使用自定义窗体
+		content: constructInfoWindow(title, content.join("<br>"), winheight),
+		offset: new AMap.Pixel(14, -47)	//-113, -140
+	});
+	infoWindow.on('open', function () {
+		windata = extData;
+	});
+	infoWindow.on('close', function () {
+		hasAutoCom = false;
+		overlayUnhighlight(e);
+	});
+	infoWindow.on('change', function () {});
+	// infoWindow.open(map, extData.position);
+	infoWindow.open(map, [e.lnglat.lng, e.lnglat.lat]);
 }
 
 //	关闭地图中的信息窗体
@@ -381,6 +470,7 @@ function initTrees() {
 	$("#searchStart").click(function(){ //检索
 		$("#ClassCheckbox").submit();
 	});
+	
 	$('#id_tree_dist').tree({
 		lines: true,
 		animate: false,
@@ -395,6 +485,7 @@ function initTrees() {
 			// 	s = '<span style=\'color:#a79696;\'>' + s + '</span>';
 			// }
 			if(!distsInited) {
+				node['selected'] = false;
 				var polygon = createDistPolygon(node, distPolygons);
 				// distPolygons.push(polygon);
 			}

@@ -83,7 +83,7 @@
         <span>地名一张图管理系统</span>
         <span id="staticsDiv" class="statics"></span>
     </div>
-    <div id="westDiv" data-options="region:'west',split:true,collapsed:false,title:'范例采集成果'" style="width: 350px; padding: 2px;">
+    <div id="westDiv" data-options="region:'west',split:true,collapsed:false,title:'地名目录'" style="width: 350px; padding: 2px;">
         <div id="tabsDiv" class="easyui-tabs" data-options="fit:true" style="cursor:pointer">
             <div title="地名" data-options="iconCls:'icon-category',tools:'#p-tools'">
 				<ul id="id_tree_type" style="margin-top: 10px;"></ul>
@@ -130,7 +130,7 @@
                 
             </div>
 
-			<div title="区划" data-options="iconCls:'icon-search',tools:'#p-tools'">
+			<div title="区划" data-options="iconCls:'icon-category',tools:'#p-tools'">
 				<ul id="id_tree_dist" style="margin-top: 10px;"></ul>
 
 				<%--<div class="hm-wikiAdv">--%>
@@ -210,7 +210,7 @@
             
             </div>
 
-			<div id="listTab" title="界线界桩" data-options="iconCls:'icon-category'">
+			<div id="listTab" title="检索" data-options="iconCls:'icon-search'">
                <div id="searchDiv">
               	<form id="ClassCheckbox" class="otherFonts" action="searchInstance.action">
 	                <h2>概念名称：<input id="input_GNMC" name="input_GNMC" type="text" /></h2>
@@ -325,22 +325,22 @@
             <a href="javascript:void(0)" class="icon-mini-refresh" onclick="reloadTree();"></a>
         </div>
     </div>
-    <div id="centerDiv" data-options="region:'center',title:'成果展示'" style="padding: 6px; overflow-y: scroll">
+    <div id="centerDiv" data-options="region:'center',title:'地名一张图'" style="padding: 6px; overflow-y: scroll">
         <div class="floatDiv" id="floatDiv">
-            <div class="jbsx1">
-                <span>概念名称：</span>
-                <a id="id_gnmc"></a>
-                <span>分类代码：</span>
-                <a id="id_fldm"></a>
-                <span>范例名称：</span>
-                <a id="id_flmc"></a>
-            </div>
-            <div class="jbsx2" id="attrDiv">
-            </div>
+            <%--<div class="jbsx1">--%>
+                <%--<span>概念名称：</span>--%>
+                <%--<a id="id_gnmc"></a>--%>
+                <%--<span>分类代码：</span>--%>
+                <%--<a id="id_fldm"></a>--%>
+                <%--<span>范例名称：</span>--%>
+                <%--<a id="id_flmc"></a>--%>
+            <%--</div>--%>
+            <%--<div class="jbsx2" id="attrDiv">--%>
+            <%--</div>--%>
           <!--     <div id="labelContainer"></div> -->
         </div>
         
-        <div id="mapContainer" style="width:100%; height: 85%"></div>
+        <div id="mapContainer" style="width:100%; height: 93%"></div>
 		<div class='button-group' style="background-color: #0d9bf2;right: 20px">
 			<input type="checkbox" checked="checked" onclick="placesCheckBox(this)"/>地名
 			<input type="checkbox" id="toolbar" onclick="distsCheckBox(this)"/>行政区
