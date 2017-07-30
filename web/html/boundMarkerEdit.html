@@ -3,8 +3,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-	<title>界线编辑</title>
+	<title>界桩、界碑编辑</title>
 	<!--<link href="http://cache.amap.com/lbs/static/main1119.css" rel="stylesheet" />-->
+	<link rel="stylesheet" type="text/css" href="../download/examplepage/jQuery-dialogBox/css/jquery.dialogbox.css">
 	<link href="../css/hdwiki.css" rel="stylesheet" type="text/css" media="all" />
 	<link href="../download/examplepage/webuploader/css/webuploader.css" rel="stylesheet" />
 	<style type="text/css">
@@ -25,6 +26,7 @@
 	<script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.10"></script>
 	<script src="../download/examplepage/webuploader/webuploader.js"></script>
 	<script src="../download/examplepage/webuploader/uploadImgPreview.js"></script>
+	<script src="../download/examplepage/jQuery-dialogBox/js/jquery.dialogBox.js"></script>
 	<script src="../js/pages/boundMarkerEdit.js" type="text/javascript"></script>
 </head>
 <body>
@@ -34,15 +36,15 @@
 	<li name="register" class="bor_no"> </li>
 </ul>
 <div class="bg_book">
-	<a href="wikiIndex.html" id="logo"><img alt="HDWiki" height="65px" src="../images/logo.png" /></a>
+	<a href="wikiIndex.html" id="logo"><img alt="HDWiki" height="65px" src="../images/logos/p1m-3.png" /></a>
 	<form name="searchform" method="post" action="#">
 		<p id="search"> <input name="searchtext" class="btn_txt" maxlength="80" size="42" value="" type="text" id="name0" /> <input name="default" value="搜索词条" tabindex="2" class="enter_doc" onclick="" type="button" /> <input name="full" value="1" tabindex="1" type="hidden" />
 			<!--<input name="search" value="搜 索" tabindex="1" class="btn_inp sea_doc" type="submit"/>--> <a href="#" class="sea_advanced link_black">高级搜索</a> <label>热门搜索： <a href="wikiContent_fitall.html?name=tuqiaoba" target="_blank">土桥坝</a> <a href="wikiContent_fitall.html?name=jinsanjiaoguangchang" target="_blank">金三角广场</a> <a href="wikiContent_fitall.html?name=gaojinghe" target="_blank">高井河</a> </label> </p>
 	</form>
 	<div id="nav" class="w-950 bor_b-ccc">
 		<ul>
-			<li><a href="wikiIndex.html">首页</a></li>
-			<li><a href="wikiClass.html">百科分类</a></li>
+			<li><a href="../instance.jsp" target="_blank">首页</a></li>
+			<li><a href="wikiIndex.html" target="_blank">地名百科</a></li>
 			<!--<li><a href="#">排行榜</a></li>-->
 		</ul>
 	</div>
@@ -196,6 +198,19 @@
 	</div>
 	<div class="nav_model"></div>
 	<div id="block_right"></div>
+
+	<div id="fix_right" class="fix_right">
+		<p></p>
+		<div class="button-group">
+			<input type="button" id="resetpage" class="button" value="    重新填写    " onClick="resetFun()"/>
+			<p></p><br/>
+			<input type="button" id="deletefeture" class="button" value="    删除要素    " onClick="deleteFun('要素')"/>
+			<p></p><br/>
+			<input type="button" id="submitpage" class="button" value="    提交信息    " onClick="submitFun()"/>
+			<div id="btn-dialogBox"></div>
+		</div>
+	</div>
+
 </div>
 <div class="nav_model"></div>
 <div class="c-b"></div>

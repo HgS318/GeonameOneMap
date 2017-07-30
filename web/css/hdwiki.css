@@ -775,3 +775,12 @@ overflow:hidden;position:absolute;right:10px;width:50px;top:12px;}
     margin-bottom: 10px;
     cursor: pointer;
 }
+
+
+.fix_right {
+    position: fixed;
+    margin: 150px 150px 150px 80px;
+    /*top: 600px;*/
+    /*bottom: 200px;*/
+    /*left: 100px;*/
+}

@@ -42,8 +42,6 @@
 	<%--<script src="js/jquery.js" type="text/javascript"></script>--%>
     <%--<script src="js/jquery-1.10.2.min.js"></script>--%>
 	<script src="js/jquery-1.10.2.js"></script>
-
-
 	<%--<script src="js/jquery-ui.min.js"></script>--%>
 	<%--<script src="js/jquery.cookie.js"></script>--%>
 	<%--<script src="js/jquery.treeview.js" type="text/javascript"></script>--%>
@@ -57,7 +55,6 @@
 	<script src="http://webapi.amap.com/demos/js/liteToolbar.js" type="text/javascript"></script>
 	<script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.10"></script>
 	<script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
-
 
     <!--  <script src="OntoSys/js/easyui/jquery-1.44-min.js" type="text/javascript"></script> -->
 

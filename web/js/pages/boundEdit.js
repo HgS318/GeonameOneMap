@@ -3,7 +3,6 @@ var orgX, orgY, orgPath;
 var orgData;
 var orgDist1, orgDist2;
 var inited = false;
-var spaType;
 var feature;
 var editorTool;
 var map;
@@ -40,52 +39,87 @@ function getQueryString(name) {
 $(function() {
 
     var idStr = getQueryString("id");
+    if(idStr && "" != idStr) {  //  修改界线
+        $.ajax({
+            url: 'getBoundInfoById.action?id=' + idStr,
+            type: 'get',
+            dataType: 'json',
+            success: function (bound_data) {
+                orgData = bound_data;
 
-    $.ajax({
-        url: 'getBoundInfoById.action?id=' + idStr,
-        type: 'get',
-        dataType: 'json',
-        success: function (bound_data) {
-            orgData = bound_data;
+                consPicsListContent(idStr, bound_data);
+                consMainContent(bound_data);
 
-            consPicsListContent(idStr, bound_data);
-            consMainContent(bound_data);
+                consUploaders(bound_data);
+                var leftDistId = bound_data.Left_;
+                var rightDistId = bound_data.Right_;
+                $.when(
+                    $.ajax({
+                        url: 'getDistInfoByNum.action?id=' + leftDistId,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (dist_data) {
+                            distData1 = dist_data;
+                            orgDist1 = dist_data;
+                        },
+                        error: function (dist_data) {
+                        }
+                    }),
+                    $.ajax({
+                        url: 'getDistInfoByNum.action?id=' + rightDistId,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (dist_data) {
+                            distData2 = dist_data;
+                            orgDist2 = dist_data;
+                        },
+                        error: function (dist_data) {
+                        }
+                    })).done(function() {
+                    mapInit(bound_data);
+                    initSelectLists();
+                    inited = true;
+                });
 
-            consUploaders(bound_data);
-            var leftDistId = bound_data.Left_;
-            var rightDistId = bound_data.Right_;
-            $.when(
-                $.ajax({
-                    url: 'getDistInfoByNum.action?id=' + leftDistId,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function (dist_data) {
-                        distData1 = dist_data;
-                        orgDist1 = dist_data;
-                    },
-                    error: function (dist_data) {
-                    }
-                }),
-                $.ajax({
-                    url: 'getDistInfoByNum.action?id=' + rightDistId,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function (dist_data) {
-                        distData2 = dist_data;
-                        orgDist2 = dist_data;
-                    },
-                    error: function (dist_data) {
-                    }
-                })).done(function() {
+            },
+            error: function (bound_data) {
+            }
+        });
+    } else {    //新增界线
+        var distidStr = getQueryString("distid");
+
+        $.ajax({
+            url: 'getDistInfoByNum.action?id=' + distidStr,
+            type: 'get',
+            dataType: 'json',
+            success: function (dist_data) {
+                distData1 = dist_data;
+                orgDist1 = dist_data;
+                var bound_data = {
+                    'name': '新增界线',
+                    'Left_': distidStr,
+                    'LeftName': dist_data.name,
+                    'Grade': dist_data.Grade,
+                    'AdminGrade': dist_data.AdminGrade,
+                    'newbound':true,
+                }
+
+
+                orgData = bound_data;
+
+                consPicsListContent(bound_data.name, bound_data);
+                consMainContent(bound_data);
+
+                consUploaders(bound_data);
                 mapInit(bound_data);
                 initSelectLists();
                 inited = true;
-            });
+            },
+            error: function (dist_data) {
+            }
+        });
 
-        },
-        error: function (bound_data) {
-        }
-    });
+    }
 
 
 });
@@ -302,7 +336,7 @@ function findSubDist(superDist, subname) {
 }
 
 function createDistPolygon(distjson) {
-    if(!distjson.path) {
+    if(!distjson || !distjson.path) {
         return null;
     }
     var pathArr = JSON.parse(distjson.path);
@@ -443,44 +477,52 @@ function mapInit(data) {
                 map.addControl(new BasicControl.LayerSwitcher({position: 'rt'}));
             });
         });
-        spaType = data.spaType;
         // consBasicCotent(data, "X", "xpos");
         // consBasicCotent(data, "Y", "ypos");
         consBasicCotent(data, "path", "pathtext");
 
-        var lineArr = JSON.parse(data.path);
-        orgPath = lineArr;
-        editor = {};
-        editor._line = (function () {
+        if(data.newbound) {
+            editorTool = new AMap.MouseTool(map);
+            AMap.event.addListener( editorTool,'draw',function(e){ //添加事件
+                var path = e.obj.getPath();
+                var tmpdata = {"path": path };
+                consBasicCotent(tmpdata, "path", "pathtext");
+                editorTool.close(false);
+            });
+        } else {
             var lineArr = JSON.parse(data.path);
             orgPath = lineArr;
-            var polyline = new AMap.Polyline({
-                map: map,
-                zIndex: 3,
-                extData: data,
-                title: data.name,
-                path: lineArr,          //设置线覆盖物路径
-                extData: data,
-                strokeColor: "#0000FF", //线颜色
-                strokeOpacity: 1,       //线透明度
-                strokeWeight: 5,        //线宽
-                strokeStyle: "solid",   //线样式
-                strokeDasharray: [10, 5] //补充线样式
-            });
-            return polyline;
-        })();
-        feature = editor._line;
-        AMap.event.addListener(feature, "change", lineEdit);
-        editor._lineEditor = new AMap.PolyEditor(map, editor._line);
-        editor.startEditLine = function () {
-            editor._lineEditor.open();
-        }
-        editor.closeEditLine = function () {
-            editor._lineEditor.close();
+            editor = {};
+            editor._line = (function () {
+                var lineArr = JSON.parse(data.path);
+                orgPath = lineArr;
+                var polyline = new AMap.Polyline({
+                    map: map,
+                    zIndex: 3,
+                    extData: data,
+                    title: data.name,
+                    path: lineArr,          //设置线覆盖物路径
+                    extData: data,
+                    strokeColor: "#0000FF", //线颜色
+                    strokeOpacity: 1,       //线透明度
+                    strokeWeight: 5,        //线宽
+                    strokeStyle: "solid",   //线样式
+                    strokeDasharray: [10, 5] //补充线样式
+                });
+                return polyline;
+            })();
+            feature = editor._line;
+            AMap.event.addListener(feature, "change", lineEdit);
+            editor._lineEditor = new AMap.PolyEditor(map, editor._line);
+            editor.startEditLine = function () {
+                editor._lineEditor.open();
+            }
+            editor.closeEditLine = function () {
+                editor._lineEditor.close();
+            }
         }
 
         setDistPolygons();
-
         map.setFitView();
     });
 }
@@ -508,20 +550,37 @@ function toPathString(pathdata) {
 }
 
 function startEdit() {
-    $('#pathtext').attr("disabled",false);
-    editor.startEditLine();
+    if(orgData.newbound) {
+        editorTool.close(true);
+        var drawPolyline = editorTool.polyline(); //用鼠标工具画折线
+    } else {
+        $('#pathtext').attr("disabled",false);
+        editor.startEditLine();
+    }
     editing = true;
+
 }
 
 function stopEdit() {
-    editing = false;
     document.getElementById("pathtext").disabled = "true";
-    editor.closeEditLine();
+    if(orgData.newbound) {
+        if(editing) {
+            alert('请在地图上双击完成绘制!');
+        }
+        // editorTool.close(false);
+    } else {
+        editor.closeEditLine();
+    }
+    editing = false;
 }
 
 function discardEdit() {
     stopEdit();
-    map.remove(feature);
+    if(orgData.newbound) {
+        editorTool.close(true);
+    } else {
+        map.remove(feature);
+    }
     map.clearMap(orgData);
     mapInit(orgData);
     initSelectLists();
@@ -567,11 +626,16 @@ function consMainContent(data) {
     // var bc = data['大类'],sc = data['小类'];
     var bc = "行政界线", sc = name;
     document.getElementById("name0").setAttribute("value", name);
-    document.getElementById("doctitle").innerHTML = "编辑界线：" + name;
+    if(data.newbound) {
+        document.getElementById("doctitle").innerHTML = "新增行政界线";
+    } else {
+        document.getElementById("doctitle").innerHTML = "编辑界线：" + name;
+    }
+
     document.getElementById("bigclass1").innerHTML = bc;
     document.getElementById("smallclass1").innerHTML = sc;
-    document.getElementById("bigclass2").innerHTML = bc;
-    document.getElementById("smallclass2").innerHTML = sc;
+    document.getElementById("bigclass2").innerHTML = "地名一张图";
+    document.getElementById("smallclass2").innerHTML = bc;
     document.getElementById("name2").innerHTML = name;
     // document.getElementById("smallclass3").innerHTML = sc;
 
@@ -691,6 +755,51 @@ function fullsection(){
     $("#hidesection > li:gt(3)").css('display','block');
 }
 
+
+function resetFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+            document.location.reload();
+        },
+        cancelValue: '取消',
+        title: '重置页面',
+        content: '确定放弃现有的编辑，重新填写？'
+    });
+}
+
+function deleteFun(typename) {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+            document.location.reload();
+        },
+        cancelValue: '取消',
+        title: '删除' + typename,
+        content: '确定删除该' + typename + '？'
+    });
+}
+
+function submitFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+
+        },
+        cancelValue: '取消',
+        title: '提交编辑',
+        content: '完成地名编辑，提交本页面？'
+    });
+}
 
 
 

@@ -50,20 +50,27 @@ test_menu = {
             // action: function(e, selector) { alert('Create clicked on ' + selector.prop("tagName") + ":" + selector.attr("id")); }
             subMenu : [
                 {
+                    icon: 'glyphicon-plus',
                     text: '点状地名',
-                    action: function(e, selector) { alert('Text clicked on ' + selector.prop("tagName") + ":" + selector.attr("id")); }
+                    action: function(e, selector) {
+                        // alert('Text clicked on ' + selector.prop("tagName") + ":" + selector.attr("id"));
+                        window.open("html/placeEdit.html?x=" + mousePos[0] + "&y=" + mousePos[1] + "&spaType=1");
+                    }
                 },
                 {
+                    icon: 'glyphicon-plus',
                     text: '线状地名',
-                    action: function(e, selector) { alert('Text clicked on ' + selector.prop("tagName") + ":" + selector.attr("id")); }
+                    action: function(e, selector) {
+                        // alert('Text clicked on ' + selector.prop("tagName") + ":" + selector.attr("id"));
+                    }
                 }
             ]
         },
-        {
-            icon: 'glyphicon-edit',
-            text: '编辑地名',
-            action: function(e, selector) { alert('Edit clicked on ' + selector.prop("tagName") + ":" + selector.attr("id")); }
-        },
+        // {
+        //     icon: 'glyphicon-edit',
+        //     text: '编辑地名',
+        //     action: function(e, selector) { alert('Edit clicked on ' + selector.prop("tagName") + ":" + selector.attr("id")); }
+        // },
         // {
         //     icon: 'glyphicon-list-alt',
         //     text: 'View Data As:',
@@ -90,20 +97,23 @@ test_menu = {
         },
         {
             icon: 'glyphicon-edit',
-            text: '编辑行政区',
-            action: function(e, selector) { alert('Delete clicked on ' + selector.prop("tagName") + ":" + selector.attr("id")); }
+            text: '创建行政区',
+            action: function(e, selector) {
+                // alert('Delete clicked on ' + selector.prop("tagName") + ":" + selector.attr("id"));
+                window.open("html/distEdit.html?x=" + mousePos[0] +"&y=" + mousePos[1]);
+            }
         },
-        {
-            divider: true
-        },
-        {
-            header: '界线界桩'
-        },
-        {
-            icon: 'glyphicon-edit',
-            text: '编辑界线界桩',
-            action: function(e, selector) { alert('Delete clicked on ' + selector.prop("tagName") + ":" + selector.attr("id")); }
-        },
+        // {
+        //     divider: true
+        // },
+        // {
+        //     header: '界线界桩'
+        // },
+        // {
+        //     icon: 'glyphicon-edit',
+        //     text: '编辑界线界桩',
+        //     action: function(e, selector) { alert('Delete clicked on ' + selector.prop("tagName") + ":" + selector.attr("id")); }
+        // },
     ]
 };
 

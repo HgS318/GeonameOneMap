@@ -189,14 +189,20 @@ function openSimpleInfoWindow(e) {
 			content.push("<strong>地理位置：</strong>" + extData['地理位置']);
 		}
 		content.push("<a href='html/distEdit.html?id=" + extData['id'] +
-			"' target='_blank'>详情</a>");
+			"' target='_blank'>行政区域详情</a>" + "&nbsp;&nbsp;&nbsp;&nbsp;" +
+			"<a href='html/boundEdit.html?distid=" + extData['id'] +
+			"' target='_blank'>新增界线</a>");
 	} else if("bound" == type) {
 		tpname = "行政界线";
 		winheight = 220;
 		content.push("<strong>行政等级：</strong>" + extData['Grade']);
 		content.push("<strong>相关行政区：</strong>" + extData['LeftName'] + ", " + extData['RightName']);
 		content.push("<a href='html/boundEdit.html?id=" + extData['Id'] +
-			"' target='_blank'>详情</a>");
+			"' target='_blank'>行政界线详情</a>" + "&nbsp;&nbsp;&nbsp;&nbsp;" +
+			"<a href='html/boundMarkerEdit.html?boundid=" + extData['Id'] +
+			"&x=" + e.lnglat.lng + "&y="+ e.lnglat.lat +
+			"' target='_blank'>新增界桩、界碑</a>"
+		);
 	} else if("boundmarker" == type) {
 		tpname = "界桩界碑";
 		winheight = 240;

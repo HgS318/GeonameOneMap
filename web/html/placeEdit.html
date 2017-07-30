@@ -11,6 +11,7 @@
 	<meta name="author" content="HDWiki Team and Hudong UI team" />
 	<meta name="copyright" content="2005-2013 baike.com" />
 	<!--<link href="http://cache.amap.com/lbs/static/main1119.css" rel="stylesheet" />-->
+	<link rel="stylesheet" type="text/css" href="../download/examplepage/jQuery-dialogBox/css/jquery.dialogbox.css">
 	<link href="../css/hdwiki.css" rel="stylesheet" type="text/css" media="all"/>
 	<link href="../download/examplepage/webuploader/css/webuploader.css" rel="stylesheet" />
 
@@ -25,6 +26,7 @@
 	<script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.10"></script>
 	<script src="../download/examplepage/webuploader/webuploader.js"></script>
 	<script src="../download/examplepage/webuploader/uploadImgPreview.js"></script>
+	<script src="../download/examplepage/jQuery-dialogBox/js/jquery.dialogBox.js"></script>
 	<script src="../js/pages/placeEdit.js" type="text/javascript"></script>
 
 </head>
@@ -37,7 +39,7 @@
 </ul>
 
 <div class="bg_book">
-	<a href="wikiIndex.html" id="logo"><img alt="HDWiki" height="65px" src="../images/logo.png"/></a>
+	<a href="wikiIndex.html" id="logo"><img alt="HDWiki" height="65px" src="../images/logos/p1m-3.png"/></a>
 	<form name="searchform" method="post" action="#">
 		<p id="search">
 			<input name="searchtext" class="btn_txt" maxlength="80" size="42" value="" type="text" id="name0"/>
@@ -54,8 +56,8 @@
 	</form>
 	<div id="nav" class="w-950 bor_b-ccc">
 		<ul>
-			<li><a href="wikiIndex.html">首页</a></li>
-			<li><a href="wikiClass.html">百科分类</a></li>
+			<li><a href="../instance.jsp" target="_blank">首页</a></li>
+			<li><a href="wikiIndex.html" target="_blank">地名百科</a></li>
 			<!--<li><a href="#">排行榜</a></li>-->
 		</ul>
 	</div>
@@ -338,13 +340,21 @@
 		</ul>
 	</div>
 
-	<div class="nav_model">
-		123
+	<div class="nav_model"></div>
+	<div id="block_right"></div>
 
+	<div id="fix_right" class="fix_right">
+		<p></p>
+		<div class="button-group">
+			<input type="button" id="resetpage" class="button" value="    重新填写    " onClick="resetFun()"/>
+				<p></p><br/>
+			<input type="button" id="deletefeture" class="button" value="    删除地名    " onClick="deleteFun('地名')"/>
+				<p></p><br/>
+			<input type="button" id="submitpage" class="button" value="    提交信息    " onClick="submitFun()"/>
+			<div id="btn-dialogBox"></div>
+		</div>
 	</div>
-	<div id="block_right">
-		456
-	</div>
+
 </div>
 
 <div class="nav_model"></div>
@@ -358,5 +368,6 @@
 </div>
 
 </body>
+<script src="../download/examplepage/dialog-master/js/dialog.js"></script>
 </html>
 

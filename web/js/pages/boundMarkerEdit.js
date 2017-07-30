@@ -27,63 +27,132 @@ function getQueryString(name) {
 $(function() {
 
     var idStr = getQueryString("id");
-
-    $.ajax({
-        url: 'getBoundMarkerInfoById.action?id=' + idStr,
-        // url: 'getBoundInfoById.action?id=' + idStr,
-        type: 'get',
-        dataType: 'json',
-        success: function(bm_data) {
-            if (!bm_data) {
-                bm_data[name] = bm_data.TypeName + bm_data.Id;
-            }
-            bm_data['inBounds'] = "";
-            bm_data['position'] = JSON.parse("[" + bm_data.X + ", " + bm_data.Y + "]");
-            orgData = bm_data;
-            var txt = JSON.stringify(bm_data);
-            modifiedData = JSON.parse(txt);
-            consPicsListContent(idStr, bm_data);
-            consUploaders(bm_data);
-
-            $.ajax({
-                url: 'wholeEasyBounds.action',
-                type: 'get',
-                dataType: 'json',
-                success: function(all_bounds_data) {
-                    var bounds_data = findNearBounds(bm_data, all_bounds_data);
-                    allBoundData = bounds_data;
-                    for (var i = 1; i < 6; i++) {
-                        boundPolylines.push(null);
-                        var columnName = "Bound" + i + "ID";
-                        if (bm_data[columnName] && "0" != bm_data[columnName]) {
-                            var bounddata = searchBounds(bounds_data, bm_data[columnName]);
-                            bm_data['inBounds'] = bm_data['inBounds'] + " " + bm_data[columnName];
-                            if (bounddata && bounddata.path) {
-                                orgBoundData.push(bounddata);
-                                boundData.push(bounddata);
-                                var polyline = createBoundPolyline(bounddata);
-                                boundPolylines[i - 1] = polyline;
+    if (idStr && "" != idStr) {  //  修改界桩
+        $.ajax({
+            url: 'getBoundMarkerInfoById.action?id=' + idStr,
+            // url: 'getBoundInfoById.action?id=' + idStr,
+            type: 'get',
+            dataType: 'json',
+            success: function (bm_data) {
+                if (!bm_data) {
+                    bm_data[name] = bm_data.TypeName + bm_data.Id;
+                }
+                bm_data['inBounds'] = "";
+                bm_data['position'] = JSON.parse("[" + bm_data.X + ", " + bm_data.Y + "]");
+                orgData = bm_data;
+                var txt = JSON.stringify(bm_data);
+                modifiedData = JSON.parse(txt);
+                consPicsListContent(idStr, bm_data);
+                consUploaders(bm_data);
+                $.ajax({
+                    url: 'wholeEasyBounds.action',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (all_bounds_data) {
+                        var bounds_data = findNearBounds(bm_data, all_bounds_data);
+                        allBoundData = bounds_data;
+                        for (var i = 1; i < 6; i++) {
+                            boundPolylines.push(null);
+                            var columnName = "Bound" + i + "ID";
+                            if (bm_data[columnName] && "0" != bm_data[columnName]) {
+                                var bounddata = searchBounds(bounds_data, bm_data[columnName]);
+                                bm_data['inBounds'] = bm_data['inBounds'] + " " + bm_data[columnName];
+                                if (bounddata && bounddata.path) {
+                                    orgBoundData.push(bounddata);
+                                    boundData.push(bounddata);
+                                    var polyline = createBoundPolyline(bounddata);
+                                    boundPolylines[i - 1] = polyline;
+                                }
+                            } else {
+                                orgBoundData.push(null);
+                                boundData.push(null);
                             }
-                        } else {
-                            orgBoundData.push(null);
-                            boundData.push(null);
                         }
+                        consMainContent(bm_data);
+                        initSelects(bounds_data, boundData);
+                        mapInit(bm_data);
+                        setDists();
+                        // initSelectLists();
+                        // inited = true;
+                    },
+                    error: function (bounds_data) {
+                    }
+                });
+            },
+            error: function (bound_data) {
+            }
+        });
+    } else {    //  新增界桩
+        var xStr = getQueryString("x");
+        var yStr = getQueryString("y");
+        var posStr = "[" + xStr + ", " + yStr + "]";
+        var pos = JSON.parse(posStr);
+        var boundidStr = getQueryString("boundid");
+
+        $.ajax({
+            url: 'getBoundInfoById.action?id=' + boundidStr,
+            type: 'get',
+            dataType: 'json',
+            success: function (bound_data) {
+                var bm_data = {
+                    'name': '新增界桩、界碑',
+                    'X': xStr, 'Y': yStr,
+                    'Grade': bound_data.Grade,
+                    'AdminGrade': bound_data.AdminGrade,
+                    'position': pos,
+                    'Bound1ID': boundidStr,
+                    'newmarker': true,
+                    // 'inBounds': bound_data.LeftName + ", " + bound_data.RightName,
+                    'inBounds': boundidStr,
+                    'relatedDists': bound_data.LeftName + ", " + bound_data.RightName,
+                    'type': 1,
+                    'TypeName': '界桩'
+                };
+                orgData = bm_data;
+                var txt = JSON.stringify(bm_data);
+                modifiedData = JSON.parse(txt);
+                consPicsListContent(idStr, bm_data);
+                consUploaders(bm_data);
+                $.ajax({
+                    url: 'wholeEasyBounds.action',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (all_bounds_data) {
+                        var bounds_data = findNearBounds(bm_data, all_bounds_data);
+                        allBoundData = bounds_data;
+                        for (var i = 1; i < 6; i++) {
+                            boundPolylines.push(null);
+                            var columnName = "Bound" + i + "ID";
+                            if (bm_data[columnName] && "0" != bm_data[columnName]) {
+                                var bounddata = searchBounds(bounds_data, bm_data[columnName]);
+                                // bm_data['inBounds'] = bm_data['inBounds'] + " " + bm_data[columnName];
+                                if (bounddata && bounddata.path) {
+                                    orgBoundData.push(bounddata);
+                                    boundData.push(bounddata);
+                                    var polyline = createBoundPolyline(bounddata);
+                                    boundPolylines[i - 1] = polyline;
+                                }
+                            } else {
+                                orgBoundData.push(null);
+                                boundData.push(null);
+                            }
+                        }
+                        consMainContent(bm_data);
+                        initSelects(bounds_data, boundData);
+                        mapInit(bm_data);
+                        // setDists();
+                        // initSelectLists();
+                        // inited = true;
+                    }, error: function () {
                     }
 
-                    consMainContent(bm_data);
-                    initSelects(bounds_data, boundData);
-                    mapInit(bm_data);
-                    setDists();
-                    // initSelectLists();
-                    // inited = true;
-                },
-                error: function(bounds_data) {}
-            });
+                });
+            }, error: function () {
+            }
 
-        },
-        error: function(bound_data) {}
-    });
+        });
 
+    }
 });
 
 function initSelectLists() {
@@ -587,11 +656,16 @@ function consMainContent(data) {
     var sc = name;
     document.getElementById("name0").setAttribute("value", name);
 
-    document.getElementById("doctitle").innerHTML = "编辑" + bc + "：" + data.Id;
+    if(data.newmarker) {
+        document.getElementById("doctitle").innerHTML = "新增界桩、界碑";
+    } else {
+        document.getElementById("doctitle").innerHTML = "编辑" + bc + "：" + data.Id;
+    }
+
     document.getElementById("bigclass1").innerHTML = bc;
     document.getElementById("smallclass1").innerHTML = sc;
-    document.getElementById("bigclass2").innerHTML = bc;
-    document.getElementById("smallclass2").innerHTML = sc;
+    document.getElementById("bigclass2").innerHTML = "界桩、界碑";
+    document.getElementById("smallclass2").innerHTML = bc;
     document.getElementById("name2").innerHTML = name;
     // document.getElementById("smallclass3").innerHTML = sc;
     consBasicCotent(data, "name", "stdname");
@@ -798,3 +872,48 @@ function findNearBounds(bmark_data, bounds_data) {
     return nears;
 }
 
+
+function resetFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+            document.location.reload();
+        },
+        cancelValue: '取消',
+        title: '重置页面',
+        content: '确定放弃现有的编辑，重新填写？'
+    });
+}
+
+function deleteFun(typename) {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+            document.location.reload();
+        },
+        cancelValue: '取消',
+        title: '删除' + typename,
+        content: '确定删除该' + typename + '？'
+    });
+}
+
+function submitFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+
+        },
+        cancelValue: '取消',
+        title: '提交编辑',
+        content: '完成地名编辑，提交本页面？'
+    });
+}

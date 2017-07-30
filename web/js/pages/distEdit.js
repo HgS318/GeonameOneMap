@@ -6,6 +6,7 @@ var spaType;
 var feature;
 var editorTool;
 var map;
+var newdist = false;
 var editor;
 var editing = false;
 var picUploaders = new Array();
@@ -36,35 +37,193 @@ function getQueryString(name) {
 $(function() {
 
     var placename = getQueryString("name");
+    var idst = getQueryString("id");
+    var xStr, yStr;
     var url;
     if(placename && ""!= placename) {
+        newdist = false;
         url = 'getDistInfoByNickname.action?name=' + placename;
         placenickname = placename;
-    } else {
-        var idst = getQueryString("id");
+    } else if(idst && ""!= idst) {
+        newdist = false;
         url = 'getDistInfoByNum.action?id=' + idst;
+    } else {
+        newdist = true;
+        xStr = getQueryString("x");
+        yStr = getQueryString("y");
+    }
+    if(newdist) {   //  新增行政区
+        var posStr = "[" + xStr + ", " + yStr + "]";
+        var pos= JSON.parse(posStr);
+        var data ={
+            'newdist': true,
+            'X': xStr, 'Y': yStr,
+            'position': pos,
+            'name': '新行政区',
+            'path': '',
+            'nickname': 'newdist'
+        };
+        orgData = data;
+        consPicsListContent(posStr, data);
+        mapInit(data);
+        consMainContent(data);
+
+        consUploaders(data);
+
+    } else {    //  修改行政区
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                orgData = data;
+                if(placenickname == null) {
+                    placenickname = data.nickname;
+                }
+                consPicsListContent(placename, data);
+                mapInit(data);
+                consMainContent(data);
+
+                consUploaders(data);
+
+            },
+            error: function (data) {
+            }
+        });
     }
 
-    $.ajax({
-        url: url,
-        type: 'get',
-        dataType: 'json',
-        success: function (data) {
-            orgData = data;
-            if(placenickname == null) {
-                placenickname = data.nickname;
-            }
-            consPicsListContent(placename, data);
-            // mapInit(data);
-            consMainContent(data);
-
-            consUploaders(data);
-
-        },
-        error: function (data) {
-        }
-    });
 });
+
+function mapInit(data) {
+    inited = false;
+
+    AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
+
+        map = new AMap.Map('mapContainer', {
+            resizeEnable: true,
+            center: data.position,
+            zoom: 15,
+            keyboardEnable: false,
+        });
+        map.on('complete', function () {
+            map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function () {
+                map.addControl(new AMap.ToolBar);
+                map.addControl(new AMap.OverView({isOpen: true}));
+                map.addControl(new AMap.Scale);
+                map.addControl(new BasicControl.LayerSwitcher({position: 'rt'}));
+            });
+        });
+        consBasicCotent(data, "X", "xpos");
+        consBasicCotent(data, "Y", "ypos");
+        consBasicCotent(data, "path", "pathtext");
+
+        if(data.newdist) {
+            editorTool = new AMap.MouseTool(map);
+            AMap.event.addListener( editorTool,'draw',function(e){ //添加事件
+                var path = e.obj.getPath();
+                var tmpdata = {"path": path };
+                consBasicCotent(tmpdata, "path", "pathtext");
+                editorTool.close(false);
+                editing = false;
+            });
+        } else {
+            var lineArr = JSON.parse(data.path);
+            orgPath = lineArr;
+            editor = {};
+            editor._polygon = (function () {
+                var pathArr = JSON.parse(data.path);
+                var polygon = new AMap.Polygon({
+                    map: map,
+                    zIndex: 40,
+                    extData: data,
+                    path: pathArr,//设置多边形边界路径
+                    strokeColor: "#FF33FF", //线颜色
+                    strokeOpacity: 0.9, //线透明度
+                    strokeWeight: 3,    //线宽
+                    fillColor: "#1791fc", //填充色
+                    fillOpacity: 0.3//填充透明度
+                });
+                return polygon;
+            })();
+            feature = editor._polygon;
+            AMap.event.addListener(feature, "change", polygonEdit);
+            editor._polygonEditor = new AMap.PolyEditor(map, editor._polygon);
+            editor.startEditPolygon = function () {
+                editor._polygonEditor.open();
+            }
+            editor.closeEditPolygon = function () {
+                editor._polygonEditor.close();
+            }
+        }
+        map.setFitView();
+    });
+}
+
+function polygonEdit() {
+    var editline = editor._polygon;
+    var newpath = editline.getPath();
+    var newpathstr = toPathString(newpath);
+    var tmpdata = {"path": newpathstr};
+    consBasicCotent(tmpdata, "path", "pathtext");
+}
+
+function toPathString(pathdata) {
+    var pathstr = "[";
+    for(var i = 0; i < pathdata.length; i++) {
+        var pdata = pathdata[i];
+        var str = "[" + pdata.lng + ", " + pdata.lat +"]";
+        if(i != pathdata.length - 1) {
+            str += ",";
+        }
+        pathstr += str;
+    }
+    pathstr += "]";
+    return pathstr;
+}
+
+function startEdit() {
+    if(orgData.newdist) {
+        editorTool.close(true);
+        var drawPolyline = editorTool.polygon(); //用鼠标工具画折线
+    } else {
+        $('#pathtext').attr("disabled",false);
+        editor.startEditPolygon();
+    }
+    editing = true;
+
+}
+
+function stopEdit() {
+    document.getElementById("pathtext").disabled = "true";
+    if(orgData.newdist) {
+        if(editing) {
+            alert('请在地图上双击完成绘制!');
+        }
+        // editorTool.close(false);
+    } else {
+        editor.closeEditPolygon();
+    }
+    editing = false;
+}
+
+function discardEdit() {
+    editing = false;
+    stopEdit();
+    if(orgData.newdist) {
+        editorTool.close(true);
+    } else {
+        map.remove(feature);
+    }
+    map.clearMap(orgData);
+    mapInit(orgData);
+}
+
+function onchangePathText() {
+    var pathText = document.getElementById("pathtext").value;
+    var lineArr = JSON.parse(pathText);
+    feature.setPath(lineArr);
+}
 
 function consUploaders(data) {
     var picInfoArr = singlePicInfoArray.concat(multiPicInfoArray);
@@ -155,16 +314,27 @@ function consMainContent(data) {
 
     var name = data['name'];
     document.title = "修改行政区域 - " + name;
+    var bc, sc;
+    if(data.newdist) {
+        bc = data['大类'];
+        sc = data['小类'];
+        document.getElementById("doctitle").innerHTML = "新增行政区域：" +
+            "<input id='newdistname' value='" + name +"' style='line-height: 25px'/>";
+    } else {
+        bc = data['小类'];
+        sc = data['上级行政区'];
+        document.getElementById("doctitle").innerHTML = "修改行政区域：" +
+            "<input id='newdistname' value='" + name +"' style='line-height: 25px'/>";
+    }
     var bc = data['大类'],sc = data['小类'];
     var upDist = data['上级行政区'];
     document.getElementById("name0").setAttribute("value", name);
-    document.getElementById("doctitle").innerHTML = "修改行政区域 - " + name;
-    document.getElementById("bigclass1").innerHTML = sc;
-    document.getElementById("smallclass1").innerHTML = upDist;
-    document.getElementById("bigclass2").innerHTML = sc;
-    document.getElementById("smallclass2").innerHTML = upDist;
+    document.getElementById("bigclass1").innerHTML = bc;
+    document.getElementById("smallclass1").innerHTML = sc;
+    document.getElementById("bigclass2").innerHTML = bc;
+    document.getElementById("smallclass2").innerHTML = sc;
     document.getElementById("name2").innerHTML = name;
-    document.getElementById("smallclass3").innerHTML = upDist;
+    document.getElementById("smallclass3").innerHTML = sc;
 
     consBasicCotent(data, "标准名称", "stdname");
     // consBasicCotent(data, "nickname", "nicktext");
@@ -208,7 +378,7 @@ function consMainContent(data) {
 
 function consPicsListContent(placename, data) {
 
-    var sharp = 7;
+    var sharp = 10;
 
     for(var i = 0; i < singlePicInfoArray.length; i++) {
         var info = singlePicInfoArray[i];
@@ -340,6 +510,51 @@ function fullsection(){
     $('#fullsection').css('display','none');
     $('#partsection').css('display','block');
     $("#hidesection > li:gt(3)").css('display','block');
+}
+
+function resetFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+            document.location.reload();
+        },
+        cancelValue: '取消',
+        title: '重置页面',
+        content: '确定放弃现有的编辑，重新填写？'
+    });
+}
+
+function deleteFun(typename) {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+            document.location.reload();
+        },
+        cancelValue: '取消',
+        title: '删除' + typename,
+        content: '确定删除该' + typename + '？'
+    });
+}
+
+function submitFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+
+        },
+        cancelValue: '取消',
+        title: '提交编辑',
+        content: '完成地名编辑，提交本页面？'
+    });
 }
 
 
