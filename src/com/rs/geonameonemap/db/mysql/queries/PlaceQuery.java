@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PlaceQuery extends MySQLQuery {
 
-    public static final String tbName = "PN";
+    public static final String tbName = "pn";
 //    public static String[] columns = null;
     public static String[] columns = new String[]{
             "id", "name", "大类", "小类", "position", "X", "Y", "spaType", "spaTypeName",

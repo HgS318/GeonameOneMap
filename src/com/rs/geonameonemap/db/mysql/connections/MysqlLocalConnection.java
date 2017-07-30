@@ -6,8 +6,10 @@ import java.sql.*;
  */
 public class MysqlLocalConnection {
     public static final String dbDriver = "com.mysql.jdbc.Driver";
-    public static final String dbAddr = "jdbc:mysql://localhost:3306/";
-    public static String account = "root", password = "cartolab";
+//    public static final String dbAddr = "jdbc:mysql://10.5.220.29:3306/";
+//    public static String account = "root", password = "cartolab";
+    public static final String dbAddr = "jdbc:mysql://61.183.15.38:3307/";
+    public static String account = "root", password = "123ABCabc";
     protected String dbName = null;
     public static String defDbName = "geoname";
     protected static MysqlLocalConnection instance = null;

@@ -226,7 +226,7 @@ function createBoundMarkers(bmjson, boundMarkers) {
         zIndex: 180,
         extData: bmjson,
         title: bmjson.name,
-        icon: "../images/markers/boundmarker_blue.png",
+        icon: "images/markers/boundmarker_blue.png",
     });
     // AMap.event.addListener(marker, "dblclick", bdmarkDbClick);
     AMap.event.addListener(marker, "mouseover", overlayHighlight);
@@ -261,7 +261,7 @@ function simpleSetMarkers(psdata, markers) {
                 zIndex: 100,
                 extData: data,
                 title: data.name,
-                icon: "../images/markers/common_marker.png",
+                icon: "images/markers/common_marker.png",
             });
             AMap.event.addListener(marker, "mouseover", markerHighlight);
             AMap.event.addListener(marker, "mouseout", markerMouseOut);
@@ -392,7 +392,7 @@ function markerHighlight(e) {
     var fea = e.target;
     var data = fea.getExtData();
     if("1" == data.spaType) {
-        fea.setIcon("../images/markers/common_marker_selected.png");
+        fea.setIcon("images/markers/common_marker_selected.png");
     } else if("3" == data.spaType) {
         fea.setOptions({strokeColor: "#FF0000"});
     }
@@ -404,7 +404,7 @@ function markerUnhighlight(e) {
     var data = fea.getExtData();
     data["selected"] = false;
     if("1" == data.spaType) {
-        fea.setIcon("../images/markers/common_marker.png");
+        fea.setIcon("images/markers/common_marker.png");
     } else if("3" == data.spaType) {
         fea.setOptions({strokeColor: "#3366FF"});
     }
@@ -417,7 +417,7 @@ function markerMouseOut(e) {
         return;
     }
     if("1" == data.spaType) {
-        fea.setIcon("../images/markers/common_marker.png");
+        fea.setIcon("images/markers/common_marker.png");
     } else if("3" == data.spaType) {
         fea.setOptions({strokeColor: "#3366FF"});
     }
@@ -443,7 +443,7 @@ function overlayHighlight(e) {
             strokeWeight: 7,        //线宽
          });
     } else if("boundmarker" == type) {
-        fea.setIcon("../images/markers/boundmarker_red.png");
+        fea.setIcon("images/markers/boundmarker_red.png");
     }
 
 }
@@ -465,7 +465,7 @@ function overlayUnhighlight(e) {
             strokeWeight: 3,        //线宽
         });
     } else if("boundmarker" == type) {
-        fea.setIcon("../images/markers/boundmarker_blue.png");
+        fea.setIcon("images/markers/boundmarker_blue.png");
     }
 }
 
@@ -488,7 +488,7 @@ function overlayMouseOut(e) {
             strokeWeight: 3,        //线宽
         });
     } else if("boundmarker" == type) {
-        fea.setIcon("../images/markers/boundmarker_blue.png");
+        fea.setIcon("images/markers/boundmarker_blue.png");
     }
 }
 

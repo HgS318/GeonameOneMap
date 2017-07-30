@@ -524,7 +524,7 @@ function initTrees() {
 		lines: true,
 		animate: false,
 		// url: 'wholeTypes.action',
-		url: '/data/placetypes_treedata.json',
+		url: 'data/placetypes_treedata.json',
 		//queryParams: { id: '' },
 		formatter: function (node) {
 			var s = '<p style=\'color:#0000FF; font-size: 14px; line-height: 15px \'>'
