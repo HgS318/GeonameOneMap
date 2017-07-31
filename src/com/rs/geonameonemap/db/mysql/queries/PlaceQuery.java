@@ -58,6 +58,8 @@ public class PlaceQuery extends MySQLQuery {
         try {
             if (rs.next()) {
                 dj = new PlaceJson(rs);
+            } else {
+                return null;
             }
             rs.close();
         } catch (SQLException se) {

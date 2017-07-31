@@ -399,7 +399,7 @@ function consMainContent(data) {
     consBasicCotent(data, "坐标系","coo");
     consBasicCotent(data, "测量方法","method");
 
-    chooseType(0);
+    toChooseType(bc, sc);
 
     consDetailedContent(data, "地名含义","hanyi");
     consDetailedContent(data, "地名来历","laili");
@@ -591,8 +591,7 @@ function submitFun() {
     });
 }
 
-//------------------------------------------------------------------------------------------
-function chooseType(x){
+function chooseType(x, y){
     var selma = document.getElementById("bigtype");
     var tempma = document.getElementById("smalltype");
     selma.options[x].selected=true;
@@ -604,5 +603,29 @@ function chooseType(x){
         // tempma.options[i] = new Option(groupma[maId][i].text, groupma[maId][i].value);
         tempma.options[j] = new Option(placetypes[x].children[j].name);
     }
-    tempma.options[0].selected=true ;
+    tempma.options[y].selected=true ;
+}
+
+function toChooseType(bigtype, smalltype){
+    var bigdiv = document.getElementById("bigtype");
+    var smalldiv = document.getElementById("smalltype");
+    var bigjson;
+    for (var m = smalldiv.options.length - 1; m > 0; m--) {
+        smalldiv.options[m] = null;  //清空选项
+    }
+    for(var i = 0; i < bigdiv.options.length; i++) {
+        if(bigtype == placetypes[i].name) {
+            bigdiv.options[i].selected=true;
+            bigjson = placetypes[i];
+            break;
+        }
+    }
+
+    for (var j = 0; j < bigjson.children.length; j++) {
+        var childname = bigjson.children[j].name;
+        smalldiv.options[j] = new Option(childname);
+        if(childname == smalltype) {
+            smalldiv.options[j].selected = true ;
+        }
+    }
 }

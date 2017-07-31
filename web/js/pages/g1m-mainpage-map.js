@@ -290,10 +290,6 @@ function simpleSetMarkers(psdata, markers) {
 
 //	新的点标注
 function setNewMarkers(newdata) {
-    // while (markers.length > 0) {
-    //     map.remove(markers);
-    //     markers.pop();
-    // }
     for(var i = 0; i < showingMarkers.length; i++) {
         var marker = showingMarkers[i];
         marker.hide();
@@ -301,20 +297,6 @@ function setNewMarkers(newdata) {
         map.remove(marker);
     }
     closeInfoWindow();
-//			for(var i = 0; i < newdata.length; i++) {
-//				var data = newdata[i];
-//				var marker;
-//				marker = new AMap.Marker({
-//					map: map,
-//					position: data.position,
-//					zIndex: 3,
-//					extData: data,
-//					title: data.name,
-//					label: data.name.substring(0, 1),
-//				});
-//				AMap.event.addListener(marker, "click", mapFeatureClick);
-//				markers.push(marker);
-//			}
     showingMarkers = [];
     simpleSetMarkers(newdata, showingMarkers);
     // map.setFitView();
@@ -367,20 +349,39 @@ function consPlaceResult(place, order) {
 
 //	初始化所有点标注
 function initmarkers(pdata) {
-    if(pdata) {
-        showingPlaces = pdata;
-    } else {
-        showingPlaces = placedata;
-    }
-    showMarkers(showingPlaces);
+    // if(pdata) {
+    //     showingPlaces = pdata;
+    // } else {
+    //     showingPlaces = placedata;
+    // }
+    simpleSetMarkers(placedata, markers);
+    setShowingMarkers(markers);
+    showMarkers();
 }
 
 //	显示一定量的点标注
 function showMarkers(psdata) {
     // placesHide();
     // simpleSetMarkers(psdata, showingMarkers);
-    setNewMarkers(psdata);
+    // setNewMarkers(psdata);
+    if(psdata) {
+        setShowingMarkers(psdata);
+    } else {
+        showingMarkers = markers;
+    }
     placesShow();
+}
+
+function setShowingMarkers(psdata) {
+    showingMarkers = [];
+    for(var i = 0; i < markers.length; i++) {
+        for(var j = 0; j < psdata.length; j++) {
+            if(markers[i].getExtData(0) == psdata[j]) {
+                showingMarkers.push(markers[i]);
+                break;
+            }
+        }
+    }
 }
 
 //	点击标注Marker时
@@ -766,17 +767,11 @@ function gotoPlace(posStr, name) {
     var zom = map.getZoom();
     if(zom < 16) {
         map.setZoom(16);
-//				if(zom < 14) {
-//					map.setZoom(14);
-//				} else {
-//					map.setZoom(zom + 1);
-//				}
     }
     map.panTo(npos);
     if(pla) {
         openInfoWindow({target: pla});
     }
-//			openInfoWindow(placedata);
 }
 
 //	地区代码是否位于某地区
@@ -798,7 +793,15 @@ function distIn(sub, par) {
 }
 
 function placesShow() {
-    for(var i = 0; i < showingMarkers.length; i++) {
+
+    if(showingMarkers != markers &&
+        showingMarkers.length != markers.length) {
+        for (var i = 0; i < markers.length; i++) {
+            var marker = markers[i];
+            marker.hide();
+        }
+    }
+    for (var i = 0; i < showingMarkers.length; i++) {
         var marker = showingMarkers[i];
         marker.setMap(map);
         marker.show();
@@ -884,13 +887,6 @@ function boundMarksCheckBox(checkbox) {
     }
 }
 
-function toChooseMapExtent(checkbox) {
-    if(checkbox.checked) {
-        alert('请在地图中勾画需要查询的范围!');
-        mouseTool.polygon();
-    } else {
-        mouseTool.close(true);
-        $("#mapextentdone")[0].innerHTML = "范围未选择";
-    }
 
-}
+
+

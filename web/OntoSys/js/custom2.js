@@ -1244,3 +1244,72 @@ $.extend($.fn.datagrid.methods, {
     }
 });
 
+
+function toChooseMapExtent(checkbox) {
+	if(checkbox.checked) {
+		$("#mapextentdone").show();
+		alert('请在地图中勾画需要查询的范围!');
+		mouseTool.polygon();
+	} else {
+		mouseTool.close(true);
+		$("#mapextentdone")[0].innerHTML = "范围未选择";
+		$("#mapextentdone").hide();
+	}
+
+}
+
+function toChooseGrade(checkbox) {
+	if(checkbox.checked) {
+		$("#gradecheckboxes").show();
+	} else {
+		$("#gradecheckboxes").hide();
+	}
+}
+
+function toChooseDist(checkbox) {
+	if(checkbox.checked) {
+		$("#distscheckboxes").show();
+	} else {
+		$("#distscheckboxes").hide();
+	}
+}
+
+function toChooseTime(checkbox) {
+	if(checkbox.checked) {
+		$("#choosetimeitmes").show();
+	} else {
+		$("#choosetimeitmes").hide();
+	}
+}
+
+function toSearchGeonames(checkbox) {
+	if(checkbox.checked) {
+		$("#geoitems").show();
+	} else {
+		$("#geoitems").hide();
+	}
+}
+
+function toSearchDists(checkbox) {
+	if(checkbox.checked) {
+		$("#distitems").show();
+	} else {
+		$("#distitems").hide();
+	}
+}
+
+function toSearchBounds(checkbox) {
+	if(checkbox.checked) {
+		$("#bounditems").show();
+	} else {
+		$("#bounditems").hide();
+	}
+}
+
+function toSearchBoundMarkers(checkbox) {
+	if(checkbox.checked) {
+		$("#boundmarkeritems").show();
+	} else {
+		$("#boundmarkeritems").hide();
+	}
+}

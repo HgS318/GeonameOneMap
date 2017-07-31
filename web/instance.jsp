@@ -99,10 +99,10 @@
 					   <div id="highsearch">
 						   <div id="mapextent">
 							   <h3><input type="checkbox" id="mapextentcheckbox" onclick="toChooseMapExtent(this)"/>&nbsp;选择地图范围</h3>
-								<div id="mapextentdone" class="nextTab">范围未选择</div>
+								<div id="mapextentdone" class="nextTab" style="display: none">范围未选择</div>
 						   </div>
 						   <div id="choosegrade">
-							   <h3><input type="checkbox" id="gradecheckbox" onclick=""/>行政等级</h3>
+							   <h3><input type="checkbox" id="gradecheckbox" checked onclick="toChooseGrade(this)"/>行政等级</h3>
 							   <div id="gradecheckboxes" class="nextTab">
 								   <input type="checkbox" id="provincecheckbox" checked="checked" onclick=""/>省级
 								   <input type="checkbox" id="citycheckbox" checked="checked" onclick=""/>地级
@@ -113,7 +113,7 @@
 
 						   <div id="choosedists">
 
-								<h3><input type="checkbox" id="distscheckbox" onclick=""/>&nbsp;所在地区</h3>
+								<h3><input type="checkbox" id="distscheckbox" checked onclick="toChooseDist(this)"/>&nbsp;所在地区</h3>
 							   <div id="distscheckboxes" class="nextTab">
 								   <input type="checkbox" id="whcheckbox" onclick=""/>武汉市 &nbsp;
 								   <input type="checkbox" id="hscheckbox" onclick=""/>黄石市 &nbsp;
@@ -133,8 +133,8 @@
 						   </div>
 
 						   <div id="choosetime">
-							   <h3><input type="checkbox" id="timecheckbox" onclick=""/>&nbsp;时间</h3>
-							   <div id="choosetimeitmes" class="nextTab">
+							   <h3><input type="checkbox" id="timecheckbox" onclick="toChooseTime(this)"/>&nbsp;时间</h3>
+							   <div id="choosetimeitmes" class="nextTab" style="display: none">
 								   <%--入库时间<input id="intotimeinput" type="text"/>--%>
 								   <%--更新时间<input id="updatetimeinput" type="text" />--%>
 									   <p>起始时间 <input id="starttime" type="text" class="easyui-datebox" required="required"></p>
@@ -144,7 +144,7 @@
 						   </div>
 
 						   <div id="geonamesearch">
-							   <h3><input type="checkbox" id="geonamecheckbox" checked="checked" onclick=""/>&nbsp;地名</h3>
+							   <h3><input type="checkbox" id="geonamecheckbox" checked="checked" onclick="toSearchGeonames(this)"/>&nbsp;地名</h3>
 							   <div id="geoitems" class="nextTab">
 								   <p>关键词：<input id="geonameword" type="text" class="innerWord" /></p>
 								   <p>地名类型
@@ -168,23 +168,23 @@
 						   </div>
 
 						   <div id="distsearch">
-							   <h3><input type="checkbox" id="distcheckbox" onclick=""/>&nbsp;行政区</h3>
+							   <h3><input type="checkbox" id="distcheckbox" onclick="toSearchDists(this)"/>&nbsp;行政区</h3>
 							   <div id="distitems" class="nextTab">
 								   <p>关键词：<input id="distword" class="innerWord"/></p>
-								   <p><input type="checkbox" id="distmmcheckbox" checked="checked" onclick=""/>包含多媒体信息</p>
+								   <p><input type="checkbox" id="distmmcheckbox" onclick=""/>包含多媒体信息</p>
 							   </div>
 						   </div>
 
 						   <div id="boundsearch">
-							   <h3><input type="checkbox" id="boundcheckbox" onclick=""/>&nbsp;界线</h3>
+							   <h3><input type="checkbox" id="boundcheckbox" onclick="toSearchBounds(this)"/>&nbsp;界线</h3>
 							   <div id="bounditems" class="nextTab">
 								   <p>关键词：<input id="boundword" class="innerWord" /></p>
-								   <p><input type="checkbox" id="boundmmcheckbox" checked="checked" onclick=""/>包含多媒体信息</p>
+								   <p><input type="checkbox" id="boundmmcheckbox" onclick=""/>包含多媒体信息</p>
 							   </div>
 						   </div>
 
 						   <div id="boundmarkersearch">
-							   <h3><input type="checkbox" id="boundmarkercheckbox" onclick=""/>&nbsp;界桩、界碑</h3>
+							   <h3><input type="checkbox" id="boundmarkercheckbox" onclick="toSearchBoundMarkers(this)"/>&nbsp;界桩、界碑</h3>
 							   <div id="boundmarkeritems" class="nextTab">
 								   <p>关键词：<input id="boundmarkerword" class="innerWord" /></p>
 								   <p>类型：
@@ -193,7 +193,7 @@
 									   <input type="checkbox" id="tabletcheckbox" checked="checked" onclick=""/>界碑
 
 								   </p>
-								   <input type="checkbox" id="boundmarkermmcheckbox" checked="checked" onclick=""/>包含多媒体信息
+								   <input type="checkbox" id="boundmarkermmcheckbox" onclick=""/>包含多媒体信息
 							   </div>
 
 						   </div>

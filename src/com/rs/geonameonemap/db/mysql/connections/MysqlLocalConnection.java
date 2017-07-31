@@ -1,6 +1,10 @@
 package com.rs.geonameonemap.db.mysql.connections;
 
+import com.rs.geonameonemap.json.ObjectJson;
+
 import java.sql.*;
+import java.io.*;
+import java.util.*;
 /**
  * Created by Administrator on 2017/7/27 0027.
  */
@@ -8,10 +12,12 @@ public class MysqlLocalConnection {
     public static final String dbDriver = "com.mysql.jdbc.Driver";
 //    public static final String dbAddr = "jdbc:mysql://10.5.220.29:3306/";
 //    public static String account = "root", password = "cartolab";
-    public static final String dbAddr = "jdbc:mysql://61.183.15.38:3307/";
-    public static String account = "root", password = "123ABCabc";
+    public static String db_ip = "";
+    public static String db_port = "";
+    public static String dbAddr = "";
+    public static String account = "", password = "";
     protected String dbName = null;
-    public static String defDbName = "geoname";
+    public static String defDbName = "";
     protected static MysqlLocalConnection instance = null;
     protected Connection conn = null;
 
@@ -93,10 +99,27 @@ public class MysqlLocalConnection {
         try {
             Class.forName(dbDriver);
             System.out.println("加载驱动成功");
+            Properties properties = new Properties();
+            InputStream inputStream = null;
+            //加载配置文件
+            inputStream = getClass().getResourceAsStream("/conf.properties");
+            properties.load(inputStream);
+            //解析配置文件，其中production_url为配置文件中一个参数的key
+            db_ip = properties.get("mysql_addr").toString();
+            db_port = properties.get("mysql_port").toString();
+            account = properties.get("mysql_account").toString();
+            password = properties.get("mysql_pw").toString();
+            defDbName = properties.get("mysql_dbname").toString();
+            dbAddr = "jdbc:mysql://" + db_ip + ":" + db_port + "/";
+            System.out.println("读取数据库初始参数成功");
             return true;
-        } catch (ClassNotFoundException e1) {
+        } catch (ClassNotFoundException ce) {
             System.out.println("加载驱动失败");
-            e1.printStackTrace();
+            ce.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("读取数据库初始参数失败");
             return false;
         }
     }

@@ -4,6 +4,7 @@ import java.sql.*;
 
 public class LocalConnection {
     public static final String dbDriver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    public static String db_ip = "", db_port = "";
     public static final String dbAddr = "jdbc:sqlserver://localhost:1433";
     public static String account = "sa", password = "111";
     protected String dbName = null;
