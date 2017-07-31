@@ -139,6 +139,17 @@ public class DistJson extends ObjectJson {
 		return sb.toString();
 	}
 
+	public static String toJson(List<DistJson> ps) {
+		StringBuffer sb = new StringBuffer();
+		sb.append('[');
+		for(DistJson pj : ps) {
+			String pjStr = pj.toJson();
+			sb.append(pjStr).append(",");
+		}
+		sb.replace(sb.length() - 1, sb.length(), "]");
+		return sb.toString();
+	}
+
 	public static void consColumnNames(List<String> columns) {
 		ObjectJson.consColumnNames(columns, DistJson.columnNames);
 	}

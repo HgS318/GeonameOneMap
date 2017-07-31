@@ -19,7 +19,28 @@ public class BoundMarkerQuery extends MySQLQuery {
         BoundMarkerJson.consColumnNames(dbType, tbName);
         String sql = "SELECT * from " + tbName;
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
-        String str = getBoundsInfoFromResultSet(rs);
+        String str = getBoundMarkersInfoFromResultSet(rs);
+        return str;
+    }
+
+    public static String getRandomResults() {
+        BoundMarkerJson.consColumnNames(dbType, tbName);
+        String sql = "SELECT * from " + tbName;
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        BoundMarkerJson[] bs = searchBoundMarkersInfoFromResultSet(rs);
+        int len = bs.length;
+        if(len < 1) {
+            return "{}";
+        }
+        int[] randomIds = DbUse.createRandomIds(len);
+        if(randomIds.length <1) {
+            return "{}";
+        }
+        BoundMarkerJson[] re = new BoundMarkerJson[randomIds.length];
+        for(int i = 0; i < randomIds.length; i++) {
+            re[i] = bs[i];
+        }
+        String str = BoundMarkerJson.toJson(re);
         return str;
     }
 
@@ -62,7 +83,7 @@ public class BoundMarkerQuery extends MySQLQuery {
 
     }
 
-    protected static String getBoundsInfoFromResultSet(ResultSet rs) {
+    protected static BoundMarkerJson[] searchBoundMarkersInfoFromResultSet(ResultSet rs) {
         int num = DbUse.getResultSetRowNum(rs);
         if(num < 1) {
             return null;
@@ -78,6 +99,15 @@ public class BoundMarkerQuery extends MySQLQuery {
             rs.close();
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
+        }
+        return bs;
+    }
+
+    protected static String getBoundMarkersInfoFromResultSet(ResultSet rs) {
+        BoundMarkerJson[] bs = searchBoundMarkersInfoFromResultSet(rs);
+        if(bs == null || bs.length < 1) {
+            return "";
         }
         String str = ObjectJson.toJson(bs);
         return str;

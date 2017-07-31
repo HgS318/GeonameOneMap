@@ -499,6 +499,7 @@ function initTrees() {
 		},
 		onLoadSuccess: function () {
 			distsInited = true;
+			showingDists = distPolygons;
 			// showDists(distPolygons);
 			if ($('#id_tree_dist').tree('getRoots').length > 0 && k) {
 //				V($('#id_tree').tree('getRoots')[0].id);
@@ -573,7 +574,7 @@ function initTrees() {
 	// 	height: '30px'
 	// });
 
-	$("#tabsDiv").tabs("select", 2);
+	$("#tabsDiv").tabs("select", 0);
 
 }
 
@@ -1244,6 +1245,81 @@ $.extend($.fn.datagrid.methods, {
     }
 });
 
+function doSimpleSearch(value,name){
+	// alert('You input: ' + value+'('+name+')');
+	randomResults();
+}
+
+function randomResults() {
+	var places = "";
+	var dists = "";
+	var bounds = "";
+	var bms = "";
+
+	$.when(
+		$.ajax({
+			url: 'randomPlacesResults.action',
+			type: 'get',
+			dataType: 'json',
+			success: function (place_data) {
+				places = place_data;
+				// showMarkers(place_data);
+				setResultItems(places, "placeresults", "geoname");
+			},
+			error: function (place_data) {
+				setResultItems(places, "placeresults", "geoname");
+			}
+		}), $.ajax({
+			url: 'randomDistsResults.action',
+			type: 'get',
+			dataType: 'json',
+			success: function (dist_data) {
+				dists = dist_data;
+				setResultItems(dists, "distresults", "dist");
+			},
+			error: function (dist_data) {
+				setResultItems(dists, "distresults", "dist");
+			}
+		}), $.ajax({
+			url: 'randomBoundsResults.action',
+			type: 'get',
+			dataType: 'json',
+			success: function (bound_data) {
+				bounds = bound_data;
+				setResultItems(bounds, "boundresults", "bound");
+			},
+			error: function (bound_data) {
+				setResultItems(bounds, "boundresults", "bound");
+			}
+		}), $.ajax({
+			url: 'randomBoundMarkersResults.action',
+			type: 'get',
+			dataType: 'json',
+			success: function (bm_data) {
+				bms = bm_data;
+				setResultItems(bms, "boundmarkrsresults", "bounemarker");
+			},
+			error: function (bm_data) {
+				setResultItems(bms, "boundmarkrsresults", "bounemarker");
+			}
+		})
+	).done(function() {
+		setShowingOverlays(places, dists, bounds, bms);
+		if(dists && dists != "") {
+			showDists(showingDists);
+		}
+		if(bounds && bounds != "") {
+			showBounds(showingBounds);
+		}
+		if(bms && bms != "") {
+			showBoundMarkers(showingbms);
+		}
+		showMarkers(places);
+		$("#tabsDiv").tabs("select", 3);
+		$("#resultsdiv").accordion("select", "地名");
+	});
+
+}
 
 function toChooseMapExtent(checkbox) {
 	if(checkbox.checked) {

@@ -1,6 +1,7 @@
 package com.rs.geonameonemap.db;
 
 import java.sql.*;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/7/23 0023.
@@ -66,6 +67,42 @@ public class DbUse {
         }
         String suf = fileName.substring(dId);
         return suf;
+    }
+
+
+    public static void main(String[] args) {
+        createRandomIds(4);
+        createRandomIds(23);
+        createRandomIds(58);
+        createRandomIds(24);
+    }
+
+    public static int[] createRandomIds(int len) {
+        Random random = new Random();
+        List<Integer> lis = new LinkedList<Integer>();
+        int total = random.nextInt(len);
+        int resttotal = len - total;
+        int offset = random.nextInt(resttotal);
+        while(lis.size() < total) {
+            int num = random.nextInt(total);
+            boolean flag = false;
+            for(Integer ext : lis) {
+                if(ext == num) {
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) {
+                lis.add(num);
+            }
+        }
+        int[] re = new int[total];
+        for(int i = 0; i < total; i++) {
+            re[i] = lis.get(i) + offset;
+            System.out.print(re[i] + ", ");
+        }
+        System.out.println();
+        return re;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.rs.geonameonemap.db.mysql.queries;
 
+import com.rs.geonameonemap.db.DbUse;
 import com.rs.geonameonemap.db.mysql.connections.*;
 import com.rs.geonameonemap.json.DistJson;
 import com.rs.geonameonemap.json.PlaceJson;
@@ -57,6 +58,30 @@ public class DistQuery extends MySQLQuery {
                 tbName +".PNid = " + PlaceQuery.tbName + ".id order by " + tbName + ".id";
         ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
         String str = getDistsInfoFromResultSet(rs);
+        return str;
+    }
+
+    public static String getRandomResults() {
+        String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
+                tbName +".PNid = " + PlaceQuery.tbName + ".id " +
+                " where " + tbName + ".OBJECTID < 25 " +
+                " order by " + tbName + ".id "
+                ;
+        ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
+        List<DistJson> ld = getDistsFromResultSet(rs);
+        int len = ld.size();
+        if(len < 1) {
+            return "{}";
+        }
+        int[] randomIds = DbUse.createRandomIds(len);
+        if(randomIds.length <1) {
+            return "{}";
+        }
+        List<DistJson> re = new LinkedList<DistJson>();
+        for(int i = 0; i < randomIds.length; i++) {
+            re.add(ld.get(i));
+        }
+        String str = DistJson.toJson(re);
         return str;
     }
 

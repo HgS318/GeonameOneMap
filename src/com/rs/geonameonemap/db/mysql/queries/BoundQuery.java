@@ -35,6 +35,27 @@ public class BoundQuery extends MySQLQuery {
         return str;
     }
 
+    public static String getRandomResults() {
+        BoundJson.consColumnNames(dbType, tbName);
+        String sql = "SELECT * from " + tbName;
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        BoundJson[] bs = searchBoundsInfoFromResultSet(rs);
+        int len = bs.length;
+        if(len < 1) {
+            return "{}";
+        }
+        int[] randomIds = DbUse.createRandomIds(len);
+        if(randomIds.length <1) {
+            return "{}";
+        }
+        BoundJson[] re = new BoundJson[randomIds.length];
+        for(int i = 0; i < randomIds.length; i++) {
+            re[i] = bs[i];
+        }
+        String str = BoundJson.toJson(re);
+        return str;
+    }
+
 
     public static String getBoundInfoByNum(String attr, String val) {
         BoundJson bj = searchBoundInfoByNum(attr, val);
@@ -45,7 +66,7 @@ public class BoundQuery extends MySQLQuery {
         }
     }
 
-    protected static String getBoundsInfoFromResultSet(ResultSet rs) {
+    protected static BoundJson[] searchBoundsInfoFromResultSet(ResultSet rs) {
         int num = DbUse.getResultSetRowNum(rs);
         if(num < 1) {
             return null;
@@ -61,6 +82,14 @@ public class BoundQuery extends MySQLQuery {
             rs.close();
         } catch (SQLException se) {
             se.printStackTrace();
+        }
+        return bs;
+    }
+
+    protected static String getBoundsInfoFromResultSet(ResultSet rs) {
+        BoundJson[] bs = searchBoundsInfoFromResultSet(rs);
+        if(bs == null || bs.length < 1) {
+            return "";
         }
         String str = ObjectJson.toJson(bs);
         return str;

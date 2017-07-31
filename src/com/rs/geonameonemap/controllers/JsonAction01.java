@@ -10,11 +10,52 @@ import javax.servlet.http.*;
 
 import com.rs.geonameonemap.db.mysql.queries.DistQuery;
 import com.rs.geonameonemap.db.mysql.queries.PlaceQuery;
+import org.apache.poi.hslf.util.SystemTimeUtils;
 import org.apache.struts2.ServletActionContext;
 
 import net.sf.json.*;
 
 public class JsonAction01 {
+
+
+    public String randomResults() {
+        String placeRandomResults = PlaceQuery.getRandomResults();
+        String distRandomResults = DistQuery.getRandomResults();
+        String boundRandomResults = BoundQuery.getRandomResults();
+        String bmRandomResults = BoundMarkerQuery.getRandomResults();
+        String whole = "{" +
+                    "geonames: " + placeRandomResults + ", " +
+                    "dists: " + distRandomResults + ", " +
+                    "bounds: " + boundRandomResults + ", " +
+                    "boundmarkers: " + bmRandomResults +
+                "}";
+        toBeJson(whole);
+        return null;
+    }
+
+    public String randomPlacesResults() {
+        String placeRandomResults = PlaceQuery.getRandomResults();
+        toBeJson(placeRandomResults);
+        return null;
+    }
+
+    public String randomDistsResults() {
+        String distRandomResults = DistQuery.getRandomResults();
+        toBeJson(distRandomResults);
+        return null;
+    }
+
+    public String randomBoundsResults() {
+        String boundRandomResults = BoundQuery.getRandomResults();
+        toBeJson(boundRandomResults);
+        return null;
+    }
+
+    public String randomBoundMarkersResults() {
+        String bmRandomResults = BoundMarkerQuery.getRandomResults();
+        toBeJson(bmRandomResults);
+        return null;
+    }
 
 
     public String wholeGeonames() {

@@ -1,5 +1,6 @@
 package com.rs.geonameonemap.db.mysql.queries;
 
+import com.rs.geonameonemap.db.DbUse;
 import com.rs.geonameonemap.db.mysql.connections.*;
 import com.rs.geonameonemap.json.PlaceJson;
 
@@ -46,6 +47,25 @@ public class PlaceQuery extends MySQLQuery {
             return null;
         }
         String str = PlaceJson.toJson(ps, easyColumnNames);
+        return str;
+    }
+
+    public static String getRandomResults() {
+        String sql = "SELECT * from " + tbName;
+        List<PlaceJson> ps = searchPlaces(sql);
+        int len = ps.size();
+        if(len < 1) {
+            return "{}";
+        }
+        int[] randomIds = DbUse.createRandomIds(len);
+        if(randomIds.length < 1) {
+            return "{}";
+        }
+        List<PlaceJson> re = new LinkedList<PlaceJson>();
+        for(int i = 0; i < randomIds.length; i++) {
+            re.add(ps.get(i));
+        }
+        String str = PlaceJson.toJson(re);
         return str;
     }
 

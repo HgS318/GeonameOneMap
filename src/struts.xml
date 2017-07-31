@@ -15,7 +15,13 @@
     </package>
 
     <package name="p1m" extends="default">
-        <!--<action name="homeAction" class="com.rs.geonameonemap.controllers.JsonAction01" method="homeAction" />-->
+
+        <action name="randomResults" class="com.rs.geonameonemap.controllers.JsonAction01" method="randomResults" />
+        <action name="randomPlacesResults" class="com.rs.geonameonemap.controllers.JsonAction01" method="randomPlacesResults" />
+        <action name="randomDistsResults" class="com.rs.geonameonemap.controllers.JsonAction01" method="randomDistsResults" />
+        <action name="randomBoundsResults" class="com.rs.geonameonemap.controllers.JsonAction01" method="randomBoundsResults" />
+        <action name="randomBoundMarkersResults" class="com.rs.geonameonemap.controllers.JsonAction01" method="randomBoundMarkersResults" />
+
         <action name="wholeGeonames" class="com.rs.geonameonemap.controllers.JsonAction01" method="wholeGeonames" />
         <action name="easyGeonames" class="com.rs.geonameonemap.controllers.JsonAction01" method="easyGeonames" />
         <action name="getGeonameByNickname" class="com.rs.geonameonemap.controllers.JsonAction01" method="getGeonameByNickname" />
