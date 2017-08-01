@@ -16,6 +16,8 @@
 
     <package name="p1m" extends="default">
 
+        <action name="searchPrepare" class="com.rs.geonameonemap.controllers.JsonAction01" method="searchPrepare" />
+        <action name="getSessionAttribute" class="com.rs.geonameonemap.controllers.JsonAction01" method="getSessionAttribute" />
         <action name="randomResults" class="com.rs.geonameonemap.controllers.JsonAction01" method="randomResults" />
         <action name="randomPlacesResults" class="com.rs.geonameonemap.controllers.JsonAction01" method="randomPlacesResults" />
         <action name="randomDistsResults" class="com.rs.geonameonemap.controllers.JsonAction01" method="randomDistsResults" />

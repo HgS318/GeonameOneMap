@@ -33,11 +33,50 @@ public class JsonAction01 {
         return null;
     }
 
+    public String searchPrepare() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String info = request.getParameter("searchinfo");
+            if(info == null || "".equals(info)) {
+                toBeText("error");
+                return null;
+            }
+            HttpSession session = request.getSession();
+            session.setAttribute("searchinfo", info);
+            session.setAttribute("placeresult", "{}");
+            session.setAttribute("distresult", "{}");
+            session.setAttribute("boundresult", "{}");
+            session.setAttribute("boundmarkerresult", "{}");
+            toBeText("ok");
+        } catch (Exception ex) {
+            toBeText("error");
+        }
+        return null;
+    }
+
+    public String getSessionAttribute() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String type = request.getParameter("type");
+            HttpSession session = request.getSession();
+            Object obj = session.getAttribute(type);
+            String str = obj.toString();
+            toBeJson(str);
+        } catch (Exception ex) {
+            return null;
+        }
+        return null;
+    }
+
     public String randomPlacesResults() {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
-            String str = PlaceQuery.getRandomResults(isAdmin(request));
+            String str = "{}";
+            if(requestContainsAttr(request, "need")) {
+                str = PlaceQuery.getRandomResults(requestContainsAttr(request, "admin"));
+            }
             toBeJson(str);
+            request.getSession().setAttribute("placeresult", str);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ex.getMessage();
@@ -48,8 +87,12 @@ public class JsonAction01 {
     public String randomDistsResults() {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
-            String str = DistQuery.getRandomResults(isAdmin(request));
+            String str = "{}";
+            if(requestContainsAttr(request, "need")) {
+                str = DistQuery.getRandomResults(requestContainsAttr(request, "admin"));
+            }
             toBeJson(str);
+            request.getSession().setAttribute("distresult", str);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ex.getMessage();
@@ -60,8 +103,12 @@ public class JsonAction01 {
     public String randomBoundsResults() {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
-            String str = BoundQuery.getRandomResults(isAdmin(request));
+            String str = "{}";
+            if(requestContainsAttr(request, "need")) {
+                str = BoundQuery.getRandomResults(requestContainsAttr(request, "admin"));
+            }
             toBeJson(str);
+            request.getSession().setAttribute("boundresult", str);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ex.getMessage();
@@ -72,8 +119,12 @@ public class JsonAction01 {
     public String randomBoundMarkersResults() {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
-            String str = BoundMarkerQuery.getRandomResults(isAdmin(request));
+            String str = "{}";
+            if(requestContainsAttr(request, "need")) {
+                str = BoundMarkerQuery.getRandomResults(requestContainsAttr(request, "admin"));
+            }
             toBeJson(str);
+            request.getSession().setAttribute("boundmarkerresult", str);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ex.getMessage();
@@ -86,7 +137,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String str = null;
-            if(isAdmin(request)) {
+            if(requestContainsAttr(request, "admin")) {
                 str = PlaceQuery.getTotalTempGeonameInfo();
             } else {
                 str = PlaceQuery.getTotalGeonameInfo();
@@ -103,7 +154,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String str = null;
-            if(isAdmin(request)) {
+            if(requestContainsAttr(request, "admin")) {
                 str = PlaceQuery.getEasyTempGeonameInfo();
             } else {
                 str = PlaceQuery.getEasyGeonameInfo();
@@ -121,7 +172,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String nameStr = request.getParameter("name");
-            String str = PlaceQuery.getGeonameInfoByNickname(nameStr, isAdmin(request));
+            String str = PlaceQuery.getGeonameInfoByNickname(nameStr, requestContainsAttr(request, "admin"));
             toBeJson(str);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -134,7 +185,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String name = new String(request.getParameter("name").getBytes("iso-8859-1"));
-            String str = PlaceQuery.getGeonameInfoByAttr("nickname" ,name, isAdmin(request));
+            String str = PlaceQuery.getGeonameInfoByAttr("nickname" ,name, requestContainsAttr(request, "admin"));
             toBeJson(str);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -147,7 +198,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String name = new String(request.getParameter("name").getBytes("iso-8859-1"));
-            String str = PlaceQuery.getGeonameFullByAttr("nickname" ,name, isAdmin(request));
+            String str = PlaceQuery.getGeonameFullByAttr("nickname" ,name, requestContainsAttr(request, "admin"));
             String outStr = str.substring(1, str.length() - 1);
             toBeJson(outStr);
         } catch (Exception ex) {
@@ -161,9 +212,9 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
-            String str = PlaceQuery.getGeonameInfoByNum("id" ,idStr, isAdmin(request));
+            String str = PlaceQuery.getGeonameInfoByNum("id" ,idStr, requestContainsAttr(request, "admin"));
             String outStr = str.substring(1, str.length() - 1);
-            toBeJson(outStr);
+            toBeText(outStr);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ex.getMessage();
@@ -320,6 +371,21 @@ public class JsonAction01 {
         }
     }
 
+    // 将json格式字符串以json数据格式向 response 的 writer 输出
+    public void toBeText(String str){
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("utf-8");
+        try {
+            PrintWriter out=response.getWriter();
+            out.write(str);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     //	将链表中的数据以json格式向 response 的 writer 输出
     public void toBeJson(List list,int total) throws Exception{
         HttpServletResponse response = ServletActionContext.getResponse();
@@ -354,9 +420,9 @@ public class JsonAction01 {
         return str;
     }
 
-    public static boolean isAdmin(HttpServletRequest request) {
+    public static boolean requestContainsAttr(HttpServletRequest request, String attrName) {
         try {
-            String adminStr = request.getParameter("admin");
+            String adminStr = request.getParameter(attrName);
             boolean admin = (adminStr != null && !"".equals(adminStr));
             return admin;
         } catch (Exception ex) {

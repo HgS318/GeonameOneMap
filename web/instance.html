@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href='images/fav.ico ' rel='icon' type=‘image/x-ico’ />
+	<link href='images/fav.ico' rel='icon' type='image/x-ico' />
     <title>秭归县“地名一张图”管理系统</title>
 
     <link href="OntoSys/js/easyui/themes/default/easyui.css" rel="stylesheet" type="text/css" />
@@ -207,7 +207,7 @@
 
 				   </form>
 
-				   <br/> <button id="searchStart" class="srhbtn" onclick="randomResults()">开始检索</button> <p></p>
+				   <br/> <button id="searchStart" class="srhbtn" onclick="doHighSearch()">开始检索</button> <p></p>
               </div>  
 
 			</div>
@@ -224,8 +224,8 @@
 						<p id="bmintotal" style="text-align: center">界桩、界碑：0条记录</p>
 						<br/>
 						<p style="text-align: center">
-							<button id="outputbtn" class="srhbtn" onclick="randomResults()">
-								导出查询结果</button></p>
+							<button id="outputbtn" class="srhbtn" onclick="openResultWindow()">
+								查询结果详情</button></p>
 					</div>
 
 					<div title="地名" id="placeresultsdiv" selected="true" >

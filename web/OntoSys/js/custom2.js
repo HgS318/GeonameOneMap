@@ -137,17 +137,6 @@ function openInfoWindow(e) {
 			"&nbsp;&nbsp;&nbsp;&nbsp" +
 			"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
 	}
-	// content.push("<strong>资料来源及出处：</strong>" + showfrom +
-	// 	"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-	// 	"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
-	// 	"&nbsp;&nbsp;&nbsp;&nbsp" +
-	// 	"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
-
-	// content.push("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-	// 	"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
-	// 	"&nbsp;&nbsp;&nbsp;&nbsp" +
-	// 	"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
-	// content.push("<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
 	closeInfoWindow();
 	infoWindow = new AMap.InfoWindow({
 		isCustom: true,  //使用自定义窗体
@@ -1251,9 +1240,11 @@ $.extend($.fn.datagrid.methods, {
     }
 });
 
-function doSimpleSearch(value,name){
+function doSimpleSearch(value, name){
 	// alert('You input: ' + value+'('+name+')');
+	var range;
 	if(name == "allsimplesearch") {
+		range = "所有要素";
 		$("#geonamecheckbox")[0].checked = true;
 		$("#distcheckbox")[0].checked = true;
 		$("#boundcheckbox")[0].checked = true;
@@ -1264,90 +1255,149 @@ function doSimpleSearch(value,name){
 		$("#boundcheckbox")[0].checked = false;
 		$("#boundmarkercheckbox")[0].checked = false;
 		if(name == "placesimplesearch") {
+			range = "地名";
 			$("#geonamecheckbox")[0].checked = true;
 		} else if(name == "distsimplesearch") {
+			range = "行政区";
 			$("#distcheckbox")[0].checked = true;
 		} else if(name == "boundsimplesearch") {
+			range = "行政界线";
 			$("#boundcheckbox")[0].checked = true;
 		} else if(name == "bmsimplesearch") {
+			range = "界桩、界碑";
 			$("#boundmarkercheckbox")[0].checked = true;
 		}
 	}
-	randomResults();
+	var keyword = (value && ""!=value) ? value : "随机查询";
+	var info = "查询方式：简单查询<br/>查询范围：" + range + "<br/>关键词：" + keyword +
+		"<br/>查询开始时间:" + getNowFormatDate() +"<br/>";
+	randomResults(info);
+
 }
 
-function randomResults() {
-	var places = "{}";
-	var dists = "{}";
-	var bounds = "{}";
-	var bms = "{}";
-
-	var randomurl = 'randomPlacesResults.action';
-	if(admin) {
-		randomurl = "randomPlacesResults.action?admin=admin";
+function doHighSearch() {
+	var range = "";
+	if($("#geonamecheckbox")[0].checked) {
+		range += "地名 ";
 	}
+	if($("#distcheckbox")[0].checked) {
+		range += "行政区 ";
+	}
+	if($("#boundcheckbox")[0].checked) {
+		range += "行政界线 ";
+	}
+	if($("#boundmarkercheckbox")[0].checked) {
+		range += "界桩界碑 ";
+	}
+	var info = "查询方式：高级查询<br/>查询范围：" + range + "<br/>地图范围：待完善<br/>所在地区：待完善<br/>时间范围：待完善<br/>" + "查询开始时间:" + getNowFormatDate() +"<br/>";
+	randomResults(info);
 
-	$.when(
-		$.ajax({
-			url: randomurl,
-			type: 'get',
-			dataType: 'json',
-			success: function (place_data) {
-				if($("#geonamecheckbox")[0].checked) {
-					places = place_data;
-				}
-				// showMarkers(place_data);
-				setResultItems(places, "placeresults", "geoname");
-			},
-			error: function (place_data) {
-				setResultItems(places, "placeresults", "geoname");
+}
+
+function randomResults(info) {
+
+	$.ajax({
+		url: 'searchPrepare.action?searchinfo=' + info,
+		type: 'get',
+		dataType: 'text',
+		success: function (data) {
+			if("ok" != data) {
+				return;
 			}
-		}), $.ajax({
-			url: 'randomDistsResults.action',
-			type: 'get',
-			dataType: 'json',
-			success: function (dist_data) {
-				if($("#distcheckbox")[0].checked) {
-					dists = dist_data;
-				}
-				setResultItems(dists, "distresults", "dist");
-			},
-			error: function (dist_data) {
-				setResultItems(dists, "distresults", "dist");
+			var places = "{}";
+			var dists = "{}";
+			var bounds = "{}";
+			var bms = "{}";
+
+			var randomurl = 'randomPlacesResults.action?id=0';
+			if($("#geonamecheckbox")[0].checked) {
+				randomurl += "&need=need";
 			}
-		}), $.ajax({
-			url: 'randomBoundsResults.action',
-			type: 'get',
-			dataType: 'json',
-			success: function (bound_data) {
-				if($("#boundcheckbox")[0].checked) {
-					bounds = bound_data;
-				}
-				setResultItems(bounds, "boundresults", "bound");
-			},
-			error: function (bound_data) {
-				setResultItems(bounds, "boundresults", "bound");
+			if(admin) {
+				randomurl += "&admin=admin";
 			}
-		}), $.ajax({
-			url: 'randomBoundMarkersResults.action',
-			type: 'get',
-			dataType: 'json',
-			success: function (bm_data) {
-				if($("#boundmarkercheckbox")[0].checked) {
-					bms = bm_data;
-				}
-				setResultItems(bms, "boundmarkrsresults", "bounemarker");
-			},
-			error: function (bm_data) {
-				setResultItems(bms, "boundmarkrsresults", "bounemarker");
+			var disturl = 'randomDistsResults.action';
+			if($("#distcheckbox")[0].checked) {
+				disturl += "?need=need";
 			}
-		})
-	).done(function() {
-		showOverlays(places, dists, bounds, bms);
-		$("#tabsDiv").tabs("select", 3);
-		$("#resultsdiv").accordion("select", "地名");
+			var boundurl = 'randomBoundsResults.action';
+			if($("#boundcheckbox")[0].checked) {
+				boundurl += "?need=need";
+			}
+			var bmurl = 'randomBoundMarkersResults.action';
+			if($("#boundmarkercheckbox")[0].checked) {
+				bmurl += "?need=need";
+			}
+
+			$.when(
+				$.ajax({
+					url: randomurl,
+					type: 'get',
+					dataType: 'json',
+					success: function (place_data) {
+						if($("#geonamecheckbox")[0].checked) {
+							places = place_data;
+						}
+						// showMarkers(place_data);
+						setResultItems(places, "placeresults", "geoname");
+					},
+					error: function (place_data) {
+						setResultItems(places, "placeresults", "geoname");
+					}
+				}), $.ajax({
+					url: disturl,
+					type: 'get',
+					dataType: 'json',
+					success: function (dist_data) {
+						dists = dist_data;
+						setResultItems(dists, "distresults", "dist");
+					},
+					error: function (dist_data) {
+						setResultItems(dists, "distresults", "dist");
+					}
+				}), $.ajax({
+					url: boundurl,
+					type: 'get',
+					dataType: 'json',
+					success: function (bound_data) {
+						bounds = bound_data;
+						setResultItems(bounds, "boundresults", "bound");
+					},
+					error: function (bound_data) {
+						setResultItems(bounds, "boundresults", "bound");
+					}
+				}), $.ajax({
+					url: bmurl,
+					type: 'get',
+					dataType: 'json',
+					success: function (bm_data) {
+						bms = bm_data;
+						setResultItems(bms, "boundmarkrsresults", "bounemarker");
+					},
+					error: function (bm_data) {
+						setResultItems(bms, "boundmarkrsresults", "bounemarker");
+					}
+				})
+			).done(function() {
+				showOverlays(places, dists, bounds, bms);
+				$("#tabsDiv").tabs("select", 3);
+				$("#resultsdiv").accordion("select", "地名");
+			});
+
+		}, error: function (data) {
+			return;
+		}
 	});
 
+}
+
+function openResultWindow() {
+	var basicinfo = encodeURI("    " + $("#placeintotal")[0].innerText + "<br/>" +
+		"    " + $("#distintotal")[0].innerText + "<br/>" +
+		"    " + $("#boundintotal")[0].innerText + "<br/>" +
+		"    " + $("#bmintotal")[0].innerText + "<br/>");
+	// document.cookie = "basicinfo="+basicinfo;
+	window.open("download/examplepage/easyui/basic.html");
 }
 
 function toChooseMapExtent(checkbox) {
@@ -1417,4 +1467,33 @@ function toSearchBoundMarkers(checkbox) {
 	} else {
 		$("#boundmarkeritems").hide();
 	}
+}
+
+function getNowFormatDate() {
+	var date = new Date();
+	var seperator1 = "-";
+	var seperator2 = ":";
+	var month = date.getMonth() + 1;
+	var strDate = date.getDate();
+	var h = date.getHours();
+	if(h < 9) {
+		h = "0" + h;
+	}
+	var m = date.getMinutes();
+	if(m < 9) {
+		m = "0" + m;
+	}
+	var s = date.getSeconds();
+	if(s < 9) {
+		s = "0" + s;
+	}
+	if (month >= 1 && month <= 9) {
+		month = "0" + month;
+	}
+	if (strDate >= 0 && strDate <= 9) {
+		strDate = "0" + strDate;
+	}
+	var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+		+ " " + h + seperator2 + m + seperator2 + s;
+	return currentdate;
 }

@@ -359,7 +359,7 @@ function setResultItems(muldata, divname, clas) {
     var parentdiv = document.getElementById(divname);
     parentdiv.style.display="block";
     var num = 0;
-    if(!muldata || "" == muldata || "{}" == muldata || muldata.length < 1) {
+    if(!muldata || "" == muldata || "{}" == muldata || !muldata.length || muldata.length < 1) {
         parentdiv.innerHTML = "";
     } else {
         num = muldata.length;
