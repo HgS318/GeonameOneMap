@@ -19,10 +19,10 @@ public class JsonAction01 {
 
 
     public String randomResults() {
-        String placeRandomResults = PlaceQuery.getRandomResults();
-        String distRandomResults = DistQuery.getRandomResults();
-        String boundRandomResults = BoundQuery.getRandomResults();
-        String bmRandomResults = BoundMarkerQuery.getRandomResults();
+        String placeRandomResults = PlaceQuery.getRandomResults(false);
+        String distRandomResults = DistQuery.getRandomResults(false);
+        String boundRandomResults = BoundQuery.getRandomResults(false);
+        String bmRandomResults = BoundMarkerQuery.getRandomResults(false);
         String whole = "{" +
                     "geonames: " + placeRandomResults + ", " +
                     "dists: " + distRandomResults + ", " +
@@ -34,39 +34,85 @@ public class JsonAction01 {
     }
 
     public String randomPlacesResults() {
-        String placeRandomResults = PlaceQuery.getRandomResults();
-        toBeJson(placeRandomResults);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String str = PlaceQuery.getRandomResults(isAdmin(request));
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
         return null;
     }
 
     public String randomDistsResults() {
-        String distRandomResults = DistQuery.getRandomResults();
-        toBeJson(distRandomResults);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String str = DistQuery.getRandomResults(isAdmin(request));
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
         return null;
     }
 
     public String randomBoundsResults() {
-        String boundRandomResults = BoundQuery.getRandomResults();
-        toBeJson(boundRandomResults);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String str = BoundQuery.getRandomResults(isAdmin(request));
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
         return null;
     }
 
     public String randomBoundMarkersResults() {
-        String bmRandomResults = BoundMarkerQuery.getRandomResults();
-        toBeJson(bmRandomResults);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String str = BoundMarkerQuery.getRandomResults(isAdmin(request));
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
         return null;
     }
 
 
     public String wholeGeonames() {
-        String str = PlaceQuery.getTotalGeonameInfo();
-        toBeJson(str);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String str = null;
+            if(isAdmin(request)) {
+                str = PlaceQuery.getTotalTempGeonameInfo();
+            } else {
+                str = PlaceQuery.getTotalGeonameInfo();
+            }
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
         return null;
     }
 
     public String easyGeonames() {
-        String str = PlaceQuery.getEasyGeonameInfo();
-        toBeJson(str);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        try {
+            String str = null;
+            if(isAdmin(request)) {
+                str = PlaceQuery.getEasyTempGeonameInfo();
+            } else {
+                str = PlaceQuery.getEasyGeonameInfo();
+            }
+            toBeJson(str);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ex.getMessage();
+        }
         return null;
     }
 
@@ -75,8 +121,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String nameStr = request.getParameter("name");
-            String name = new String(nameStr.getBytes("iso-8859-1"));
-            String str = PlaceQuery.getGeonameInfoByNickname(nameStr);
+            String str = PlaceQuery.getGeonameInfoByNickname(nameStr, isAdmin(request));
             toBeJson(str);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -89,7 +134,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String name = new String(request.getParameter("name").getBytes("iso-8859-1"));
-            String str = PlaceQuery.getGeonameInfoByAttr("nickname" ,name);
+            String str = PlaceQuery.getGeonameInfoByAttr("nickname" ,name, isAdmin(request));
             toBeJson(str);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -102,7 +147,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String name = new String(request.getParameter("name").getBytes("iso-8859-1"));
-            String str = PlaceQuery.getGeonameFullByAttr("nickname" ,name);
+            String str = PlaceQuery.getGeonameFullByAttr("nickname" ,name, isAdmin(request));
             String outStr = str.substring(1, str.length() - 1);
             toBeJson(outStr);
         } catch (Exception ex) {
@@ -116,7 +161,7 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String idStr = new String(request.getParameter("id").getBytes("iso-8859-1"));
-            String str = PlaceQuery.getGeonameInfoByNum("id" ,idStr);
+            String str = PlaceQuery.getGeonameInfoByNum("id" ,idStr, isAdmin(request));
             String outStr = str.substring(1, str.length() - 1);
             toBeJson(outStr);
         } catch (Exception ex) {
@@ -125,6 +170,8 @@ public class JsonAction01 {
         }
         return null;
     }
+
+
 
     public String wholeDists() {
         String str = DistQuery.getTotalDistInfo();
@@ -305,6 +352,16 @@ public class JsonAction01 {
         json.append("]}");
         String str=json.toString();
         return str;
+    }
+
+    public static boolean isAdmin(HttpServletRequest request) {
+        try {
+            String adminStr = request.getParameter("admin");
+            boolean admin = (adminStr != null && !"".equals(adminStr));
+            return admin;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
 }

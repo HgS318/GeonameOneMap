@@ -99,9 +99,9 @@ public class DbUse {
         int[] re = new int[total];
         for(int i = 0; i < total; i++) {
             re[i] = lis.get(i) + offset;
-            System.out.print(re[i] + ", ");
+//            System.out.print(re[i] + ", ");
         }
-        System.out.println();
+//        System.out.println();
         return re;
     }
 

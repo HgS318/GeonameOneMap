@@ -3,7 +3,7 @@ var placetypes =
     [{"name":"行政区域类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"行政区域","parent":"行政区域类","state":"open","par":"行政区域类"}]},{"name":"非行政区域类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"地片","parent":"非行政区域类","state":"open","par":"非行政区域类"},{"name":"边贸区、口岸","parent":"非行政区域类","state":"open","par":"非行政区域类"},{"name":"非行政区域类其他","parent":"非行政区域类","state":"open","par":"非行政区域类"},{"name":"工业区、开发区","parent":"非行政区域类","state":"open","par":"非行政区域类"},{"name":"军事区","parent":"非行政区域类","state":"open","par":"非行政区域类"},{"name":"矿区","parent":"非行政区域类","state":"open","par":"非行政区域类"},{"name":"农、林、牧、渔区","parent":"非行政区域类","state":"open","par":"非行政区域类"},{"name":"区片","parent":"非行政区域类","state":"open","par":"非行政区域类"}]},{"name":"群众自治组织类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"群众自治组织","parent":"群众自治组织类","state":"open","par":"群众自治组织类"},{"name":"群众自治组织类其他","parent":"群众自治组织类","state":"open","par":"群众自治组织类"}]},{"name":"居民点类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"居民点","parent":"居民点类","state":"open","par":"居民点类"},{"name":"居民点类其他","parent":"居民点类","state":"open","par":"居民点类"}]},{"name":"交通运输设施类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"街、巷","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"车站、停车场","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"城镇交通运输类其他","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"船闸、升船机站","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"道班","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"道口","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"灯塔、导航台","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"渡口","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"公路","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"公路运输类其他","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"管道","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"管站","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"航空港","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"航空与管道运输类其他","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"环岛、路口","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"火车站","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"加油站","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"检查站","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"交通运输附属设施类其他","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"交通运输设施类其他","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"锚地","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"桥梁","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"收费站","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"水上运输类其他","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"水运港口","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"隧道","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"索道、扶梯","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"铁路","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"铁路运输类其他","parent":"交通运输设施类","state":"open","par":"交通运输设施类"},{"name":"有轨交通线路","parent":"交通运输设施类","state":"open","par":"交通运输设施类"}]},{"name":"水利电力设施类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"发电站","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"泵站","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"池塘、海塘","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"堤堰","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"堤堰类其他","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"电力设施类其他","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"渡槽","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"灌区","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"涵洞","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"井","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"排灌设施类其他","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"输变电站","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"水库","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"水利、电力、通信设施类其他","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"水渠","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"通信基站","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"通信设施类其他","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"蓄洪区、泄洪区","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"蓄水区类其他","parent":"水利电力设施类","state":"open","par":"水利电力设施类"},{"name":"运河","parent":"水利电力设施类","state":"open","par":"水利电力设施类"}]},{"name":"纪念地旅游景点类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"纪念地、遗址","parent":"纪念地旅游景点类","state":"open","par":"纪念地旅游景点类"},{"name":"纪念地、遗址类其他","parent":"纪念地旅游景点类","state":"open","par":"纪念地旅游景点类"},{"name":"公园、风景区","parent":"纪念地旅游景点类","state":"open","par":"纪念地旅游景点类"},{"name":"自然保护区","parent":"纪念地旅游景点类","state":"open","par":"纪念地旅游景点类"},{"name":"宗教纪念地","parent":"纪念地旅游景点类","state":"open","par":"纪念地旅游景点类"},{"name":"纪念地、旅游景点类其他","parent":"纪念地旅游景点类","state":"open","par":"纪念地旅游景点类"}]},{"name":"建筑物类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"广场、体育场","parent":"建筑物类","state":"open","par":"建筑物类"},{"name":"城堡、墙","parent":"建筑物类","state":"open","par":"建筑物类"},{"name":"亭、台、碑、塔","parent":"建筑物类","state":"open","par":"建筑物类"},{"name":"房屋","parent":"建筑物类","state":"open","par":"建筑物类"},{"name":"建筑物类其他","parent":"建筑物类","state":"open","par":"建筑物类"}]},{"name":"单位类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"单位","parent":"单位类","state":"open","par":"单位类"},{"name":"单位类其他","parent":"单位类","state":"open","par":"单位类"}]},{"name":"陆地水系类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"河流","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"河口","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"河流类其他","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"河滩","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"河湾","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"河源","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"湖泊","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"阶地","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"陆地岛屿类其他","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"陆地水系类其他","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"瀑布","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"泉","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"三角洲","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"峡谷","parent":"陆地水系类","state":"open","par":"陆地水系类"},{"name":"洲、河岛，湖岛，矶","parent":"陆地水系类","state":"open","par":"陆地水系类"}]},{"name":"陆地地形类","parent":"全部类型","state":"closed","par":"全部类型","children":[{"name":"山","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"山峰","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"山谷、谷地","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"山口、关隘","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"山坡","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"山体","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"洞穴","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"陆地地形类其他","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"平原、盆地","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"丘陵山地","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"丘陵山地类其他","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"森林","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"湿地（沼泽）","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"台地","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"苔原","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"天生桥","parent":"陆地地形类","state":"open","par":"陆地地形类"},{"name":"重要陆地景观类其他","parent":"陆地地形类","state":"open","par":"陆地地形类"}]}]
     // []
     ;
-
+var admin = false;
 var placenickname;
 var orgX, orgY, orgPath;
 var orgData;
@@ -41,11 +41,18 @@ function getQueryString(name) {
 $(function() {
 
     var placename = getQueryString("name");
+
     placenickname = placename;
 
     if(placename && "" != placename) {  //  修改地名
+        var adminStr = getQueryString("admin");
+        var url = 'getGeonameByNickname.action?name=' + placename;
+        if(adminStr && "" != adminStr) {
+            admin = true;
+            url = 'getGeonameByNickname.action?name=' + placename + "&admin=admin";
+        }
         $.ajax({
-            url: 'getGeonameByNickname.action?name=' + placename,
+            url: url,
             type: 'get',
             dataType: 'json',
             success: function (data) {
@@ -199,6 +206,7 @@ function mapInit(data) {
                     var tmpdata = {"path": path };
                     consBasicCotent(tmpdata, "path", "pathtext");
                     editorTool.close(false);
+                    editing = false;
                 });
             } else {    //  修改地名
                 var lineArr = JSON.parse(data.path);
@@ -370,10 +378,11 @@ function consDetailedContent(data, attaname, divname) {
 function consMainContent(data) {
 
     var name = data['name'];
-    document.title = name + " - 地名编辑";
+    var tt = admin ? "审核" : "编辑";
+    document.title = name + " - 地名" + tt;
     var bc = data['大类'],sc = data['小类'];
     document.getElementById("name0").setAttribute("value", name);
-    document.getElementById("doctitle").innerHTML = "编辑地名：" +
+    document.getElementById("doctitle").innerHTML = tt + "地名：" +
             "<input id='newplacename' value='" + name +"' style='line-height: 25px'/>";
     document.getElementById("bigclass1").innerHTML = bc;
     document.getElementById("smallclass1").innerHTML = sc;
@@ -588,6 +597,51 @@ function submitFun() {
         cancelValue: '取消',
         title: '提交编辑',
         content: '完成地名编辑，提交本页面？'
+    });
+}
+
+function passFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+
+        },
+        cancelValue: '取消',
+        title: '地名审核',
+        content: '确认通过该地名的审核，提交数据库？'
+    });
+}
+
+function vetoFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+
+        },
+        cancelValue: '取消',
+        title: '地名审核',
+        content: '该地名校验不通过，要求数据员修改？'
+    });
+}
+
+function adminDeleteFun() {
+    $('#btn-dialogBox').dialogBox({
+        hasClose: true,
+        hasBtn: true,
+        confirmValue: '确定',
+        confirm: function(){
+            // alert('this is callback function');
+
+        },
+        cancelValue: '取消',
+        title: '撤销地名审核',
+        content: '确认删除该地名的审批请求？'
     });
 }
 

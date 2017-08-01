@@ -62,6 +62,7 @@ test_menu = {
                     text: '线状地名',
                     action: function(e, selector) {
                         // alert('Text clicked on ' + selector.prop("tagName") + ":" + selector.attr("id"));
+                        window.open("html/placeEdit.html?x=" + mousePos[0] + "&y=" + mousePos[1] + "&spaType=3");
                     }
                 }
             ]

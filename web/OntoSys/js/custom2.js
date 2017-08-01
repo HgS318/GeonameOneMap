@@ -126,12 +126,17 @@ function openInfoWindow(e) {
 		"' target='_blank'>" + extData['所在跨行政区'] + "</a>");
 	// content.push("<p></p>");
 	content.push("<strong>使用时间：</strong>" + extData['使用时间']);
-	content.push("<strong>地理实体描述：</strong>" + showobj +
-		"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-		"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
-		"&nbsp;&nbsp;&nbsp;&nbsp" +
-		"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
-
+	if(admin) {
+		content.push("<strong>地理实体描述：</strong>" + showobj +
+			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+			"<a href='html/placeEdit.html?admin=admin&name=" + extData.nickname + "' target='_blank'>审核地名</a>");
+	} else {
+		content.push("<strong>地理实体描述：</strong>" + showobj +
+			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+			"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
+			"&nbsp;&nbsp;&nbsp;&nbsp" +
+			"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
+	}
 	// content.push("<strong>资料来源及出处：</strong>" + showfrom +
 	// 	"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
 	// 	"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
@@ -466,11 +471,6 @@ function setAutoComplete() {
 
 // showMarkers(showingPlaces);
 
-function delInstance(geocode,insnum) {
-	var url="delInstance.action?geocode="+geocode+"&insnum="+insnum;
-	window.location.href=url;
-}
-
 function initTrees() {
 
 	$("#searchStart").click(function(){ //检索
@@ -492,14 +492,20 @@ function initTrees() {
 			// }
 			if(!distsInited) {
 				node['selected'] = false;
-				var polygon = createDistPolygon(node, distPolygons);
+				if(admin) {
+
+				} else {
+					var polygon = createDistPolygon(node, distPolygons);
+				}
 				// distPolygons.push(polygon);
 			}
 			return s;
 		},
 		onLoadSuccess: function () {
 			distsInited = true;
-			showingDists = distPolygons;
+			if(!admin) {
+				showingDists = distPolygons;
+			}
 			// showDists(distPolygons);
 			if ($('#id_tree_dist').tree('getRoots').length > 0 && k) {
 //				V($('#id_tree').tree('getRoots')[0].id);
@@ -1247,22 +1253,49 @@ $.extend($.fn.datagrid.methods, {
 
 function doSimpleSearch(value,name){
 	// alert('You input: ' + value+'('+name+')');
+	if(name == "allsimplesearch") {
+		$("#geonamecheckbox")[0].checked = true;
+		$("#distcheckbox")[0].checked = true;
+		$("#boundcheckbox")[0].checked = true;
+		$("#boundmarkercheckbox")[0].checked = true;
+	} else {
+		$("#geonamecheckbox")[0].checked = false;
+		$("#distcheckbox")[0].checked = false;
+		$("#boundcheckbox")[0].checked = false;
+		$("#boundmarkercheckbox")[0].checked = false;
+		if(name == "placesimplesearch") {
+			$("#geonamecheckbox")[0].checked = true;
+		} else if(name == "distsimplesearch") {
+			$("#distcheckbox")[0].checked = true;
+		} else if(name == "boundsimplesearch") {
+			$("#boundcheckbox")[0].checked = true;
+		} else if(name == "bmsimplesearch") {
+			$("#boundmarkercheckbox")[0].checked = true;
+		}
+	}
 	randomResults();
 }
 
 function randomResults() {
-	var places = "";
-	var dists = "";
-	var bounds = "";
-	var bms = "";
+	var places = "{}";
+	var dists = "{}";
+	var bounds = "{}";
+	var bms = "{}";
+
+	var randomurl = 'randomPlacesResults.action';
+	if(admin) {
+		randomurl = "randomPlacesResults.action?admin=admin";
+	}
 
 	$.when(
 		$.ajax({
-			url: 'randomPlacesResults.action',
+			url: randomurl,
 			type: 'get',
 			dataType: 'json',
 			success: function (place_data) {
-				places = place_data;
+				if($("#geonamecheckbox")[0].checked) {
+					places = place_data;
+				}
 				// showMarkers(place_data);
 				setResultItems(places, "placeresults", "geoname");
 			},
@@ -1274,7 +1307,9 @@ function randomResults() {
 			type: 'get',
 			dataType: 'json',
 			success: function (dist_data) {
-				dists = dist_data;
+				if($("#distcheckbox")[0].checked) {
+					dists = dist_data;
+				}
 				setResultItems(dists, "distresults", "dist");
 			},
 			error: function (dist_data) {
@@ -1285,7 +1320,9 @@ function randomResults() {
 			type: 'get',
 			dataType: 'json',
 			success: function (bound_data) {
-				bounds = bound_data;
+				if($("#boundcheckbox")[0].checked) {
+					bounds = bound_data;
+				}
 				setResultItems(bounds, "boundresults", "bound");
 			},
 			error: function (bound_data) {
@@ -1296,7 +1333,9 @@ function randomResults() {
 			type: 'get',
 			dataType: 'json',
 			success: function (bm_data) {
-				bms = bm_data;
+				if($("#boundmarkercheckbox")[0].checked) {
+					bms = bm_data;
+				}
 				setResultItems(bms, "boundmarkrsresults", "bounemarker");
 			},
 			error: function (bm_data) {
@@ -1304,17 +1343,7 @@ function randomResults() {
 			}
 		})
 	).done(function() {
-		setShowingOverlays(places, dists, bounds, bms);
-		if(dists && dists != "") {
-			showDists(showingDists);
-		}
-		if(bounds && bounds != "") {
-			showBounds(showingBounds);
-		}
-		if(bms && bms != "") {
-			showBoundMarkers(showingbms);
-		}
-		showMarkers(places);
+		showOverlays(places, dists, bounds, bms);
 		$("#tabsDiv").tabs("select", 3);
 		$("#resultsdiv").accordion("select", "地名");
 	});

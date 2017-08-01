@@ -1,4 +1,6 @@
 
+var admin = false;
+
 var infoWindow, map, level = 13;
 var markers = [];	//	所有地点标注，包括点、线
 var showingMarkers = [];
@@ -25,8 +27,16 @@ var mousePos;
 
 $(function() {
 
+    var wholepnurl = 'wholeGeonames.action';
+
+    var thisurl = window.location.href;
+    if(thisurl.indexOf('admin') > -1) {
+        admin = true;
+        wholepnurl = "wholeGeonames.action?admin=admin";
+    }
+
     $.ajax({
-        url: 'wholeGeonames.action',
+        url: wholepnurl,
         type:'get',
         dataType: 'json',
         success:function(data){
@@ -66,6 +76,9 @@ $(function() {
                 initTrees();
                 initBounds();
                 initBoundMarkers();
+                if(admin) {
+                    initTmpDists();
+                }
             });
 
         },
@@ -100,6 +113,31 @@ function createDistPolygon(distjson, dists) {
     AMap.event.addListener(polygon, "click", overlayFeatureClick);
     // polygon.setMap(map);
     dists.push(polygon);
+}
+
+function initTmpDists() {
+    var wholeTmpDistsUrl = 'wholeEasyBounds.action';
+    if(admin) {
+        wholeTmpDistsUrl = "";
+    }
+    $.ajax({
+        url: wholeTmpDistsUrl,
+        type:'get',
+        dataType: 'json',
+        success:function(dist_data){
+            var distArrayJson = dist_data;
+            // initBounds(boundArrayJson);
+            for(var i = 0; i < distArrayJson.length; i++) {
+                var distjson = distArrayJson[i];
+                distjson['selected'] = false;
+                createDistPolygon(distjson, distPolygons);
+            }
+            showingDists = distPolygons;
+        },
+        error:function(dist_data){
+            console.log(dist_data);
+        }
+    });
 }
 
 function distDbClick(e) {
@@ -139,8 +177,10 @@ function showDists(distpolygons) {
 }
 
 function initBounds() {
+    var wholeBoundsUrl = 'wholeEasyBounds.action';
+
     $.ajax({
-        url: 'wholeEasyBounds.action',
+        url: wholeBoundsUrl,
         type:'get',
         dataType: 'json',
         success:function(bound_data){
@@ -202,8 +242,9 @@ function showBounds(boundPylylines) {
 }
 
 function initBoundMarkers(bmArrayJson) {
+    var wholebmurl = 'wholeEasyBoundMarkers.action';
     $.ajax({
-        url: 'wholeEasyBoundMarkers.action',
+        url: wholebmurl,
         type:'get',
         dataType: 'json',
         success:function(bm_data){
@@ -318,7 +359,7 @@ function setResultItems(muldata, divname, clas) {
     var parentdiv = document.getElementById(divname);
     parentdiv.style.display="block";
     var num = 0;
-    if(!muldata || "" == muldata) {
+    if(!muldata || "" == muldata || "{}" == muldata || muldata.length < 1) {
         parentdiv.innerHTML = "";
     } else {
         num = muldata.length;
@@ -453,6 +494,34 @@ function setShowingMarkers(psdata) {
         }
     }
     return showingMarkers;
+}
+
+function showOverlays(psdata, distdata, bounddata, bmdata) {
+    if(distdata == "{}") {
+        distsHide();
+    }
+    if(bounddata == "{}") {
+        boundsHide();
+    }
+    if(bmdata == "{}") {
+        bdmarksHide();
+    }
+    setShowingOverlays(psdata, distdata, bounddata, bmdata);
+    if(distdata && distdata != "{}") {
+        showDists(showingDists);
+    }
+    if(bounddata && bounddata != "{}") {
+        showBounds(showingBounds);
+    }
+    if(bmdata && bmdata != "{}") {
+        showBoundMarkers(showingbms);
+    }
+    if(!psdata || psdata =="" || psdata == "{}" || psdata.length < 1) {
+        placesHide();
+        $("#toolbarPlaces")[0].selected = false;
+    } else {
+        showMarkers(psdata);
+    }
 }
 
 function setShowingOverlays(psdata, distdata, bounddata, bmdata) {

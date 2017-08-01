@@ -4,6 +4,7 @@ import com.rs.geonameonemap.db.DbUse;
 import com.rs.geonameonemap.db.mysql.connections.*;
 import com.rs.geonameonemap.json.DistJson;
 import com.rs.geonameonemap.json.PlaceJson;
+import org.apache.poi.hssf.record.BOFRecord;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import java.util.List;
 public class DistQuery extends MySQLQuery {
 
     public static final String tbName = "enshidists";
+    public static final String tmpTbName = "enshidists_temp";
     public static String[] columns = null;
     public static String[] easyColumnNames = new String[]{
             "id", "name", "nickname", "大类", "小类", "position", "spaType", "path",
@@ -61,12 +63,27 @@ public class DistQuery extends MySQLQuery {
         return str;
     }
 
-    public static String getRandomResults() {
-        String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
-                tbName +".PNid = " + PlaceQuery.tbName + ".id " +
-                " where " + tbName + ".OBJECTID < 25 " +
-                " order by " + tbName + ".id "
-                ;
+    public static String getTotalTempDistInfo() {
+        String sql = "SELECT * from " + tmpTbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
+                tmpTbName +".PNid = " + PlaceQuery.tbName + ".id order by " + tmpTbName + ".id";
+        ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
+        String str = getDistsInfoFromResultSet(rs);
+        return str;
+    }
+
+    public static String getRandomResults(boolean admin) {
+        String sql = null;
+        if(admin) {
+            sql = "SELECT * from " + tmpTbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
+                    tmpTbName +".PNid = " + PlaceQuery.tbName + ".id " +
+                    " where " + tmpTbName + ".OBJECTID < 25 " +
+                    " order by " + tbName + ".id ";
+        } else {
+            sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
+                    tbName +".PNid = " + PlaceQuery.tbName + ".id " +
+                    " where " + tbName + ".OBJECTID < 25 " +
+                    " order by " + tbName + ".id ";
+        }
         ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
         List<DistJson> ld = getDistsFromResultSet(rs);
         int len = ld.size();

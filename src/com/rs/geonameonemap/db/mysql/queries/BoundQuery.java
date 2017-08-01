@@ -14,6 +14,7 @@ import java.util.*;
 public class BoundQuery extends MySQLQuery {
 
     public static final String tbName = "enshidivid";
+    public static final String tmpTbName = "enshidivid_temp";
     public static final String[] boundPathColumns = new String[] {
             "OBJECTID", "Id", "path", "Name", "AdminGrade", "Grade", "LeftName", "RightName"
     };
@@ -27,6 +28,14 @@ public class BoundQuery extends MySQLQuery {
         return str;
     }
 
+    public static String getEasyTempBoundsInfo() {
+        BoundJson.consColumnNames(dbType, tmpTbName);
+        String sql = "SELECT * from " + tmpTbName;
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        String str = getBoundsInfoFromResultSet(rs);
+        return str;
+    }
+
     public static String getBoundPathsInfo() {
         BoundJson.consColumnNames(dbType, tbName);
         String sql = "SELECT "+ DbUse.columnsToSQL(boundPathColumns) +" from " + tbName;
@@ -35,9 +44,15 @@ public class BoundQuery extends MySQLQuery {
         return str;
     }
 
-    public static String getRandomResults() {
-        BoundJson.consColumnNames(dbType, tbName);
-        String sql = "SELECT * from " + tbName;
+    public static String getRandomResults(boolean admin) {
+        String sql = null;
+        if(admin) {
+            BoundJson.consColumnNames(dbType, tmpTbName);
+            sql = "SELECT * from " + tmpTbName;
+        } else {
+            BoundJson.consColumnNames(dbType, tbName);
+            sql = "SELECT * from " + tbName;
+        }
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         BoundJson[] bs = searchBoundsInfoFromResultSet(rs);
         int len = bs.length;

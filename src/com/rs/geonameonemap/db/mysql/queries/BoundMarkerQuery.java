@@ -14,6 +14,7 @@ import java.util.*;
 public class BoundMarkerQuery extends MySQLQuery {
 
     public static final String tbName = "enshiboundrymarker";
+    public static final String tmpTbName = "enshiboundrymarker_temp";
 
     public static String getEasyBoundMarkersInfo() {
         BoundMarkerJson.consColumnNames(dbType, tbName);
@@ -23,9 +24,23 @@ public class BoundMarkerQuery extends MySQLQuery {
         return str;
     }
 
-    public static String getRandomResults() {
-        BoundMarkerJson.consColumnNames(dbType, tbName);
-        String sql = "SELECT * from " + tbName;
+    public static String getEasyTempBoundMarkersInfo() {
+        BoundMarkerJson.consColumnNames(dbType, tmpTbName);
+        String sql = "SELECT * from " + tmpTbName;
+        ResultSet rs = MysqlLocalConnection.executeQuery(sql);
+        String str = getBoundMarkersInfoFromResultSet(rs);
+        return str;
+    }
+
+    public static String getRandomResults(boolean admin) {
+        String sql = null;
+        if(admin) {
+            BoundMarkerJson.consColumnNames(dbType, tmpTbName);
+            sql = "SELECT * from " + tmpTbName;
+        } else {
+            BoundMarkerJson.consColumnNames(dbType, tbName);
+            sql = "SELECT * from " + tbName;
+        }
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         BoundMarkerJson[] bs = searchBoundMarkersInfoFromResultSet(rs);
         int len = bs.length;
