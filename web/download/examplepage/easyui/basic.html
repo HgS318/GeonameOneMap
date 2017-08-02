@@ -9,7 +9,11 @@
 	<link rel="stylesheet" type="text/css" href="demo.css">
     <style>
         /*body {text-align:center}*/
-        .basicmid {margin:0 auto;width:700px;}
+        .basicmid {
+            margin-left: 320px;
+            width:700px;
+            float: none;
+        }
         /* CSS注释：设置对象边框、宽度、高度 便于观察布局效果 */
     </style>
 
@@ -23,14 +27,13 @@
 
 
 
-<div style="float: left; margin: 60px 60px">
+<div style="float: left; margin: 60px 10px 20px 60px; width: 220px">
     <h2>查询信息</h2>
     <div id="infodiv"></div>
 </div>
 
 	<div class="basicmid">
         <h1 style="text-align: center">查询结果详情</h1>
-        <div style="margin:20px 0;"></div>
         <table id="placedatadiv" class="easyui-datagrid" title="地名" style="width:700px;height:300px"
                 data-options="rownumbers:true,singleSelect:true,collapsible:true,method:'get'">
             <thead data-options="frozen:true">
@@ -50,7 +53,7 @@
                 </thead>
         </table>
 
-        <div style="margin:20px 0;"></div>
+        <div></div>
         <table id="distdatadiv" class="easyui-datagrid" title="行政区" style="width:700px;height:300px"
                data-options="rownumbers:true,singleSelect:true,collapsible:true,method:'get'">
             <thead data-options="frozen:true">
@@ -70,7 +73,7 @@
             </thead>
         </table>
 
-        <div style="margin:20px 0;"></div>
+        <div></div>
         <table id="bounddatadiv" class="easyui-datagrid" title="行政界线" style="width:700px;height:300px"
                data-options="rownumbers:true,singleSelect:true,collapsible:true,method:'get'">
             <thead data-options="frozen:true">
@@ -89,7 +92,7 @@
             </thead>
         </table>
 
-        <div style="margin:20px 0;"></div>
+        <div></div>
         <table id="boundmarkerdatadiv" class="easyui-datagrid" title="界桩、界碑" style="width:700px;height:120px"
                data-options="rownumbers:true,singleSelect:true,collapsible:true,method:'get'">
             <thead data-options="frozen:true">

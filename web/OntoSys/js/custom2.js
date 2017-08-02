@@ -1270,7 +1270,7 @@ function doSimpleSearch(value, name){
 	}
 	var keyword = (value && ""!=value) ? value : "随机查询";
 	var info = "查询方式：简单查询<br/>查询范围：" + range + "<br/>关键词：" + keyword +
-		"<br/>查询开始时间:" + getNowFormatDate() +"<br/>";
+		"<br/>查询时间:" + getNowFormatDate() +"<br/>";
 	randomResults(info);
 
 }
