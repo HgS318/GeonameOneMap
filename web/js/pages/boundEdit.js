@@ -696,23 +696,8 @@ function consPicCont(nickname, sharp, typecode, typename, fwitdh) {
     var url1 = "../data/wikiContent/place/" + nickname + "/" + nickname + typename + ".jpg";
     var str1 = "<h3><span class='texts'>"+ typename + "</span>";
     var str2 =	"<a name='" + sharp + "'></a> <a href='#section'>回目录</a></h3>";
-//		var str3 =	"<div class='content_topp'><p></p><p></p>" + "<div class='img img_l' style='width: " + fwitdh +"px;'>";
-//		var reg1 = new RegExp("typename","g"); //创建正则RegExp对象
-//		var reg2 = new RegExp("url1","g"); //创建正则RegExp对象
-//		var str4tmp = "<a title='typename' href='url1' target='_blank'><img title='typename' alt='typename' src='url1' /></a>";
-//		var str4tmp1 = str4tmp.replace(reg1, typename);
-//		var str4 = str4tmp1.replace(reg2, url1);
-//		var str5 = "<span style='clear: both; display: block; padding-top: 10px; color: rgb(51, 51, 51);'>"
-//				+typename+"</span></div></div>";
-
-//		var recon = str1 + str2 + str3 + str4 + str5;
-//		return recon;
-
     var str4 = "<div id='uploader" + typecode + "'></div> <div class='choose-file-btn' id='choose_file_" +
-        typecode + "'>选择图片</div> <button type='button' id='upload_now" + typecode +
-        "'>上传图片</button>";
-
-
+        typecode + "'>选择图片</div>";
     var recon = str1 + str2 + str4;
     return recon;
 
