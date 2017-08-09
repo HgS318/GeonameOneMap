@@ -1,19 +1,14 @@
 package com.rs.geonameonemap.controllers;
 
-//import com.rs.geonameonemap.db.ms.queries.*;
-import com.rs.geonameonemap.db.ms.queries.*;
-import com.rs.geonameonemap.db.mysql.queries.*;
+import javax.servlet.http.*;
+import org.apache.struts2.ServletActionContext;
 import java.io.*;
 import java.util.*;
-
-import javax.servlet.http.*;
-
-import com.rs.geonameonemap.db.mysql.queries.DistQuery;
-import com.rs.geonameonemap.db.mysql.queries.PlaceQuery;
-import org.apache.poi.hslf.util.SystemTimeUtils;
-import org.apache.struts2.ServletActionContext;
-
 import net.sf.json.*;
+
+//import com.rs.geonameonemap.db.ms.queries.*;
+import com.rs.geonameonemap.db.mysql.queries.*;
+import org.apache.poi.hslf.util.SystemTimeUtils;
 
 public class JsonAction01 {
 
@@ -270,11 +265,11 @@ public class JsonAction01 {
 
     public String wholeTypes() {
 
-        HttpServletRequest request = ServletActionContext.getRequest();
+//        HttpServletRequest request = ServletActionContext.getRequest();
         String webPath = ServletActionContext.getServletContext().getRealPath("/");
         String jsPath =  webPath + "data/placetypes_treedata.json";
         StringBuffer jsonBuf = new StringBuffer();
-        File jFile=new File(jsPath);
+        File jFile = new File(jsPath);
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(jFile.getAbsolutePath()),"UTF-8"));
             String str=br.readLine();

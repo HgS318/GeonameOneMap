@@ -3,13 +3,13 @@ var admin = false;
 
 var infoWindow, map, level = 13;
 var markers = [];	//	所有地点标注，包括点、线
-var showingMarkers = [];
+var showingMarkers = [];    //  当前显示的地点标注
 var distPolygons = [];	//	所有行政区标注
-var showingDists = [];
+var showingDists = [];	//	当前显示的行政区标注
 var boundPolylines = [];	//	所有界线标注
-var showingBounds = [];
+var showingBounds = [];	//	当前显示的界线标注
 var boundMarkers = [];	//	所有界桩、界碑
-var showingbms = [];
+var showingbms = [];    //	当前显示的界桩、界碑
 var mouseTool;
 var placedata;
 var showingPlaces;	//	所有当前显示的地名
