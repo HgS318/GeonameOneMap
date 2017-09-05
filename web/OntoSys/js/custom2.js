@@ -122,7 +122,7 @@ function openInfoWindow(e) {
 
 	content.push("<img src='images/contentdemopic.jpg'>"
 		+ "<strong>地名含义：</strong>" + extData.brif);
-	content.push("<strong>行政区：</strong>" + "<a href='html/wikiContent_fitall.html?name=" + extData['所在跨行政区'] +
+	content.push("<strong>行政区：</strong>" + "<a href='html/placeContent.html?name=" + extData['所在跨行政区'] +
 		"' target='_blank'>" + extData['所在跨行政区'] + "</a>");
 	// content.push("<p></p>");
 	content.push("<strong>使用时间：</strong>" + extData['使用时间']);
@@ -133,7 +133,7 @@ function openInfoWindow(e) {
 	} else {
 		content.push("<strong>地理实体描述：</strong>" + showobj +
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-			"<a href='html/wikiContent_fitall.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
+			"<a href='html/placeContent.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
 			"&nbsp;&nbsp;&nbsp;&nbsp" +
 			"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
 	}

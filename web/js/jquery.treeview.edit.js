@@ -1,4 +1,5 @@
 (function($) {
+(function($) {
 	var CLASSES = $.treeview.classes;
 	var proxied = $.fn.treeview;
 	$.fn.treeview = function(settings) {
@@ -34,4 +35,4 @@
 		});
 	};
 
-})(jQuery);
+})(jQuery);}

@@ -69,8 +69,49 @@ public class PlaceJson extends ObjectJson {
 			}
 			tmpValue = tmpValue.replace('\"', '\'');
 			String value = tmpValue;
-			if(tmpValue.contains("\n")) {
+			if (tmpValue.contains("\n")) {
 				value = tmpValue.replace("\n", "<br/>");
+			}
+//			if(tmpValue.contains("<br/>")) {
+//				value = tmpValue.replace("<br/>", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;");
+//			}
+//			String value = tmpValue.replace("\n", "<br/>");
+			if(key.equals("position")) {
+				value = "[" + value +"]";
+			}
+			if(key.equalsIgnoreCase("name")) {
+				this.name = value;
+			}
+			this.attr.put(key, value);
+		}
+	}
+
+	public PlaceJson(ResultSet rs, boolean easy) {
+		for(int i = 0; i < columnNames.size(); i++) {
+			String key = columnNames.get(i);
+			Object obj = null;
+			try {
+				obj = rs.getObject(key);
+			} catch (SQLException se) {
+				continue;
+			}
+			if(obj == null) {
+				continue;
+			}
+			String tmpValue = obj.toString();
+			String value = tmpValue;
+			if(!easy) {
+				if (tmpValue == null || "".equals(tmpValue)) {
+					continue;
+				}
+				tmpValue = tmpValue.replace('\"', '\'');
+				value = tmpValue;
+//				if (tmpValue.contains("\n")) {
+//					value = tmpValue.replace("\n", "<br/>");
+//				}
+				if(tmpValue.contains("<br/>")) {
+					value = tmpValue.replace("<br/>", "<br/>&nbsp;&nbsp;&nbsp;&nbsp;");
+				}
 			}
 //			String value = tmpValue.replace("\n", "<br/>");
 			if(key.equals("position")) {

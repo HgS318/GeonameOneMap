@@ -52,6 +52,21 @@
 			pardiv.innerHTML += str;
 		}
 
+		function searchWord() {
+			var srhname = document.getElementById("name0").value;
+			if(srhname && "" != srhname) {
+				var newurl = "wikiContent_fitall.html?name=" + srhname;
+				window.open(newurl);
+			}
+		}
+
+		function srchkeypress(e) {
+			var keynum = window.event ? e.keyCode : e.which;
+			if(13 == keynum) {
+				searchWord();
+			}
+		}
+
 	</script>
 </head>
 <body>
@@ -66,17 +81,16 @@
 	<a href="wikiIndex.html" id="logo"><img alt="HDWiki" height="65px" src="../images/logo.png"></a>
 		<form name="searchform" method="post" action="">
 			<p id="search">
-				<input name="searchtext" class="btn_txt" maxlength="80" size="42" value="" type="text"/>
-				<input name="default" value="搜索词条" tabindex="2" class="enter_doc"
-					   onclick="" type="button"/>
-				<input name="full" value="1" tabindex="1"   type="hidden"/>
-				<!--<input name="search" value="搜 索" tabindex="1" class="btn_inp sea_doc" type="submit"/>-->
-				<a href="#" class="sea_advanced link_black">高级搜索</a>
+				<input name="searchtext" class="btn_txt" maxlength="80" size="42" value="" type="text" id="name0" onkeypress="srchkeypress(event)"/>
+				<input name="default" value="搜索词条" tabindex="2" class="enter_doc" onclick="searchWord()" type="button"/>
+				<!--<input name="full" value="1" tabindex="1"   type="hidden"/>-->
+				<!--&lt;!&ndash;<input name="search" value="搜 索" tabindex="1" class="btn_inp sea_doc" type="submit"/>&ndash;&gt;-->
+				<!--<a href="#" class="sea_advanced link_black">高级搜索</a>-->
 
 				<label>热门搜索：
-					<a href="wikiContent_fitall.html?name=tuqiaoba" target="_blank">土桥坝</a>
-					<a href="wikiContent_fitall.html?name=jinsanjiaoguangchang" target="_blank">金三角广场</a>
-					<a href="wikiContent_fitall.html?name=gaojinghe" target="_blank">高井河</a>
+					<a href="wikiContent_fitall.html?name=wangguiting" target="_blank">望归亭</a>
+					<a href="wikiContent_fitall.html?name=sanxialianziyajingqu" target="_blank">三峡链子崖景区</a>
+					<a href="wikiContent_fitall.html?name=xiangxihe" target="_blank">香溪河</a>
 				</label>
 			</p>
 	</form>

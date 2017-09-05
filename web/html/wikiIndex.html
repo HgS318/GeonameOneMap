@@ -15,7 +15,6 @@
     <script type="text/javascript" src="../js/front.js"></script>
     <script type="text/javascript" src="../js/jquery.dialog-0.8.min.js"></script>
     <script type="text/javascript" src="../js/login.js"></script>
-    <script src="data/testdata.js" type="text/javascript" charset=”utf-8″></script>
 
 </head>
 <body>
@@ -29,17 +28,16 @@
     <a href="wikiIndex.html" id="logo"><img alt="HDWiki" height="65px" src="../images/logo.png"/></a>
     <form name="searchform" method="post" action="#">
         <p id="search">
-            <input name="searchtext" class="btn_txt" maxlength="80" size="42" value="" type="text"/>
-            <input name="default" value="搜索词条" tabindex="2" class="enter_doc"
-                   onclick="" type="button"/>
-            <input name="full" value="1" tabindex="1"   type="hidden"/>
-            <!--<input name="search" value="搜 索" tabindex="1" class="btn_inp sea_doc" type="submit"/>-->
-            <a href="#" class="sea_advanced link_black">高级搜索</a>
+            <input name="searchtext" class="btn_txt" maxlength="80" size="42" value="" type="text" id="name0" onkeypress="srchkeypress(event)"/>
+            <input name="default" value="搜索词条" tabindex="2" class="enter_doc" onclick="searchWord()" type="button"/>
+            <!--<input name="full" value="1" tabindex="1"   type="hidden"/>-->
+            <!--&lt;!&ndash;<input name="search" value="搜 索" tabindex="1" class="btn_inp sea_doc" type="submit"/>&ndash;&gt;-->
+            <!--<a href="#" class="sea_advanced link_black">高级搜索</a>-->
 
             <label>热门搜索：
-                <a href="wikiContent_fitall.html?name=tuqiaoba" target="_blank">土桥坝</a>
-                <a href="wikiContent_fitall.html?name=jinsanjiaoguangchang" target="_blank">金三角广场</a>
-                <a href="wikiContent_fitall.html?name=gaojinghe" target="_blank">高井河</a>
+                <a href="wikiContent_fitall.html?name=wangguiting" target="_blank">望归亭</a>
+                <a href="wikiContent_fitall.html?name=sanxialianziyajingqu" target="_blank">三峡链子崖景区</a>
+                <a href="wikiContent_fitall.html?name=xiangxihe" target="_blank">香溪河</a>
             </label>
         </p>
     </form>
@@ -59,7 +57,9 @@
 <!--ad start -->
 
 
-<!--ad end --><script type="text/javascript">
+<!--ad end -->
+<script type="text/javascript">
+
     $(document).ready(function(){
         $("#tpbk img,#tjct img").each(function(i){
             var w = this.width;
@@ -75,6 +75,22 @@
 
         $("input[name*='searchtext']") .focus();
     });
+
+    function searchWord() {
+        var srhname = document.getElementById("name0").value;
+        if(srhname && "" != srhname) {
+            var newurl = "wikiContent_fitall.html?name=" + srhname;
+            window.open(newurl);
+        }
+    }
+
+    function srchkeypress(e) {
+        var keynum = window.event ? e.keyCode : e.which;
+        if(13 == keynum) {
+            searchWord();
+        }
+    }
+
 </script>
 
 <div class="l w-710 o-v">
@@ -235,36 +251,36 @@
             <a href="#" class="more">更多>></a>
             <div>
                 <div class="jc_tj">
-                    <a href="wikiContent_fitall.html?name=guabangyan"  class="a-img"><img alt="挂榜岩" title="月亮湖" src="../data/wikiContent/xiangyashan.jpg"/></a>
-                    <p class="a-c"><a href="wikiContent_fitall.html?name=guabangyan"  title="月亮湖">挂榜岩</a></p>
+                    <a href="wikiContent_fitall.html?name=chashuping"  class="a-img"><img alt="茶树坪" title="茶树坪" src="../data/wikiContent/xiangyashan.jpg"/></a>
+                    <p class="a-c"><a href="wikiContent_fitall.html?name=chashuping"  title="茶树坪">茶树坪</a></p>
                 </div>
                 <div class="jc_tj">
-                    <a href="wikiContent_fitall.html?name=liujiaotingjiedao"  class="a-img"><img alt="六角亭街道" title="中国移动通信塔" src="../data/wikiContent/liujiaoting.jpg"/></a>
-                    <p class="a-c"><a href="wikiContent_fitall.html?name=liujiaotingjiedao"  title="中国移动通信塔">六角亭街道</a></p>
+                    <a href="wikiContent_fitall.html?name=guizhoushequjuminweiyuanhui"  class="a-img"><img alt="归州社区居民委员会" title="归州社区居民委员会" src="../data/wikiContent/liujiaoting.jpg"/></a>
+                    <p class="a-c"><a href="wikiContent_fitall.html?name=guizhoushequjuminweiyuanhui"  title="归州社区居民委员会">归州社区居民委员会</a></p>
                 </div>
                 <div class="jc_tj">
-                    <a href="wikiContent_fitall.html?name=renminfayuan"  class="a-img"><img alt="恩施市人民法院" title="东湖" src="../data/wikiContent/renminfayuan.jpg"/></a>
-                    <p class="a-c"><a href="wikiContent_fitall.html?name=renminfayuan"  title="东湖">恩施市人民法院</a></p>
+                    <a href="wikiContent_fitall.html?name=ziguixianrenminfayuan"  class="a-img"><img alt="秭归县人民法院" title="秭归县人民法院" src="../data/wikiContent/zgfyxx.jpg"/></a>
+                    <p class="a-c"><a href="wikiContent_fitall.html?name=ziguixianrenminfayuan"  title="东湖">秭归县人民法院</a></p>
                 </div>
             </div>
             <ul class="col-ul point c-b">
-                <li><a href="wikiContent_fitall.html?name=ximachi"  title="洗马池">洗马池</a></li>
-                <li><a href="wikiContent_fitall.html?name=jinguidadao"  title="金桂大道">金桂大道...</a></li>
+                <li><a href="wikiContent_fitall.html?name=xiaoqiugushan"  title="小秋谷山">小秋谷山</a></li>
+                <li><a href="wikiContent_fitall.html?name=shanghepingsuidao"  title="上和坪隧道">上和坪隧道</a></li>
             </ul>
         </div><div id="jcct" class="columns jcct " bid="22">
             <h2 class="col-h2">精彩词条</h2>
             <a href="#"  class="more">更多>></a>
             <dl class="col-dl">
-                <dd class="l"><a href="wikiContent_fitall.html?name=jinsanjiaoguangchang"  class="a-img"><img title="金三角广场" src="../data/wikiContent/jinsanjiaoguangchang.jpg"/></a></dd>
-                <dt class="h1 a-c bold"><a href="wikiContent_fitall.html?name=jinsanjiaoguangchang" title="金三角广场" >金三角广场</a></dt>
-                <dd><p>地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;<a href="wikiContent_fitall.html?name=jinsanjiaoguangchang" >阅读全文&gt;&gt;</a></p></dd>
+                <dd class="l"><a href="wikiContent_fitall.html?name=sanxialianziyajingqu"  class="a-img"><img title="三峡链子崖景区" src="../data/wikiContent/sanxialianziyajingqu.jpg"/></a></dd>
+                <dt class="h1 a-c bold"><a href="wikiContent_fitall.html?name=sanxialianziyajingqu" title="三峡链子崖景区" >三峡链子崖景区</a></dt>
+                <dd><p>地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;<a href="wikiContent_fitall.html?name=sanxialianziyajingqu" >阅读全文&gt;&gt;</a></p></dd>
             </dl>
             <ul class="col-ul point font-14 link_blue ">
-                <li><a href="wikiContent_fitall.html?name=dizhidadui" >湖北省地质局第二地质大队商住小区</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
-                <li><a href="wikiContent_fitall.html?name=yueliangyanwan" >月亮岩湾</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
-                <li><a href="wikiContent_fitall.html?name=huangnibashequ" >黄泥坝社区居委会</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
-                <li><a href="wikiContent_fitall.html?name=longlingong" >龙麟宫</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
-                <li><a href="wikiContent_fitall.html?name=tiyuzhongxin" >恩施市体育运动中心</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
+                <li><a href="wikiContent_fitall.html?name=niulingcunyiminwenhuaguangchang" >牛岭村移民文体广场</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
+                <li><a href="wikiContent_fitall.html?name=xiangxihe" >香溪河</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
+                <li><a href="wikiContent_fitall.html?name=zhongxinguancuncunminweiyuanhui" >中心观村村民委员会</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
+                <li><a href="wikiContent_fitall.html?name=meizuoxia" >美座峡</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
+                <li><a href="wikiContent_fitall.html?name=sanjinbinguan" >三金宾馆</a>: 地名来历&nbsp; 地名含义&nbsp; 历史沿革&nbsp;地理实体描述&nbsp; 其它信息&nbsp;</li>
             </ul>
         </div></div>
     </div>
@@ -279,23 +295,23 @@
         <h2 class="col-h2">热门词条</h2>
         <a href="#" class="more">更多>></a>
         <dl class="col-dl ">
-            <dt><a href="wikiContent_fitall.html?name=liujiaotingjiedao"  title="六角亭街道">六角亭街道</a></dt>
-            <dd>地名来历&nbsp; 地名含义&nbsp; 历史沿革...[<a href="wikiContent_fitall.html?name=liujiaotingjiedao"  class="entry">详细</a>]</dd>
+            <dt><a href="wikiContent_fitall.html?name=wangguiting"  title="望归亭">望归亭</a></dt>
+            <dd>地名来历&nbsp; 地名含义&nbsp; 历史沿革...[<a href="wikiContent_fitall.html?name=wangguiting"  class="entry">详细</a>]</dd>
         </dl>
         <dl class="col-dl ">
-            <dt><a href="wikiContent_fitall.html?name=jinhuazhiye"  title="恩施市锦华纸业有限责任公司">恩施市锦华纸业有限责任公司</a></dt>
-            <dd>地名来历&nbsp; 地名含义&nbsp; 历史沿革...[<a href="wikiContent_fitall.html?name=jinhuazhiye"  class="entry">详细</a>]</dd>
+            <dt><a href="wikiContent_fitall.html?name=liangdouhe"  title="良斗河">良斗河</a></dt>
+            <dd>地名来历&nbsp; 地名含义&nbsp; 历史沿革...[<a href="wikiContent_fitall.html?name=liangdouhe"  class="entry">详细</a>]</dd>
         </dl>
     </div><div id="zjgx" class="columns zjgx o-v " bid="6">
         <h2 class="col-h2">最近更新</h2>
         <a href="#" class="more">更多>></a>
         <ul class="col-ul font-14 ">
-            <li><a href="wikiContent_fitall.html?name=wuyangbajiedao"  class="ctm" title="舞阳坝街道">舞阳坝街道</a><span>03-25 17:57</span></li>
-            <li><a href="wikiContent_fitall.html?name=jinguidadao"  class="ctm" title="金桂大道">金桂大道</a><span>03-25 17:23</span></li>
-            <li><a href="wikiContent_fitall.html?name=qingjiangdaqiao"  class="ctm" title="清江大桥">清江大桥</a><span>03-23 14:39</span></li>
-            <li><a href="wikiContent_fitall.html?name=guanpishequ"  class="ctm" title="官坡社区居民">官坡社区居民...</a><span>07-23 14:39</span></li>
-            <li><a href="wikiContent_fitall.html?name=huangnibashequ"  class="ctm" title="黄泥坝社区居委会">黄泥坝社区居委会</a><span>03-23 14:39</span></li>
-            <li><a href="wikiContent_fitall.html?name=xiaoduchuanjiedao"  class="ctm" title="小渡船街道">小渡船街道</a><span>03-23 14:39</span></li>
+            <li><a href="wikiContent_fitall.html?name=quyuanzhennongmaoshichang"  class="ctm" title="屈原镇农贸市场">屈原镇农贸市场</a><span>03-25 17:57</span></li>
+            <li><a href="wikiContent_fitall.html?name=dashuitianping"  class="ctm" title="大水田坪">大水田坪</a><span>03-25 17:23</span></li>
+            <li><a href="wikiContent_fitall.html?name=dahekouoqiao"  class="ctm" title="大河口桥">大河口桥</a><span>03-23 14:39</span></li>
+            <li><a href="wikiContent_fitall.html?name=maopingzhen"  class="ctm" title="茅坪镇">茅坪镇</a><span>07-23 14:39</span></li>
+            <li><a href="wikiContent_fitall.html?name=meipingjizhan"  class="ctm" title="梅坪基站">梅坪基站</a><span>03-23 14:39</span></li>
+            <li><a href="wikiContent_fitall.html?name=wangkeshilieshizhimu"  class="ctm" title="王克诗烈士之墓">王克诗烈士之墓</a><span>03-23 14:39</span></li>
         </ul>
     </div>
 	<!-- <div  class="columns i6-ff p-b8 rmbq " bid="21"> -->
@@ -332,7 +348,7 @@
 <!--ad end -->
 <div class="c-b"></div>
 <div id="footer"  class="w-950">
-    <p id="footer-p"> Copyright @ <a href="http://sres.whu.edu.cn/" target="_blank">武汉大学</a>  V WIKI_VERSION  &copy;2015 <a href="#" class="link_black">地理百科</a> | <a href="#">Licensed</a> <br/>
+    <p id="footer-p"> Copyright @ <a href="http://mzj.hbzg.gov.cn/" target="_blank">秭归县民政局</a>  V WIKI_VERSION  &copy;2017 <a href="#" class="link_black">地名百科</a> | <a href="#">Licensed</a> <br/>
     </p>
     <br/>
     <p style="color:rgb(87, 87, 87);">ICP: xxx-xxxx</p>

@@ -1,7 +1,6 @@
 package com.rs.geonameonemap.controllers;
 
 //import com.rs.geonameonemap.db.ms.queries.*;
-import com.rs.geonameonemap.db.ms.queries.*;
 import com.rs.geonameonemap.db.mysql.queries.*;
 import java.io.*;
 import java.util.*;
@@ -154,7 +153,9 @@ public class JsonAction01 {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
             String str = null;
-            if(requestContainsAttr(request, "admin")) {
+            if(requestContainsAttr(request, "zg")) {
+                str = ZPlaceQuery.getEasyGeonameInfo();
+            } else if(requestContainsAttr(request, "admin")) {
                 str = PlaceQuery.getEasyTempGeonameInfo();
             } else {
                 str = PlaceQuery.getEasyGeonameInfo();
@@ -167,12 +168,15 @@ public class JsonAction01 {
         return null;
     }
 
-    //	通过 request 的 geocode 参数，检索类型库并返回响应的类
     public String getGeonameByNickname() {
         HttpServletRequest request = ServletActionContext.getRequest();
         try {
-            String nameStr = request.getParameter("name");
-            String str = PlaceQuery.getGeonameInfoByNickname(nameStr, requestContainsAttr(request, "admin"));
+            String nameStr = request.getParameter("name"), str = null;
+            if(requestContainsAttr(request, "zg")) {
+                str = ZPlaceQuery.getGeonameInfoByNickname(nameStr, false);
+            } else {
+                str = PlaceQuery.getGeonameInfoByNickname(nameStr, requestContainsAttr(request, "admin"));
+            }
             toBeJson(str);
         } catch (Exception ex) {
             ex.printStackTrace();

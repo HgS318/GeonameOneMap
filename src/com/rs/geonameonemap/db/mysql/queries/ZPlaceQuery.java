@@ -2,19 +2,22 @@ package com.rs.geonameonemap.db.mysql.queries;
 
 import com.rs.geonameonemap.db.DbUse;
 import com.rs.geonameonemap.db.mysql.connections.*;
+import com.rs.geonameonemap.db.office.WordDemo01;
 import com.rs.geonameonemap.json.PlaceJson;
 
 import java.sql.*;
 import java.util.*;
 import java.io.*;
 
-public class PlaceQuery extends MySQLQuery {
+/**
+ * Created by Administrator on 2017/9/5 0005.
+ */
+public class ZPlaceQuery extends MySQLQuery {
 
-    public static final String tbName = "pn";
-//    public static final String tbName = "zgpn_copy1";
-//public static final String tbName = "zgpn";
+    public static final String tbName = "zgpn_copy1";
+    //public static final String tbName = "zgpn";
     public static final String tmpTbName = "pn_temp";
-//    public static String[] columns = null;
+    //    public static String[] columns = null;
     public static String[] columns = new String[]{
             "id", "name", "大类", "小类", "position", "X", "Y", "spaType", "spaTypeName",
             "path", "标准名称", "图名图号年版", "比例尺", "使用时间", "普查状态",
@@ -24,9 +27,48 @@ public class PlaceQuery extends MySQLQuery {
             "SJDJ", "SJDS", "YGCG", "YGDS", "SWCG", "LTCG", "SYCG", "SPCG"
     };
     public static String[] easyColumnNames = new String[]{
-            "id", "name", "nickname", "大类", "小类", "position", "spaType", "path",
-            "所在跨行政区", "dist", "citycode", "ChnSpell", "brif"
+            "id", "name", "spell", "大类", "小类", "类别名称", "position",
+            "所在跨行政区", "dist", "brif", "desbrif", "使用时间", "geonamecode"
     };
+
+    public static void main(String[] args) throws Exception {
+//        String typeName = "陆地地形";
+//        typeIntoDb(typeName);
+//        indivIntoDb(typeName, "1345祠堂岭地名成果表" + ".docx");
+
+//        int[] idds= new int[]{14, 242, 435, 3816, 4218, 4436, 4486, 4517, 4912, 4994, 6504};
+//        for(int i = 0; i < idds.length - 1; i++) {
+//            int start = idds[i] + 1, end = idds[i + 1] - 1;
+//            int dif = end - start;
+//            int step = dif / 11;
+//            for(int j = 1; j < 10; j++) {
+//                int id = start + j * step;
+//                String sql = "insert into zgpn_copy1(select * FROM zgpn where id = " + id + ")";
+//                MysqlLocalConnection.excuteUpdate(sql);
+//            }
+//        }
+    }
+
+    static void typeIntoDb(String typeName) throws Exception  {
+        String rootPath = "D:\\temp\\秭归县第二次全国地名普查地名成果表\\";
+        String folderPath = rootPath + typeName + File.separator;
+        File folder = new File(folderPath);
+        File[] files = folder.listFiles();
+        for(File file : files) {
+            Map<String, String> map = WordDemo01.readZiguiDocsTable(file.getAbsolutePath());
+            map.put("大类", typeName + "类");
+            map.put("filename", file.getName());
+            placeIntoDb(map);
+        }
+    }
+
+    static void indivIntoDb(String typeName, String indivName) throws Exception  {
+        String rootPath = "D:\\temp\\秭归县第二次全国地名普查地名成果表\\";
+        String filePath = rootPath + typeName + File.separator + indivName;
+        Map<String, String> map = WordDemo01.readZiguiDocsTable(filePath);
+        map.put("大类", typeName + "类");
+        placeIntoDb(map);
+    }
 
     public static String getTotalGeonameInfo(){
         String sql = "SELECT * from " + tbName;
@@ -100,17 +142,17 @@ public class PlaceQuery extends MySQLQuery {
         if(admin) {
             PlaceJson.consColumnNames(dbType, tmpTbName);
             sql = "SELECT * from " + tmpTbName + " where nickname = '" + val +
-                    "' or ChnSpell = '" + val + "' or name = '" + val + "'";
+                    "' or spell = '" + val + "' or name = '" + val + "'";
         } else {
             PlaceJson.consColumnNames(dbType, tbName);
             sql = "SELECT * from " + tbName + " where nickname = '" + val +
-                    "' or ChnSpell = '" + val + "' or name = '" + val + "'";
+                    "' or spell = '" + val + "' or name = '" + val + "'";
         }
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         PlaceJson dj = null;
         try {
             if (rs.next()) {
-                dj = new PlaceJson(rs);
+                dj = new PlaceJson(rs, false);
             } else {
                 return null;
             }
@@ -124,7 +166,7 @@ public class PlaceQuery extends MySQLQuery {
 
     public static String getGeonameInfoByAttr(String attr, String val, boolean admin){
         String sql = admin ? "SELECT * from " + tmpTbName + " where " + attr + " = '" + val + "'":
-            "SELECT * from " + tbName + " where " + attr + " = '" + val + "'";
+                "SELECT * from " + tbName + " where " + attr + " = '" + val + "'";
         List<PlaceJson> ps = searchPlaces(sql);
         String str = PlaceJson.toJson(ps);
         return str;
@@ -132,7 +174,7 @@ public class PlaceQuery extends MySQLQuery {
 
     public static String getGeonameInfoByNum(String attr, String numVal, boolean admin){
         String sql = admin ? "SELECT * from " + tmpTbName + " where " + attr + " = " + numVal :
-        "SELECT * from " + tbName + " where " + attr + " = " + numVal;
+                "SELECT * from " + tbName + " where " + attr + " = " + numVal;
         List<PlaceJson> ps = searchPlaces(sql);
         String str = PlaceJson.toJson(ps);
         return str;
@@ -319,5 +361,6 @@ public class PlaceQuery extends MySQLQuery {
             return 420527000;
         }
     }
+
 
 }
