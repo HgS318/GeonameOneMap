@@ -50,6 +50,12 @@ $(function() {
         if(adminStr && "" != adminStr) {
             admin = true;
             url = 'getGeonameByNickname.action?name=' + placename + "&admin=admin";
+            $("#resetpage")[0].value = "    发回重填    ";
+            $("#resetpage")[0].onclick = vetoFun;
+            $("#deletefeture")[0].value = "    删除更改    ";
+            $("#deletefeture")[0].onclick = adminDeleteFun;
+            $("#submitpage")[0].value = "    通过审核    ";
+            $("#submitpage")[0].onclick = passFun;
         }
         $.ajax({
             url: url,
@@ -611,7 +617,7 @@ function vetoFun() {
         },
         cancelValue: '取消',
         title: '地名审核',
-        content: '该地名校验不通过，要求数据员修改？'
+        content: '该地名存在问题，要求数据员修改？'
     });
 }
 
@@ -625,7 +631,7 @@ function adminDeleteFun() {
 
         },
         cancelValue: '取消',
-        title: '撤销地名审核',
+        title: '删除地名审核',
         content: '确认删除该地名的审批请求？'
     });
 }
