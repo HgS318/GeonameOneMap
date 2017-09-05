@@ -1,8 +1,8 @@
 package com.rs.geonameonemap.json;
 
-import com.rs.geonameonemap.db.ms.SQLArgs.LocalConnection;
-import org.omg.CORBA.CODESET_INCOMPATIBLE;
+import com.rs.geonameonemap.db.office.*;
 
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -119,35 +119,35 @@ public class PlaceJson extends ObjectJson {
 
 
 
-//	public static void main(String[] args) {
-//		List<PlaceJson> ps = new LinkedList<PlaceJson>();
-//		List<List<String>> data = null;
-//		try {
-//			data = ExcelDemo02.readExcel("data/placesdemo01.xlsx","Sheet1");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			return;
-//		}
-//		List<String> columns = data.get(0);
-//		consVolumnNames(columns);
-//		for(int i = 1; i < data.size(); i++) {
-//			List<String> pdata = data.get(i);
-//			PlaceJson pj = new PlaceJson(pdata);
-//			if(pj.getAttr("name")!=null && !"".equals(pj.getAttr("name"))) {
-//				ps.add(pj);
-//			}
-//		}
-//
-//
-////		System.out.print("{\'total\':" + ps.size() +", ");
-////		System.out.print("\'places\':");
-//		System.out.println("[");
-//		for(PlaceJson pj : ps) {
-//			System.out.println(pj.toJson() + ",");
-//		}
-//		System.out.println("]");
-////		System.out.println("}");
-//	}
+	public static void main(String[] args) {
+		List<PlaceJson> ps = new LinkedList<PlaceJson>();
+		List<List<String>> data = null;
+		try {
+			data = ExcelDemo02.readExcel("web/data/placeszg01.xlsx","Sheet1");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		List<String> columns = data.get(0);
+		consColumnNames(columns);
+		for(int i = 1; i < data.size(); i++) {
+			List<String> pdata = data.get(i);
+			PlaceJson pj = new PlaceJson(pdata);
+			if(pj.getAttr("name")!=null && !"".equals(pj.getAttr("name"))) {
+				ps.add(pj);
+			}
+		}
+
+
+//		System.out.print("{\'total\':" + ps.size() +", ");
+//		System.out.print("\'places\':");
+		System.out.println("[");
+		for(PlaceJson pj : ps) {
+			System.out.println(pj.toJson() + ",");
+		}
+		System.out.println("]");
+//		System.out.println("}");
+	}
 
 	public static void consColumnNames(List<String> columns) {
 		ObjectJson.consColumnNames(columns, PlaceJson.columnNames);
@@ -155,6 +155,67 @@ public class PlaceJson extends ObjectJson {
 
 	public static void consColumnNames(String dbType, String tbName) {
 		ObjectJson.consColumnNames(dbType, tbName, PlaceJson.columnNames);
+	}
+
+
+	public static double drg2num(String drg) {
+		if(drg == null || "".equals(drg)) {
+			return -200.00;
+		}
+		int did = drg.indexOf("°");
+		int rid = drg.indexOf("′");
+		int gid = drg.indexOf("″");
+		if(gid < 0) {
+			gid = drg.indexOf("”");
+		}
+		if(gid < 0) {
+			gid = drg.indexOf("\"");
+		}
+		if(gid < 0) {
+			gid = drg.length();
+		}
+		String dstr = drg.substring(0, did);
+		String rstr = drg.substring(did + 1, rid);
+		String gstr = drg.substring(rid + 1, gid);
+		double d = Double.parseDouble(dstr);
+		double r = Double.parseDouble(rstr);
+		double g = Double.parseDouble(gstr);
+		double val = d + r / 60.0 + g / 3600.0;
+		return val;
+	}
+
+	public static String pinyin2spell(String py) {
+		String tmp = py;
+		tmp = tmp.replace(" ", "");
+
+		tmp = tmp.replace("ā", "a");
+		tmp = tmp.replace("á", "a");
+		tmp = tmp.replace("ǎ", "a");
+		tmp = tmp.replace("à", "a");
+
+		tmp = tmp.replace("ē", "e");
+		tmp = tmp.replace("é", "e");
+		tmp = tmp.replace("ě", "e");
+		tmp = tmp.replace("è", "e");
+
+		tmp = tmp.replace("ī", "i");
+		tmp = tmp.replace("í", "i");
+		tmp = tmp.replace("ǐ", "i");
+		tmp = tmp.replace("ì", "i");
+
+		tmp = tmp.replace("ō", "o");
+		tmp = tmp.replace("ó", "o");
+		tmp = tmp.replace("ǒ", "o");
+		tmp = tmp.replace("ò", "o");
+
+		tmp = tmp.replace("ū", "u");
+		tmp = tmp.replace("ú", "u");
+		tmp = tmp.replace("ǔ", "u");
+		tmp = tmp.replace("ù", "u");
+
+		tmp = tmp.toLowerCase();
+
+		return tmp;
 	}
 
 }

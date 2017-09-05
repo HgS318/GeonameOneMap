@@ -2,17 +2,18 @@ package com.rs.geonameonemap.db.mysql.queries;
 
 import com.rs.geonameonemap.db.DbUse;
 import com.rs.geonameonemap.db.mysql.connections.*;
+import com.rs.geonameonemap.db.office.WordDemo01;
 import com.rs.geonameonemap.json.PlaceJson;
+import jdk.nashorn.internal.codegen.types.Type;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
+import java.io.*;
 
 public class PlaceQuery extends MySQLQuery {
 
-    public static final String tbName = "pn";
+//    public static final String tbName = "pn";
+    public static final String tbName = "zgpn";
     public static final String tmpTbName = "pn_temp";
 //    public static String[] columns = null;
     public static String[] columns = new String[]{
@@ -27,6 +28,33 @@ public class PlaceQuery extends MySQLQuery {
             "id", "name", "nickname", "大类", "小类", "position", "spaType", "path",
             "所在跨行政区", "dist", "citycode", "ChnSpell", "brif"
     };
+
+    public static void main(String[] args) throws Exception {
+        String typeName = "陆地地形";
+//        typeIntoDb(typeName);
+        indivIntoDb(typeName, "1345祠堂岭地名成果表" + ".docx");
+    }
+
+    static void typeIntoDb(String typeName) throws Exception  {
+        String rootPath = "D:\\temp\\秭归县第二次全国地名普查地名成果表\\";
+        String folderPath = rootPath + typeName + File.separator;
+        File folder = new File(folderPath);
+        File[] files = folder.listFiles();
+        for(File file : files) {
+            Map<String, String> map = WordDemo01.readZiguiDocsTable(file.getAbsolutePath());
+            map.put("大类", typeName + "类");
+            map.put("filename", file.getName());
+            placeIntoDb(map);
+        }
+    }
+
+    static void indivIntoDb(String typeName, String indivName) throws Exception  {
+        String rootPath = "D:\\temp\\秭归县第二次全国地名普查地名成果表\\";
+        String filePath = rootPath + typeName + File.separator + indivName;
+        Map<String, String> map = WordDemo01.readZiguiDocsTable(filePath);
+        map.put("大类", typeName + "类");
+        placeIntoDb(map);
+    }
 
     public static String getTotalGeonameInfo(){
         String sql = "SELECT * from " + tbName;
@@ -183,6 +211,125 @@ public class PlaceQuery extends MySQLQuery {
 
 
 
+    public static boolean placeIntoDb(Map<String, String> map) {
+        String sql= "insert into " + tbName +
+                " (`geonamecode`,`类别名称`,`name`,`民族文字`,`语种`,`ChnSpell`,`使用时间`,`abbre`,`nickname`,`oldname`," +
+                "`东经`,`至东经`,`北纬`,`至北纬`,`原图名称`,`比例尺`,`图名图号年版`,`所在跨行政区`,`来历含义历史`,`地理实体描述`," +
+                "`资料来源及出处`,`多媒体信息`,`备注`,`制表人`,`审核人`,`制表时间`,`大类`,`X`,`Y`,`position`," +
+                "`citycode`,`dist`,`地名来历`,`地名含义`,`历史沿革`,`brif`,`spell`) " +
+                "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        PreparedStatement ps;
+        try {
+            Connection conn = MysqlLocalConnection.getConnection();
+            ps = conn.prepareStatement(sql);
 
+            ps.setString(1, map.get("地名代码"));
+            ps.setString(2, map.get("类别名称"));
+            ps.setString(3, map.get("汉字"));
+            ps.setString(4, map.get("民族文字"));
+            ps.setString(5, map.get("语种"));
+            ps.setString(6, map.get("罗马字母拼写"));
+            ps.setString(7, map.get("使用时间"));
+            ps.setString(8, map.get("简称"));
+            ps.setString(9, map.get("别名"));
+            ps.setString(10, map.get("曾用名"));
+            ps.setString(11, map.get("东经（自）"));
+            ps.setString(12, map.get("东经（至）"));
+            ps.setString(13, map.get("北纬（自）"));
+            ps.setString(14, map.get("北纬（至）"));
+            ps.setString(15, map.get("原图名称"));
+            ps.setString(16, map.get("比例尺"));
+            ps.setString(17, map.get("图号（年版）"));
+            ps.setString(18, map.get("所在（跨）行政区"));
+            String lt = map.get("地名的来历、含义及历史沿革").replace('\"', '\'');
+            ps.setString(19, lt);
+            ps.setString(20, map.get("地理实体概况").replace('\"', '\''));
+            ps.setString(21, map.get("资料来源"));
+            ps.setString(22, map.get("多媒体信息"));
+            ps.setString(23, map.get("备注"));
+            ps.setString(24, map.get("制表人"));
+            ps.setString(25, map.get("审核人"));
+            ps.setString(26, map.get("制表时间"));
+
+            ps.setString(27, map.get("大类"));
+
+            double dj = PlaceJson.drg2num(map.get("东经（自）"));
+            double zdj = PlaceJson.drg2num(map.get("东经（至）"));
+            double x = (zdj == -200.00 ? dj : (dj + zdj) / 2);
+            double bw = PlaceJson.drg2num(map.get("北纬（自）"));
+            double zbw = PlaceJson.drg2num(map.get("北纬（至）"));
+            double y = (zbw == -200.00 ? bw : (bw + zbw) / 2);
+            String posStr = x + "," + y;
+            ps.setDouble(28, x);
+            ps.setDouble(29, y);
+            ps.setString(30, posStr);
+
+            ps.setString(31, "0717");
+            long distcode = getDist(map.get("所在（跨）行政区"));
+            ps.setLong(32, distcode);
+
+            String[] strs = lt.split("<br/>");
+            String ll = strs[0];
+            String hy = strs[1];
+            StringBuffer sb = new StringBuffer();
+            for(int i = 2; i < strs.length; i++) {
+                sb.append(strs[i]).append("<br/>");
+            }
+            String ls = sb.toString();
+            ps.setString(33, ll);
+            ps.setString(34, hy);
+            ps.setString(35, ls);
+            if(hy != null && hy.length() > 23) {
+                hy = hy.substring(0, 23) + "...";
+            }
+            ps.setString(36, hy);
+
+            String spell = PlaceJson.pinyin2spell(map.get("罗马字母拼写"));
+            ps.setString(37, spell);
+//            ps.setString(36, "");
+            int un = ps.executeUpdate();
+//            System.out.println(un);
+//            boolean un = ps.execute();
+//            System.out.println(un);
+        } catch (Exception e) {
+            System.out.println(map.get("filename") + " insert failed...");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public static long getDist(String distStr) {
+        if("秭归县".equals(distStr)) {
+            return 420527000;
+        } else if("茅坪镇".equals(distStr)) {
+            return 420527101;
+        } else if("归州镇".equals(distStr)) {
+            return 420527102;
+        } else if("屈原镇".equals(distStr)) {
+            return 420527103;
+        } else if("沙镇溪镇".equals(distStr)) {
+            return 420527104;
+        } else if("两河口镇".equals(distStr)) {
+            return 420527105;
+        } else if("郭家坝镇".equals(distStr)) {
+            return 420527106;
+        } else if("杨林桥镇".equals(distStr)) {
+            return 420527107;
+        } else if("九畹溪镇".equals(distStr)) {
+            return 420527108;
+        } else if("水田坝乡".equals(distStr)) {
+            return 420527201;
+        } else if("泄滩乡".equals(distStr)) {
+            return 420527202;
+        } else if("梅家河乡".equals(distStr)) {
+            return 420527203;
+        } else if("磨坪乡".equals(distStr)) {
+            return 420527204;
+        }  else {
+            return 420527000;
+        }
+    }
 
 }

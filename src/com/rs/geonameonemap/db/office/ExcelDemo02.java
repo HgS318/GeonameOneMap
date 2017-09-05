@@ -1,4 +1,4 @@
-package com.rs.geonameonemap.db.excel;
+package com.rs.geonameonemap.db.office;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -558,7 +558,12 @@ public class ExcelDemo02 {
 	    	double dv = xssfCell.getNumericCellValue();
 	    	double ddv = dv * 1.0;
 	    	int inte = (int)ddv;
-	    	return String.valueOf( inte);  
+			double dif = ddv - inte;
+			if(dif < 1e-6) {
+				return String.valueOf(inte);
+			} else {
+				return String.valueOf(ddv);
+			}
 	    } else {  
 	    	return String.valueOf( xssfCell.getStringCellValue());  
 	    }  

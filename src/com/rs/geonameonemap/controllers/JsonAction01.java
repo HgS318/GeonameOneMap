@@ -1,18 +1,13 @@
 package com.rs.geonameonemap.controllers;
 
 //import com.rs.geonameonemap.db.ms.queries.*;
-import com.rs.geonameonemap.db.ms.queries.*;
 import com.rs.geonameonemap.db.mysql.queries.*;
+
 import java.io.*;
 import java.util.*;
-
 import javax.servlet.http.*;
-
-import com.rs.geonameonemap.db.mysql.queries.DistQuery;
-import com.rs.geonameonemap.db.mysql.queries.PlaceQuery;
 import org.apache.poi.hslf.util.SystemTimeUtils;
 import org.apache.struts2.ServletActionContext;
-
 import net.sf.json.*;
 
 public class JsonAction01 {

@@ -1,7 +1,6 @@
 package com.rs.geonameonemap.json;
 
-import com.rs.geonameonemap.db.excel.ExcelDemo02;
-import com.rs.geonameonemap.db.ms.SQLArgs.LocalConnection;
+import com.rs.geonameonemap.db.office.ExcelDemo02;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -118,7 +117,8 @@ public class DistJson extends ObjectJson {
 				pj.setParent(par);
 			}
 		}
-		System.out.println(ps.get(0).toFullJson());
+//		System.out.println(ps.get(0).toFullJson());
+		System.out.println(ps.get(346).toFullJson());
 
 //		System.out.println("[");
 //		for(TypeJson pj : ps) {

@@ -1,10 +1,8 @@
 package com.rs.geonameonemap.json;
 
-import com.rs.geonameonemap.db.excel.ExcelDemo02;
-import com.rs.geonameonemap.db.ms.SQLArgs.LocalConnection;
+import com.rs.geonameonemap.db.office.ExcelDemo02;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
