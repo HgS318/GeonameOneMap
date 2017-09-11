@@ -475,9 +475,9 @@ function consUploaders(data) {
         for (var j = 0; j < picnum; j++) {
             var picpath;
             if (i < singlePicInfoArray.length) {
-                picpath = "../data/wikiContent/place/" + placenickname + "/" + placenickname + typename + ".jpg";
+                picpath = "../data/wikiContent/bm/" + orgData['Id'] + "/" + orgData['Id'] + typename + ".jpg";
             } else {
-                picpath = "../data/wikiContent/place/" + placenickname + "/" + placenickname + typename + (j + 1) + ".jpg";
+                picpath = "../data/wikiContent/bm/" + orgData['Id'] + "/" + orgData['Id'] + typename + (j + 1) + ".jpg";
             }
             //						var fso = new ActiveXObject("Scripting.FileSystemObject");
             //						var file = fso.GetFile(picpath);
@@ -740,7 +740,7 @@ function consMultiPicCont(nickname, sharp, typecode, typename, fwitdh, numStr) {
     var mul = "";
     var num = parseInt(numStr);
     for (var i = 0; i < num; i++) {
-        var url = "../data/wikiContent/place/" + nickname + "/" + nickname + typename + (i + 1) + ".jpg";
+        var url = "../data/wikiContent/bm/" + nickname + "/" + nickname + typename + (i + 1) + ".jpg";
         var reg = new RegExp("url", "g"); //创建正则RegExp对象
         var s1 = "<div class='img img_l' style='width: " + fwitdh + "px;'>";
         var s2tmp = "<a title='typename' href='url' target='_blank'><img title='typename' alt='typename' src='url' /></a>";

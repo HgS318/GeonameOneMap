@@ -155,6 +155,7 @@ public class JsonAction01 {
             String str = null;
             if(requestContainsAttr(request, "zg")) {
                 str = ZPlaceQuery.getEasyGeonameInfo();
+
             } else if(requestContainsAttr(request, "admin")) {
                 str = PlaceQuery.getEasyTempGeonameInfo();
             } else {

@@ -199,10 +199,13 @@ function openSimpleInfoWindow(e) {
 		);
 	} else if("boundmarker" == type) {
 		tpname = "界桩界碑";
-		winheight = 240;
-		content.push("<strong>行政等级：</strong>" + extData['Grade']);
-		content.push("<strong>类型：</strong>" + extData['TypeName']);
+		winheight = 300;
+		content.push("<img src='images/boundmarkereg.jpg'>"
+			+ "<strong>行政等级：</strong>" + extData['Grade']);
+		// content.push("<p></p>");
+		// content.push("<strong>行政等级：</strong>" + extData['Grade']);
 		content.push("<strong>相关行政区：</strong>" + extData['relatedDists']);
+		content.push("<strong>类型：</strong>" + extData['TypeName']);
 		content.push("<a href='html/boundMarkerEdit.html?id=" + extData['Id'] +
 			"' target='_blank'>详情</a>");
 	}
@@ -1405,6 +1408,7 @@ function toChooseMapExtent(checkbox) {
 		$("#mapextentdone").show();
 		alert('请在地图中勾画需要查询的范围!');
 		mouseTool.polygon();
+		mouseTool.measureArea();
 	} else {
 		mouseTool.close(true);
 		$("#mapextentdone")[0].innerHTML = "范围未选择";

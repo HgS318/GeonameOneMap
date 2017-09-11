@@ -93,6 +93,7 @@ public class ZPlaceQuery extends MySQLQuery {
     public static String getEasyGeonameInfo(){
         String cns = MySQLQuery.createSqlColumns(easyColumnNames);
         String sql = "SELECT " + cns + " from " + tbName;
+
 //        List<PlaceJson> ps = searchPlaces(sql);
         List<PlaceJson> ps = searchEasyPlaces(sql);
         if(ps.size() < 1) {

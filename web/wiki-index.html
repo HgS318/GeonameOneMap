@@ -1089,18 +1089,18 @@
 				success: function (data) {
 					placedata = data;
 
-					map = new AMap.Map('mapContainer',{
-						resizeEnable: true,
+								map = new AMap.Map('mapContainer',{
+									resizeEnable: true,
 //						center: [109.461756,30.285877],
-						zoom:level,
-						keyboardEnable :false,
-					});
-					map.on('complete', function(){
-						map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
-							map.addControl(new AMap.ToolBar);
-							map.addControl(new AMap.OverView({isOpen: true}));
-							map.addControl(new AMap.Scale);
-						});
+									zoom:level,
+									keyboardEnable :false,
+								});
+								map.on('complete', function(){
+									map.plugin(["AMap.ToolBar", "AMap.OverView", "AMap.Scale"], function(){
+										map.addControl(new AMap.ToolBar);
+										map.addControl(new AMap.OverView({isOpen: true}));
+										map.addControl(new AMap.Scale);
+									});
 					});
 
 					showingPlaces = placedata;
