@@ -118,6 +118,7 @@ function openInfoWindow(e) {
 			showobj = showobj.substring(0, 27) + "...";
 		}
 	}
+	// showobj = extData['desbrif'];
 	// var mean = extData['所在跨行政区'], showmean = indist;
 
 	content.push("<img src='images/contentdemopic.jpg'>"
@@ -129,13 +130,13 @@ function openInfoWindow(e) {
 	if(admin) {
 		content.push("<strong>地理实体描述：</strong>" + showobj +
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-			"<a href='html/placeEdit.html?admin=admin&name=" + extData.nickname + "' target='_blank'>审核地名</a>");
+			"<a href='html/placeEdit.html?admin=admin&name=" + extData.spell + "' target='_blank'>审核地名</a>");
 	} else {
 		content.push("<strong>地理实体描述：</strong>" + showobj +
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-			"<a href='html/placeContent.html?name=" + extData.nickname + "' target='_blank'>详细信息</a>" +
+			"<a href='html/placeContent.html?name=" + extData.spell + "' target='_blank'>详细信息</a>" +
 			"&nbsp;&nbsp;&nbsp;&nbsp" +
-			"<a href='html/placeEdit.html?name=" + extData.nickname + "' target='_blank'>编辑地名</a>");
+			"<a href='html/placeEdit.html?name=" + extData.spell + "' target='_blank'>编辑地名</a>");
 	}
 	closeInfoWindow();
 	infoWindow = new AMap.InfoWindow({

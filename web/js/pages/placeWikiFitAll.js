@@ -67,20 +67,33 @@ function consMainContent(data) {
     document.getElementById("name2").innerHTML = name;
     document.getElementById("smallclass3").innerHTML = sc;
 
+    // consBasicCotent(data, "标准名称","stdname");
+    // consBasicCotent(data, "所在跨行政区","indist");
+    // consBasicCotent(data, "比例尺","scale");
+    // consBasicCotent(data, "图名图号年版","mapname");
+    // consBasicCotent(data, "使用时间","usetime");
+    // consBasicCotent(data, "普查状态","instate");
+    // consBasicCotent(data, "设立年份","setyear");
+    // consBasicCotent(data, "废止年份","endyear");
+    // consBasicCotent(data, "东经","east");
+    // consBasicCotent(data, "至东经","toeast");
+    // consBasicCotent(data, "北纬","north");
+    // consBasicCotent(data, "至北纬","tonorth");
+    // consBasicCotent(data, "坐标系","coo");
+    // consBasicCotent(data, "测量方法","method");
     consBasicCotent(data, "标准名称","stdname");
+    consBasicCotent(data, "ChnSpell","ChnSpell");
+    consBasicCotent(data, "geonamecode","gncode");
     consBasicCotent(data, "所在跨行政区","indist");
     consBasicCotent(data, "比例尺","scale");
     consBasicCotent(data, "图名图号年版","mapname");
     consBasicCotent(data, "使用时间","usetime");
-    consBasicCotent(data, "普查状态","instate");
-    consBasicCotent(data, "设立年份","setyear");
-    consBasicCotent(data, "废止年份","endyear");
+    consBasicCotent(data, "oldname","oldname");
     consBasicCotent(data, "东经","east");
     consBasicCotent(data, "至东经","toeast");
     consBasicCotent(data, "北纬","north");
     consBasicCotent(data, "至北纬","tonorth");
-    consBasicCotent(data, "坐标系","coo");
-    consBasicCotent(data, "测量方法","method");
+
     consDetailedContent(data, "地名含义","hanyi");
     consDetailedContent(data, "地名来历","laili");
     consDetailedContent(data, "历史沿革","yange");

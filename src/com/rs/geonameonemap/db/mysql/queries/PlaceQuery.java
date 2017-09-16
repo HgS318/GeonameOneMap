@@ -10,8 +10,8 @@ import java.io.*;
 
 public class PlaceQuery extends MySQLQuery {
 
-    public static final String tbName = "pn";
-//    public static final String tbName = "zgpn_copy1";
+//    public static final String tbName = "pn";
+    public static final String tbName = "zgpn_copy1";
 //public static final String tbName = "zgpn";
     public static final String tmpTbName = "pn_temp";
 //    public static String[] columns = null;
@@ -25,7 +25,7 @@ public class PlaceQuery extends MySQLQuery {
     };
     public static String[] easyColumnNames = new String[]{
             "id", "name", "nickname", "大类", "小类", "position", "spaType", "path",
-            "所在跨行政区", "dist", "citycode", "ChnSpell", "brif"
+            "所在跨行政区", "dist", "citycode", "spell", "brif", "desbrif"
     };
 
     public static String getTotalGeonameInfo(){
@@ -100,11 +100,11 @@ public class PlaceQuery extends MySQLQuery {
         if(admin) {
             PlaceJson.consColumnNames(dbType, tmpTbName);
             sql = "SELECT * from " + tmpTbName + " where nickname = '" + val +
-                    "' or ChnSpell = '" + val + "' or name = '" + val + "'";
+                    "' or spell = '" + val + "' or name = '" + val + "'";
         } else {
             PlaceJson.consColumnNames(dbType, tbName);
             sql = "SELECT * from " + tbName + " where nickname = '" + val +
-                    "' or ChnSpell = '" + val + "' or name = '" + val + "'";
+                    "' or spell = '" + val + "' or name = '" + val + "'";
         }
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
         PlaceJson dj = null;
