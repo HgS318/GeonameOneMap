@@ -6,7 +6,7 @@
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href='images/fav.ico ' rel='icon' type=‘image/x-ico’ />
-	<title>地名百科</title>
+	<title>地名百科测试 - 勾画线条</title>
 
 	<link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -226,7 +226,7 @@
 	<!-- 主地图操作 -->
 	<script type="text/javascript">
 
-		var infoWindow, map, level = 12;
+		var infoWindow, map, level = 15;
 		var markers = [];	//	所有点标注
 		var showingPlaces;	//	所有当前显示的地名
 		var windata;		//	当前信息窗体中的地名数据
@@ -1002,7 +1002,7 @@
 
 		map = new AMap.Map('mapContainer',{
 			resizeEnable: true,
-			center: [109.461756,30.285877],
+			center: [110.9713,30.8275],
 			zoom:level,
 			keyboardEnable :false,
 		});
@@ -1015,7 +1015,7 @@
 		});
 
 		showingPlaces = placedata;
-		initmarkers();
+//		initmarkers();
 //		showMarkers(showingPlaces);
 
         var mouseTool = new AMap.MouseTool(map);
@@ -1037,76 +1037,76 @@
 //            mouseTool.close(false);
         });
 
-        AMap.service('AMap.DistrictSearch',function(){//回调函数
-            //实例化DistrictSearch
-            var districtSearch = new AMap.DistrictSearch({
-//                level : 'city',
-                level : 'county',
-//                level : 'district',
-                subdistrict : 1,
-                extensions : 'all'
-            });
-            //TODO: 使用districtSearch对象调用行政区查询的功能
-			 var cities = [ "利川市", "建始县", "巴东县", "宣恩县", "咸丰县", "来凤县", "鹤峰县" ];
-			for(var ci = 0; ci < cities.length; ci++) {
-				var cit = cities[ci];
-				//            districtSearch.search('恩施土家族苗族自治州',function(status, result){
-				districtSearch.search(cit,function(status, result){
-//            districtSearch.search('舞阳坝街道',function(status, result){
-					//TODO : 按照自己需求处理查询结果
-					var dist = result.districtList[0];
-					var subDistricts = result.districtList[0].districtList;
-//                var bdata;
-					var cname = dist.name;
-					var cbs = dist.boundaries;
-					var cdata = { name: "", boundary: []};
-					cdata.name = cname;
-					for(var j = 0; j < cbs.length; j++) {
-						for(var k = 0; k < cbs[j].length; k++) {
-							var po = cbs[j][k];
-							var cood = [po.lng, po.lat];
-							cdata.boundary.push(cood);
-						}
-					}
-//                alert(eval(cdata));
-//                for(var i = 0;i < subDistricts.length; i++){
-//                    var county = subDistricts[i];
-//
-//                    var streetList = county.districtList;
-//                    for(var j = 0; j < streetList.length; j++) {
-//                        var street = streetList[j];
-//                        var sname = street.name;
-//                        var sb = street.boundaries;
+//        AMap.service('AMap.DistrictSearch',function(){//回调函数
+//            //实例化DistrictSearch
+//            var districtSearch = new AMap.DistrictSearch({
+////                level : 'city',
+//                level : 'county',
+////                level : 'district',
+//                subdistrict : 1,
+//                extensions : 'all'
+//            });
+//            //TODO: 使用districtSearch对象调用行政区查询的功能
+//			 var cities = [ "利川市", "建始县", "巴东县", "宣恩县", "咸丰县", "来凤县", "鹤峰县" ];
+//			for(var ci = 0; ci < cities.length; ci++) {
+//				var cit = cities[ci];
+//				//            districtSearch.search('恩施土家族苗族自治州',function(status, result){
+//				districtSearch.search(cit,function(status, result){
+////            districtSearch.search('舞阳坝街道',function(status, result){
+//					//TODO : 按照自己需求处理查询结果
+//					var dist = result.districtList[0];
+//					var subDistricts = result.districtList[0].districtList;
+////                var bdata;
+//					var cname = dist.name;
+//					var cbs = dist.boundaries;
+//					var cdata = { name: "", boundary: []};
+//					cdata.name = cname;
+//					for(var j = 0; j < cbs.length; j++) {
+//						for(var k = 0; k < cbs[j].length; k++) {
+//							var po = cbs[j][k];
+//							var cood = [po.lng, po.lat];
+//							cdata.boundary.push(cood);
+//						}
 //					}
-//                }
-					var polygonArr = [
-						[109.453796, 30.299918],
-						[109.445556, 30.246251],
-						[109.528983, 30.245064],
-						[109.523833, 30.305846]
-					];
-					var polygon = new AMap.Polygon({
-						path: cdata.boundary,//设置多边形边界路径
-						strokeColor: "#FF33FF", //线颜色
-						strokeOpacity: 0.2, //线透明度
-						strokeWeight: 3,    //线宽
-						fillColor: "#1791fc", //填充色
-						fillOpacity: 0.35//填充透明度
-					});
-					polygon.setMap(map);
+////                alert(eval(cdata));
+////                for(var i = 0;i < subDistricts.length; i++){
+////                    var county = subDistricts[i];
+////
+////                    var streetList = county.districtList;
+////                    for(var j = 0; j < streetList.length; j++) {
+////                        var street = streetList[j];
+////                        var sname = street.name;
+////                        var sb = street.boundaries;
+////					}
+////                }
+//					var polygonArr = [
+//						[109.453796, 30.299918],
+//						[109.445556, 30.246251],
+//						[109.528983, 30.245064],
+//						[109.523833, 30.305846]
+//					];
+//					var polygon = new AMap.Polygon({
+//						path: cdata.boundary,//设置多边形边界路径
+//						strokeColor: "#FF33FF", //线颜色
+//						strokeOpacity: 0.2, //线透明度
+//						strokeWeight: 3,    //线宽
+//						fillColor: "#1791fc", //填充色
+//						fillOpacity: 0.35//填充透明度
+//					});
+//					polygon.setMap(map);
+//
+//				})
+//
+//
+//
+//			}
+//
+//
+//
+//        })
 
-				})
 
-
-
-			}
-
-
-
-			map.setFitView();
-        })
-
-
+		map.setFitView();
 
 	</script>
 

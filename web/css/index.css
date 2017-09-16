@@ -212,8 +212,20 @@ span {
     background-color: #326AA7;
 }
 
+#hm_classnav {
+
+}
+
+#hm_favnav {
+
+}
+
+#hm_wikinav{
+    /*width: 148px;*/
+}
+
 .headnav-default{
-    width: 100px;
+    width: 149px;
     height: 100%;
     display:inline;
     float:left;
@@ -229,18 +241,6 @@ div.headnav-default:focus {
 }
 div.headnav-default.active {
     background-color: #002850;
-}
-
-#hm_classnav {
-
-}
-
-#hm_favnav {
-
-}
-
-#hm_wikinav{
-    width: 98px;
 }
 
 .hm_boxshadow {
@@ -311,7 +311,7 @@ div.headnav-default.active {
 
 .hm-wikiClass {
     width: 100%;
-    height: 70%;
+    height: 320px;
     /*display: none;*/
 	overflow: scroll;
 }

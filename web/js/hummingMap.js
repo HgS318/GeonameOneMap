@@ -236,9 +236,10 @@ define(function(require){
     }
 
     function toChangeHead(oid) {
-        var titles=["hm_wikinav", "hm_classnav", "hm_favnav"];
+        // var titles=["hm_wikinav", "hm_classnav", "hm_favnav"];
+        var titles=["hm_wikinav", "hm_classnav"];
         var infoClassObj = document.getElementById("hm_infoClass");
-        var favoritesObj = document.getElementById("hm_favorites");
+        // var favoritesObj = document.getElementById("hm_favorites");
         var wikiClassObj = document.getElementById("hm_wikiClass");
 
         for(var i = 0;i < titles.length; i++) {
@@ -253,19 +254,19 @@ define(function(require){
         switch(oid) {
             case "hm_classnav":{
                 infoClassObj.style.display="block";
-                favoritesObj.style.display="none";
+                // favoritesObj.style.display="none";
                 wikiClassObj.style.display="none";
                 break;
             }
-            case "hm_favnav":{
-                infoClassObj.style.display="none";
-                favoritesObj.style.display="block";
-                wikiClassObj.style.display="none";
-                break;
-            }
+            // case "hm_favnav":{
+            //     infoClassObj.style.display="none";
+            //     favoritesObj.style.display="block";
+            //     wikiClassObj.style.display="none";
+            //     break;
+            // }
             case "hm_wikinav":{
                 infoClassObj.style.display="none";
-                favoritesObj.style.display="none";
+                // favoritesObj.style.display="none";
                 wikiClassObj.style.display="block";
                 break;
             }
