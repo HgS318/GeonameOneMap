@@ -295,8 +295,8 @@
             chooseBtn = options.btns.chooseBtn,
             accept = { //指定接受哪些类型的文件
                 title: 'Images',
-                extensions: 'gif,jpg,jpeg,bmp,png',
-                mimeTypes: 'image/png,image/gif,image/jpeg,image/jpg,image/bmp'
+                extensions: 'gif,jpg,jpeg,bmp,png,doc,docx',
+                mimeTypes: 'image/png,image/gif,image/jpeg,image/jpg,image/bmp,application/internet-property-stream,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             };
         if(!options.pictureOnly){
             accept = null;

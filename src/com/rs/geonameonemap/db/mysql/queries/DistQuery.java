@@ -15,7 +15,8 @@ import java.util.List;
 
 public class DistQuery extends MySQLQuery {
 
-    public static final String tbName = "enshidists";
+//    public static final String tbName = "enshidists";
+    public static final String tbName = "zgdists";
     public static final String tmpTbName = "enshidists_temp";
     public static String[] columns = null;
     public static String[] easyColumnNames = new String[]{
@@ -56,6 +57,14 @@ public class DistQuery extends MySQLQuery {
     }
 
     public static String getTotalDistInfo() {
+        String sql = "SELECT * from " + tbName + " INNER JOIN " + PlaceQuery.tbName + " ON " +
+                tbName +".PNid = " + PlaceQuery.tbName + ".id order by " + tbName + ".id";
+        ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
+        String str = getDistsInfoFromResultSet(rs);
+        return str;
+    }
+
+    public static String getZiguiDistInfo() {
         String sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
                 tbName +".PNid = " + PlaceQuery.tbName + ".id order by " + tbName + ".id";
         ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);
@@ -81,7 +90,7 @@ public class DistQuery extends MySQLQuery {
         } else {
             sql = "SELECT * from " + tbName + " LEFT JOIN " + PlaceQuery.tbName + " ON " +
                     tbName +".PNid = " + PlaceQuery.tbName + ".id " +
-                    " where " + tbName + ".OBJECTID < 25 " +
+                    " where " + tbName + ".OBJECTID > 429 AND " + tbName + ".OBJECTID < 442 " +
                     " order by " + tbName + ".id ";
         }
         ResultSet rs = DistJson.consColumnNamesBySql(dbType, sql);

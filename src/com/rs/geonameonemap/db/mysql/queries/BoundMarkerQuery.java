@@ -13,7 +13,8 @@ import java.util.*;
  */
 public class BoundMarkerQuery extends MySQLQuery {
 
-    public static final String tbName = "enshiboundrymarker";
+//    public static final String tbName = "enshiboundrymarker";
+    public static final String tbName = "zgboundmarkers";
     public static final String tmpTbName = "enshiboundrymarker_temp";
 
     public static String getEasyBoundMarkersInfo() {

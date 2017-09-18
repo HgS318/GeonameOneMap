@@ -230,7 +230,13 @@ public class JsonAction01 {
 
 
     public String wholeDists() {
-        String str = DistQuery.getTotalDistInfo();
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String str;
+        if(requestContainsAttr(request, "zg")) {
+            str = DistQuery.getTotalDistInfo();
+        } else {
+            str = DistQuery.getTotalDistInfo();
+        }
         toBeJson("[" + str + "]");
         return null;
     }

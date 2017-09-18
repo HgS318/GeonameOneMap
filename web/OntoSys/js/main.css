@@ -431,6 +431,17 @@ div.tabContainer{
     margin-right: 2px;
 
 }
+
+ .tab260 {
+     width: 260px;
+
+ }
+
+ .nextTab p {
+     line-height: 20px;
+
+ }
+
 .innerWord {
     height: 16px;
     width: 170px;

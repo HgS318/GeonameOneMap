@@ -175,7 +175,8 @@ function openSimpleInfoWindow(e) {
 		winheight = 220;
 		content.push("<strong>行政等级：</strong>" + extData['Grade']);
 		content.push("<strong>上级行政区：</strong>" + extData['上级行政区']);
-		content.push("<strong>下级行政区：</strong>" + extData['下级行政区']);
+		var subdist = extData['下级行政区'] ? extData['下级行政区'] : '无';
+		content.push("<strong>下级行政区：</strong>" + subdist);
 		if(extData['政府驻地']) {
 			content.push("<strong>政府驻地：</strong>" + extData['政府驻地']);
 			content.push("<strong>总面积：</strong>" + extData['总面积'] +
@@ -473,7 +474,7 @@ function initTrees() {
 	$('#id_tree_dist').tree({
 		lines: true,
 		animate: false,
-		url: 'wholeDists.action',
+		url: 'wholeDists.action?zg=zg',
 		//queryParams: { id: '' },
 		formatter: function (node) {
 			var s = '<p style=\'color:#0000FF; font-size: 14px; line-height: 15px \'>'
@@ -539,7 +540,7 @@ function initTrees() {
 		},
 		onClick: function (node) {
 			if(node.name == '全部类型') {
-				gotoAll();
+				gotoAllType();
 			} else if(node.children) {
 				gotoBigType(node.name);
 			} else {
@@ -1244,6 +1245,130 @@ $.extend($.fn.datagrid.methods, {
     }
 });
 
+function toChooseMapExtent(checkbox) {
+	if(checkbox.checked) {
+		$("#mapextentdone").show();
+		alert('请在地图中勾画需要查询的范围!');
+		mouseTool.polygon();
+		mouseTool.measureArea();
+	} else {
+		mouseTool.close(true);
+		$("#mapextentdone")[0].innerHTML = "范围未选择";
+		$("#mapextentdone").hide();
+	}
+
+}
+
+function toChooseGrade(checkbox) {
+	if(checkbox.checked) {
+		$("#gradecheckboxes").show();
+	} else {
+		$("#gradecheckboxes").hide();
+	}
+}
+
+function toChooseDist(checkbox) {
+	if(checkbox.checked) {
+		$("#distscheckboxes").show();
+	} else {
+		$("#distscheckboxes").hide();
+	}
+}
+
+function toChooseTime(checkbox) {
+	if(checkbox.checked) {
+		$("#choosetimeitmes").show();
+	} else {
+		$("#choosetimeitmes").hide();
+	}
+}
+
+function toSearchGeonames(checkbox) {
+	if(checkbox.checked) {
+		$("#geoitems").show();
+	} else {
+		$("#geoitems").hide();
+	}
+}
+
+function toSearchDists(checkbox) {
+	if(checkbox.checked) {
+		$("#distitems").show();
+	} else {
+		$("#distitems").hide();
+	}
+}
+
+function toSearchBounds(checkbox) {
+	if(checkbox.checked) {
+		$("#bounditems").show();
+	} else {
+		$("#bounditems").hide();
+	}
+}
+
+function toSearchBoundMarkers(checkbox) {
+	if(checkbox.checked) {
+		$("#boundmarkeritems").show();
+	} else {
+		$("#boundmarkeritems").hide();
+	}
+}
+
+function getNowFormatDate() {
+	var date = new Date();
+	var seperator1 = "-";
+	var seperator2 = ":";
+	var month = date.getMonth() + 1;
+	var strDate = date.getDate();
+	var h = date.getHours();
+	if(h < 9) {
+		h = "0" + h;
+	}
+	var m = date.getMinutes();
+	if(m < 9) {
+		m = "0" + m;
+	}
+	var s = date.getSeconds();
+	if(s < 9) {
+		s = "0" + s;
+	}
+	if (month >= 1 && month <= 9) {
+		month = "0" + month;
+	}
+	if (strDate >= 0 && strDate <= 9) {
+		strDate = "0" + strDate;
+	}
+	var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+		+ " " + h + seperator2 + m + seperator2 + s;
+	return currentdate;
+}
+
+function toResStat() {
+	$("#eastTabsDiv").tabs("select", "信息列表");
+	$("#resultsdiv").accordion("select", "检索汇总");
+}
+
+function toPlaceRes() {
+	$("#eastTabsDiv").tabs("select", "信息列表");
+	$("#resultsdiv").accordion("select", "地名");
+}
+
+function toDistRes() {
+	$("#eastTabsDiv").tabs("select", "信息列表");
+	$("#resultsdiv").accordion("select", "行政区");
+}
+
+function toBoundRes() {
+	$("#eastTabsDiv").tabs("select", "信息列表");
+	$("#resultsdiv").accordion("select", "行政界线");
+}
+
+function toBmRes() {
+	$("#eastTabsDiv").tabs("select", "信息列表");
+	$("#resultsdiv").accordion("select", "界桩");
+}
+
 function doSimpleSearch(value, name){
 	// alert('You input: ' + value+'('+name+')');
 	var range;
@@ -1376,15 +1501,15 @@ function randomResults(info) {
 					dataType: 'json',
 					success: function (bm_data) {
 						bms = bm_data;
-						setResultItems(bms, "boundmarkrsresults", "bounemarker");
+						setResultItems(bms, "boundmarkrsresults", "boundmarker");
 					},
 					error: function (bm_data) {
-						setResultItems(bms, "boundmarkrsresults", "bounemarker");
+						setResultItems(bms, "boundmarkrsresults", "boundmarker");
 					}
 				})
 			).done(function() {
 				showOverlays(places, dists, bounds, bms);
-				$("#tabsDiv").tabs("select", 3);
+				$("#eastTabsDiv").tabs("select", "信息列表");
 				$("#resultsdiv").accordion("select", "地名");
 			});
 
@@ -1402,103 +1527,4 @@ function openResultWindow() {
 		"    " + $("#bmintotal")[0].innerText + "<br/>");
 	// document.cookie = "basicinfo="+basicinfo;
 	window.open("download/examplepage/easyui/basic.html");
-}
-
-function toChooseMapExtent(checkbox) {
-	if(checkbox.checked) {
-		$("#mapextentdone").show();
-		alert('请在地图中勾画需要查询的范围!');
-		mouseTool.polygon();
-		mouseTool.measureArea();
-	} else {
-		mouseTool.close(true);
-		$("#mapextentdone")[0].innerHTML = "范围未选择";
-		$("#mapextentdone").hide();
-	}
-
-}
-
-function toChooseGrade(checkbox) {
-	if(checkbox.checked) {
-		$("#gradecheckboxes").show();
-	} else {
-		$("#gradecheckboxes").hide();
-	}
-}
-
-function toChooseDist(checkbox) {
-	if(checkbox.checked) {
-		$("#distscheckboxes").show();
-	} else {
-		$("#distscheckboxes").hide();
-	}
-}
-
-function toChooseTime(checkbox) {
-	if(checkbox.checked) {
-		$("#choosetimeitmes").show();
-	} else {
-		$("#choosetimeitmes").hide();
-	}
-}
-
-function toSearchGeonames(checkbox) {
-	if(checkbox.checked) {
-		$("#geoitems").show();
-	} else {
-		$("#geoitems").hide();
-	}
-}
-
-function toSearchDists(checkbox) {
-	if(checkbox.checked) {
-		$("#distitems").show();
-	} else {
-		$("#distitems").hide();
-	}
-}
-
-function toSearchBounds(checkbox) {
-	if(checkbox.checked) {
-		$("#bounditems").show();
-	} else {
-		$("#bounditems").hide();
-	}
-}
-
-function toSearchBoundMarkers(checkbox) {
-	if(checkbox.checked) {
-		$("#boundmarkeritems").show();
-	} else {
-		$("#boundmarkeritems").hide();
-	}
-}
-
-function getNowFormatDate() {
-	var date = new Date();
-	var seperator1 = "-";
-	var seperator2 = ":";
-	var month = date.getMonth() + 1;
-	var strDate = date.getDate();
-	var h = date.getHours();
-	if(h < 9) {
-		h = "0" + h;
-	}
-	var m = date.getMinutes();
-	if(m < 9) {
-		m = "0" + m;
-	}
-	var s = date.getSeconds();
-	if(s < 9) {
-		s = "0" + s;
-	}
-	if (month >= 1 && month <= 9) {
-		month = "0" + month;
-	}
-	if (strDate >= 0 && strDate <= 9) {
-		strDate = "0" + strDate;
-	}
-	var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-		+ " " + h + seperator2 + m + seperator2 + s;
-	return currentdate;
 }

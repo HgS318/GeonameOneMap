@@ -27,7 +27,8 @@ var singlePicInfoArray = [
 var multiPicInfoArray = [
     ["SJDJ", "实景多角度", 700],
     ["SJDS", "实景多时相", 219],
-    ["YGDS", "遥感多时相", 720]
+    ["YGDS", "遥感多时相", 720],
+    ["DOCS", "参考文档", 160]
 ];
 
 function getQueryString(name) {
@@ -117,7 +118,7 @@ function consUploaders(data) {
                 uploadBtn: $("#upload_now" + typecode), //开始上传按钮，必须。可以传递dom元素、选择器、jQuery对象
                 retryBtn: null, //用户自定义"重新上传"按钮
                 chooseBtn: '#choose_file_' + typecode,//"选折图片"按钮，必须。可以传递dom元素、选择器、jQuery对象
-                chooseBtnText: "选择本地图片" //选择文件按钮显示的文字
+                chooseBtnText: "选择本地文件" //选择文件按钮显示的文字
             },
             pictureOnly: true,//只能上传图片
             datas: {

@@ -44,7 +44,7 @@ $(function() {
             AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
                 map = new AMap.Map('mapContainer',{
                     resizeEnable: true,
-                    center: [109.461756,30.285877],
+                    center: [110.66, 30.91],
                     zoom: level,
                     keyboardEnable :false,
                 });
@@ -249,6 +249,7 @@ function initBoundMarkers(bmArrayJson) {
         dataType: 'json',
         success:function(bm_data){
             var bmArrayJson = bm_data;
+            setResultItems(bmArrayJson, "boundmarkersall", "boundmarker");
             // initBoundMarkers(bmArrayJson);
             for(var i = 0; i < bmArrayJson.length; i++) {
                 var bmjson = bmArrayJson[i];
@@ -256,6 +257,7 @@ function initBoundMarkers(bmArrayJson) {
                 createBoundMarkers(bmjson, boundMarkers);
             }
             showingbms = boundMarkers;
+            // bdmarksShow();
         },
         error:function(bm_data){
             console.log(bm_data);
@@ -353,7 +355,7 @@ function setNewMarkers(newdata) {
     // map.setFitView();
 }
 
-//	在左边结果栏显示若干条结果，muldata为json
+//	在右边结果栏显示若干条结果，muldata为json
 function setResultItems(muldata, divname, clas) {
 
     var parentdiv = document.getElementById(divname);
@@ -376,7 +378,7 @@ function setResultItems(muldata, divname, clas) {
                 if (clas == "bound") {
                     str = consBoundResult(data, i + 1);
                 }
-                if (clas == "bounemarker") {
+                if (clas == "boundmarker") {
                     str = consBoundMarkerResult(data, i + 1);
                 }
             } else {
@@ -386,16 +388,30 @@ function setResultItems(muldata, divname, clas) {
         }
         var totalstr = prestr + midstr + endstr;
         parentdiv.innerHTML = totalstr;
+        // document.getElementById("distinfo").style.display = "none";
     }
 
     if(clas) {
         if(clas == "geoname") {
             document.getElementById("placeintotal").innerText = "      地名：" + num +" 条记录";
         } else if(clas == "dist") {
-            document.getElementById("distintotal").innerText = "      行政区：" + num +" 条记录";
+            if(num == 1) {
+                var distData = muldata[0];
+                document.getElementById("distintotal").innerHTML = "      行政区：<strong>" + distData.name + "</strong>"
+                    + "<br/>      乡村数：" + distData.NumVillage
+                    + "<br/>      社区数：" + distData.NumCommu
+                    + "<br/>      下属村、居委会：" + distData.SubCommu
+                ;
+                // document.getElementById("distname").innerHTML = '      行政区名称：<strong>' + distData.name + '</strong>';
+                // document.getElementById("numval").innerHTML ='      乡村数：<strong>' + distData.NumVillage + '</strong>';
+                // document.getElementById("numcomu").innerHTML ='     社区数：<strong>' + distData.NumCommu + '</strong>';
+                // document.getElementById("subcom").innerHTML ='     下属村、居委会：<strong>' + distData.SubCommu + '</strong>';
+            } else {
+                document.getElementById("distintotal").innerText = "      行政区：" + num + " 条记录";
+            }
         }if(clas == "bound") {
             document.getElementById("boundintotal").innerText = "      行政界线：" + num +" 条记录";
-        }if(clas == "bounemarker") {
+        }if(clas == "boundmarker") {
             document.getElementById("bmintotal").innerText = "      界桩、界碑：" + num +" 条记录";
         }
     } else{
@@ -859,12 +875,21 @@ function toChangeHead(oid) {
     }
 }
 
-function gotoAll() {
+function setPlaceElseNone() {
+    var nullArray = [];
+    setResultItems(nullArray, "distresults", "dist");
+    setResultItems(nullArray, "boundresults", "bound");
+    setResultItems(nullArray, "boundmarkrsresults", "boundmarker");
+}
+
+function gotoAllType() {
     var tmpdata = placedata;
     showingPlaces = tmpdata;
     // setNewMarkers(tmpdata);
     showMarkers(tmpdata);
+    setPlaceElseNone();
     setResultItems(tmpdata, "placeresults");
+    toPlaceRes();
 }
 
 //	显示某大类的所有地名
@@ -880,7 +905,9 @@ function gotoBigType(bigtype) {
         showingPlaces = tmpdata;
         // setNewMarkers(tmpdata);
         showMarkers(tmpdata);
+        setPlaceElseNone();
         setResultItems(tmpdata, "placeresults");
+        toPlaceRes();
     } else {
         alert("暂无 " + bigtype + " 相关数据...");
     }
@@ -900,7 +927,9 @@ function gotoSmallType(bigtype, smalltype) {
         showingPlaces = tmpdata;
         // setNewMarkers(tmpdata);
         showMarkers(tmpdata);
+        setPlaceElseNone();
         setResultItems(tmpdata, "placeresults");
+        toPlaceRes();
     } else {
         alert("暂无 " + bigtype +"-" + smalltype + " 相关数据...");
     }
@@ -925,6 +954,30 @@ function gotoDist(dictcode) {
         setResultItems(tmpdata, "placeresults");
     } else {
         alert("暂无 " + dictcode + " 地区相关数据...");
+    }
+    if(dictcode != 420527000) {
+        var dp = findDistPolygon(dictcode);
+        if (dp) {
+            var distData = dp.getExtData();
+            var dtatArray = [];
+            dtatArray.push(distData);
+            setResultItems(dtatArray, "distresults", "dist");
+            showingDists = [];
+            showingDists.push(dp);
+            distsShow();
+            toResStat();
+        }
+    } else {
+        var dtatArray = [];
+        for(var i = 0; i < distPolygons.length; i++) {
+            var distData = distPolygons[i].getExtData();
+            dtatArray.push(distData);
+        }
+        setResultItems(dtatArray, "distresults", "dist");
+        showingDists = distPolygons;
+        // showingDists.push(dp);
+        distsShow();
+        toPlaceRes();
     }
 }
 
@@ -1000,6 +1053,18 @@ function findOverlay(overlays, id) {
         var ov = overlays[i];
         if(id == ov.getExtData()['id'] || id == ov.getExtData()['Id']) {
             return ov;
+        }
+    }
+    return null;
+}
+
+function findDistPolygon(distcode) {
+    for(var i = 0; i < distPolygons.length; i++) {
+        var dp = distPolygons[i];
+        var extData = dp.getExtData();
+        var testcode = extData.id;
+        if(testcode == distcode) {
+            return dp;
         }
     }
     return null;

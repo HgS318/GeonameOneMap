@@ -13,7 +13,8 @@ import java.util.*;
  */
 public class BoundQuery extends MySQLQuery {
 
-    public static final String tbName = "enshidivid";
+//    public static final String tbName = "enshidivid";
+    public static final String tbName = "zgbounds";
     public static final String tmpTbName = "enshidivid_temp";
     public static final String[] boundPathColumns = new String[] {
             "OBJECTID", "Id", "path", "Name", "AdminGrade", "Grade", "LeftName", "RightName"
