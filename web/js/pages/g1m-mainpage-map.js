@@ -71,23 +71,20 @@ $(function() {
                 showingPlaces = placedata;
                 initmarkers();
                 setAutoComplete();
-                // map.setFitView();
                 setRightMenu();
-                initTrees();
-                initBounds();
-                initBoundMarkers();
+                initTrees(true);
+                initBounds(true);
+                initBoundMarkers(true);
                 if(admin) {
                     initTmpDists();
                 }
+                toResStat();
             });
-
         },
         error:function(data){
             console.log(data);
         }
     })
-
-
 
 });
 
@@ -160,7 +157,7 @@ function bdmarkDbClick(e) {
     window.open("html/boundMarkerEdit.html?id=" + id);
 }
 
-function showDists(distpolygons) {
+function showDists(distpolygons, fit) {
     if(distPolygons != distpolygons) {
         for(var i = 0; i < distPolygons.length; i++) {
             var old = distPolygons[i];
@@ -173,10 +170,12 @@ function showDists(distpolygons) {
         polygon.show();
     }
     $("#toolbarDists")[0].checked = true;
-    
+    if(fit) {
+        map.setFitView(distpolygons);
+    }
 }
 
-function initBounds() {
+function initBounds(show) {
     var wholeBoundsUrl = 'wholeEasyBounds.action';
 
     $.ajax({
@@ -192,6 +191,10 @@ function initBounds() {
                 createBoundPolyline(boundjson, boundPolylines);
             }
             showingBounds = boundPolylines;
+            setResultItems(boundArrayJson, "boundresults", "bound");
+            if(show) {
+                boundsShow();
+            }
         },
         error:function(bound_data){
             console.log(bound_data);
@@ -241,7 +244,7 @@ function showBounds(boundPylylines) {
     $("#toolbarBounds")[0].checked = true;
 }
 
-function initBoundMarkers(bmArrayJson) {
+function initBoundMarkers(show) {
     var wholebmurl = 'wholeEasyBoundMarkers.action';
     $.ajax({
         url: wholebmurl,
@@ -250,6 +253,7 @@ function initBoundMarkers(bmArrayJson) {
         success:function(bm_data){
             var bmArrayJson = bm_data;
             setResultItems(bmArrayJson, "boundmarkersall", "boundmarker");
+            setResultItems(bmArrayJson, "boundmarkrsresults", "boundmarker");
             // initBoundMarkers(bmArrayJson);
             for(var i = 0; i < bmArrayJson.length; i++) {
                 var bmjson = bmArrayJson[i];
@@ -257,7 +261,9 @@ function initBoundMarkers(bmArrayJson) {
                 createBoundMarkers(bmjson, boundMarkers);
             }
             showingbms = boundMarkers;
-            // bdmarksShow();
+            if(show) {
+                bdmarksShow();
+            }
         },
         error:function(bm_data){
             console.log(bm_data);
@@ -368,6 +374,9 @@ function setResultItems(muldata, divname, clas) {
         var prestr = "<div class='list-group'>", endstr = "</div>", midstr = "";
         for (var i = 0; i < muldata.length; i++) {
             var data = muldata[i];
+            if(!data['g1m']) {
+                data = data.getExtData();
+            }
             var str;
             if (clas) {
                 if (clas == "geoname") {
@@ -476,11 +485,9 @@ function initmarkers(pdata) {
         map.remove(marker);
     }
     markers = [];
-    if(pdata) {
-        simpleSetMarkers(pdata, markers);
-    } else {
-        simpleSetMarkers(placedata, markers);
-    }
+    var pldata = pdata ? pdata : placedata;
+    simpleSetMarkers(pldata, markers);
+    setResultItems(pldata, "placeresults", "geoname")
     setShowingMarkers(markers);
     showMarkers();
 }
@@ -877,6 +884,11 @@ function toChangeHead(oid) {
 
 function setPlaceElseNone() {
     var nullArray = [];
+    boundsHide();
+    bdmarksHide();
+    // initBoundMarkers();
+    // initBounds();
+    initTrees(true);
     setResultItems(nullArray, "distresults", "dist");
     setResultItems(nullArray, "boundresults", "bound");
     setResultItems(nullArray, "boundmarkrsresults", "boundmarker");
@@ -936,9 +948,9 @@ function gotoSmallType(bigtype, smalltype) {
 }
 
 //	显示某地区的所有地名
-function gotoDist(dictcode) {
+function gotoDist(distcode) {
 
-    var diststr = dictcode.toString();
+    var diststr = distcode.toString();
     var tmpdata = [];
     for (var i = 0; i < placedata.length; i++) {
         var data = placedata[i];
@@ -953,11 +965,23 @@ function gotoDist(dictcode) {
         showMarkers(tmpdata);
         setResultItems(tmpdata, "placeresults");
     } else {
-        alert("暂无 " + dictcode + " 地区相关数据...");
+        alert("暂无 " + distcode + " 地区相关数据...");
     }
-    if(dictcode != 420527000) {
-        var dp = findDistPolygon(dictcode);
+    if(distcode != 420527000) {
+        var dp = findDistPolygon(distcode);
         if (dp) {
+            var ba = findDistBounds(distcode);
+            var bma = [];
+            for(var i = 0; i < ba.length; i++) {
+                var bd = ba[i];
+                var bid = bd.getExtData()['Id'];
+                findBoundBms(bid, bma);
+            }
+            var bms = unique1(bma);
+            setResultItems(ba, "boundresults", "bound");
+            showBounds(ba);
+            setResultItems(bms, "boundmarkrsresults", "boundmarker");
+            showBoundMarkers(bms);
             var distData = dp.getExtData();
             var dtatArray = [];
             dtatArray.push(distData);
@@ -968,17 +992,44 @@ function gotoDist(dictcode) {
             toResStat();
         }
     } else {
-        var dtatArray = [];
-        for(var i = 0; i < distPolygons.length; i++) {
-            var distData = distPolygons[i].getExtData();
-            dtatArray.push(distData);
-        }
-        setResultItems(dtatArray, "distresults", "dist");
-        showingDists = distPolygons;
-        // showingDists.push(dp);
-        distsShow();
-        toPlaceRes();
+        // var dtatArray = [];
+        // for(var i = 0; i < distPolygons.length; i++) {
+        //     var distData = distPolygons[i].getExtData();
+        //     dtatArray.push(distData);
+        // }
+        // setResultItems(dtatArray, "distresults", "dist");
+        // showingDists = distPolygons;
+        // // showingDists.push(dp);
+        // distsShow();
+        // toPlaceRes();
+        initTrees(true);
+        initBounds(true);
+        initBoundMarkers(true);
     }
+}
+
+function findDistBounds(distcode) {
+    var ba = [];
+    for(var i = 0; i < boundPolylines.length; i++) {
+        var bound = boundPolylines[i];
+        var bdata = bound.getExtData();
+        if(distcode == bdata['Left_'] || distcode == bdata['Right_']) {
+            ba.push(bound);
+        }
+    }
+    return ba;
+}
+
+function findBoundBms(bid, bma) {
+    for(var i = 0; i < boundMarkers.length; i++) {
+        var bm = boundMarkers[i];
+        var bmdata = bm.getExtData();
+        if(bid == bmdata['Bound1ID'] || bid == bmdata['Bound2ID'] || bid == bmdata['Bound3ID']
+            || bid == bmdata['Bound4ID'] || bid == bmdata['Bound5ID'] ) {
+            bma.push(bm);
+        }
+    }
+    return bma;
 }
 
 //	地图前往某一坐标点
@@ -1038,6 +1089,8 @@ function gotoOverlay(type, id) {
             overlay.getPosition() : overlay.getBounds().getCenter();
         zom = 16;
     }
+    overlay.setMap(map);
+    overlay.show();
     map.setZoom(zom);
     map.panTo(center);
     if(type == "geoname") {
@@ -1102,7 +1155,7 @@ function placesShow() {
         marker.setMap(map);
         marker.show();
     }
-    map.setFitView();
+    map.setFitView(showingMarkers);
 }
 
 function placesHide() {
@@ -1114,8 +1167,8 @@ function placesHide() {
     }
 }
 
-function distsShow() {
-    showDists(showingDists);
+function distsShow(fit) {
+    showDists(showingDists, fit);
 }
 
 function distsHide() {

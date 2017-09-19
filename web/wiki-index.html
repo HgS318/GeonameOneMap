@@ -89,13 +89,16 @@
 						<tr>
 							<!--<td style="padding-left: 15px"><wb:share-button appkey='2943998357' addition='simple' type='icon'></wb:share-button></td>-->
 							<td>
-								<div id="sidetreecontrol2"> &nbsp; <a href="#">全部收起</a> | <a href="#">全部展开</a> </div>
+								<div id="sidetreecontrol2">
+									&nbsp; <a href="#">全部收起</a> | <a href="#">全部展开</a>
+								</div>
 							</td>
 						</tr>
 					</table>
-					<table>
+
+					<table style="margin-top: 5px">
 						<tr>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td><p>&nbsp;</p>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 							<td>
 								<ul class="treeview" id="tree2">
 									<li class="expandable" id="folder2">
@@ -122,9 +125,11 @@
 					</table>
 				</div>
 
-            </div>
 
-			<!-- 地名类型 -->
+
+			</div>
+
+			<!-- 地名分类 -->
 			<div id="hm_infoClass" class="hm-infoclass">
 
 				<div class="hm-wikiAdv">
@@ -132,7 +137,9 @@
 						<tr>
 							<!--<td style="padding-left: 15px"><wb:share-button appkey='2943998357' addition='simple' type='icon'></wb:share-button></td>-->
 							<td>
-								<div id="sidetreecontrol1">&nbsp; <a href="#">全部收起</a> | <a href="#">全部展开</a></div>
+								<div id="sidetreecontrol1">
+									&nbsp; <a href="#">全部收起</a> | <a href="#">全部展开</a><br/>
+								</div>
 							</td>
 						</tr>
 					</table>
@@ -142,7 +149,7 @@
 					<!--<div id="sidetreecontrol1" style="width:200px;height:20px;margin: 0 0 0 80px;">-->
 					<!--<a href="#">全部收起</a> | <a href="#">全部展开</a>-->
 					<!--</div>-->
-					<table>
+					<table style="margin-top: 5px">
 						<tr>
 							<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 							<td>
@@ -214,9 +221,10 @@
 
 			<!-- 左下列表 -->
 			<div id="searchresults" class="SearchResult">
-				<div id="resultitems"></div>
-				<div id="hm_Paginate"></div>
+				<!--<div id="resultitems"></div>-->
+				<!--<div id="hm_Paginate"></div>-->
 			</div>
+
 
 
 		</div>
@@ -601,7 +609,7 @@
 				showingPlaces = tmpdata;
 				setNewMarkers(tmpdata);
 				setResultItems(tmpdata, "searchresults");
-				setResultItems(tmpdata, "pathinfo1");
+//				setResultItems(tmpdata, "pathinfo1");
 			} else {
 				if(bigtype) {
 					alert("暂无 " + bigtype + " 相关数据...");
@@ -625,7 +633,7 @@
 				showingPlaces = tmpdata;
 				setNewMarkers(tmpdata);
 				setResultItems(tmpdata, "searchresults");
-				setResultItems(tmpdata, "pathinfo1");
+//				setResultItems(tmpdata, "pathinfo1");
 			} else {
 				alert("暂无 " + bigtype +"-" + smalltype + " 相关数据...");
 			}
@@ -649,7 +657,7 @@
 				showingPlaces = tmpdata;
 				setNewMarkers(tmpdata);
 				setResultItems(tmpdata, "searchresults");
-				setResultItems(tmpdata, "pathinfo1");
+//				setResultItems(tmpdata, "pathinfo1");
 			} else {
 				if(dictcode) {
 					alert("暂无 " + dictcode + " 地区相关数据...");
@@ -781,99 +789,115 @@
 			var inner1 = "<li class='collapsable'>";
 			var inner2 = "</li>";
 			var branches = $(inner1 + "<div class='hitarea collapsable-hitarea'></div>" +
-					"<a href='#' onclick=\"gotoDist('420000000')\">宜昌市</a><ul id='clist'></ul>" + inner2).appendTo("#folder1");
+					"<a href='#' onclick=\"gotoDist('420527000')\">秭归县</a><ul id='clist'></ul>" + inner2).appendTo("#folder1");
 			var branchdom =$('#clist')[0];
 
 			var subDistricts = distdata.children;
-			for (var i = 0; i < subDistricts.length; i++) {	//	省内各城市
-				var city = subDistricts[i];
-				var cityname = city.name;
-				var citynode = document.createElement("li");
-				var $cn = $(citynode);
-				if(i == subDistricts.length - 1) {
-					citynode.setAttribute("class", "last");
-				} else {
-					if(cityname == '秭归县') {
-						citynode.setAttribute("class", "collapsable");
-					} else {
-						citynode.setAttribute("class", "expandable");
-					}
+			for (var k = 0; k < subDistricts.length; k++) {	//	区县内各街道
+				var street = subDistricts[k];
+				var streetname = street.name;
+				var streetnode = document.createElement("li");
+				var streeta = document.createElement("a");
+				streeta.setAttribute("href", "#");
+				streeta.setAttribute("onclick", "gotoDist('" + street.id + "')");
+				var streettext = document.createTextNode(streetname);
+				streeta.appendChild(streettext);
+				streetnode.appendChild(streeta);
+				if(k == subDistricts.length - 1) {
+					streetnode.className = "last";
 				}
-//				citynode.setAttribute("class", "expandable");
-				var citydiv = document.createElement("div");
-				if(cityname == '秭归县') {
-					citydiv.setAttribute("class", "hitarea collapsable-hitarea");
-				} else {
-					citydiv.setAttribute("class", "hitarea expandable-hitarea");
-				}
-				var citya = document.createElement("a");
-				citya.setAttribute("href", "#");
-//				citya.setAttribute("class", "");
-				citya.setAttribute("onclick", "gotoDist('" + city.id + "')");
-				var citytext = document.createTextNode(cityname);
-				citya.appendChild(citytext);
-				citynode.appendChild(citydiv);
-				citynode.appendChild(citya);
-				if (!city.children) {
-					branchdom.appendChild(citynode);
-					continue;
-				}
-				var countylist = document.createElement("ul");
-				if(cityname == '秭归县') {
-					countylist.setAttribute("style", "overflow: hidden;");
-				} else {
-					countylist.setAttribute("style", "display: none;");
-				}
-				for (var j = 0; j < city.children.length; j++) {//	城市内各区县
-					var county = city.children[j];
-					var countyname = county.name;
-					var countynode = document.createElement("li");
-					var countya = document.createElement("a");
-					countya.setAttribute("href", "#");
-					countya.setAttribute("onclick", "gotoDist('" + county.id + "')");
-					var countytext = document.createTextNode(countyname);
-					countya.appendChild(countytext);
-
-					if (county.children) {
-						if(j == city.children.length - 1) {
-							countynode.setAttribute("class", "last");
-						} else {
-							countynode.setAttribute("class", "expandable");
-						}
-//						countynode.setAttribute("class", "expandable");
-						var countydiv = document.createElement("div");
-						countydiv.setAttribute("class", "hitarea expandable-hitarea");
-						countynode.appendChild(countydiv);
-						countynode.appendChild(countya);
-//						var streetlist = document.createElement("ul");
-//						streetlist.setAttribute("style", "display: none;");
-//						for (var k = 0; k < county.subclasses.length; k++) {	//	区县内各街道
-//							var street = county.subclasses[k];
-//							var streetname = street.name;
-//							var streetnode = document.createElement("li");
-//							var streeta = document.createElement("a");
-//							streeta.setAttribute("href", "#");
-//							streeta.setAttribute("onclick", "gotoDist('" + street.id + "')");
-//							var streettext = document.createTextNode(streetname);
-//							streeta.appendChild(streettext);
-//							streetnode.appendChild(streeta);
-//							if(k == county.subclasses.length - 1) {
-//								streetnode.className = "last";
-//							}
-//							streetlist.appendChild(streetnode);
-//						}
-//						countynode.appendChild(streetlist);
-					} else {
-						if(j == city.children.length - 1) {
-							countynode.setAttribute("class", "last");
-						}
-						countynode.appendChild(countya);
-					}
-					countylist.appendChild(countynode);
-				}
-				citynode.appendChild(countylist);
-				branchdom.appendChild(citynode);
+				branchdom.appendChild(streetnode);
 			}
+
+//			for (var i = 0; i < subDistricts.length; i++) {	//	省内各城市
+//				var city = subDistricts[i];
+//				var cityname = city.name;
+//				var citynode = document.createElement("li");
+//				var $cn = $(citynode);
+//				if(i == subDistricts.length - 1) {
+//					citynode.setAttribute("class", "last");
+//				} else {
+//					if(cityname == '秭归县') {
+//						citynode.setAttribute("class", "collapsable");
+//					} else {
+//						citynode.setAttribute("class", "expandable");
+//					}
+//				}
+////				citynode.setAttribute("class", "expandable");
+//				var citydiv = document.createElement("div");
+//				if(cityname == '秭归县') {
+//					citydiv.setAttribute("class", "hitarea collapsable-hitarea");
+//				} else {
+//					citydiv.setAttribute("class", "hitarea expandable-hitarea");
+//				}
+//				var citya = document.createElement("a");
+//				citya.setAttribute("href", "#");
+////				citya.setAttribute("class", "");
+//				citya.setAttribute("onclick", "gotoDist('" + city.id + "')");
+//				var citytext = document.createTextNode(cityname);
+//				citya.appendChild(citytext);
+//				citynode.appendChild(citydiv);
+//				citynode.appendChild(citya);
+//				if (!city.children) {
+//					branchdom.appendChild(citynode);
+//					continue;
+//				}
+//				var countylist = document.createElement("ul");
+//				if(cityname == '秭归县') {
+//					countylist.setAttribute("style", "overflow: hidden;");
+//				} else {
+//					countylist.setAttribute("style", "display: none;");
+//				}
+//				for (var j = 0; j < city.children.length; j++) {//	城市内各区县
+//					var county = city.children[j];
+//					var countyname = county.name;
+//					var countynode = document.createElement("li");
+//					var countya = document.createElement("a");
+//					countya.setAttribute("href", "#");
+//					countya.setAttribute("onclick", "gotoDist('" + county.id + "')");
+//					var countytext = document.createTextNode(countyname);
+//					countya.appendChild(countytext);
+//
+//					if (county.children) {
+//						if(j == city.children.length - 1) {
+//							countynode.setAttribute("class", "last");
+//						} else {
+//							countynode.setAttribute("class", "expandable");
+//						}
+////						countynode.setAttribute("class", "expandable");
+//						var countydiv = document.createElement("div");
+//						countydiv.setAttribute("class", "hitarea expandable-hitarea");
+//						countynode.appendChild(countydiv);
+//						countynode.appendChild(countya);
+////						var streetlist = document.createElement("ul");
+////						streetlist.setAttribute("style", "display: none;");
+////						for (var k = 0; k < county.subclasses.length; k++) {	//	区县内各街道
+////							var street = county.subclasses[k];
+////							var streetname = street.name;
+////							var streetnode = document.createElement("li");
+////							var streeta = document.createElement("a");
+////							streeta.setAttribute("href", "#");
+////							streeta.setAttribute("onclick", "gotoDist('" + street.id + "')");
+////							var streettext = document.createTextNode(streetname);
+////							streeta.appendChild(streettext);
+////							streetnode.appendChild(streeta);
+////							if(k == county.subclasses.length - 1) {
+////								streetnode.className = "last";
+////							}
+////							streetlist.appendChild(streetnode);
+////						}
+////						countynode.appendChild(streetlist);
+//					} else {
+//						if(j == city.children.length - 1) {
+//							countynode.setAttribute("class", "last");
+//						}
+//						countynode.appendChild(countya);
+//					}
+//					countylist.appendChild(countynode);
+//				}
+//				citynode.appendChild(countylist);
+//				branchdom.appendChild(citynode);
+//			}
 			var htm = branches.html();
 			wholetree.innerHTML = inner1 + htm + inner2;
 

@@ -40,7 +40,7 @@ public class BoundMarkerJson extends ObjectJson {
             this.attr.put(key, value);
         }
         if(name == null || "".equals(name)) {
-            name = "界桩界碑" + attr.get("Id");
+            name = "界桩" + attr.get("Id");
         }
         String posStr = "[" + attr.get("X") + ", " + attr.get("Y") + "]";
         this.attr.put("position", posStr);

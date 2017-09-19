@@ -224,7 +224,57 @@
 
 		<div id="eastTabsDiv" class="easyui-tabs" data-options="fit:true" style="cursor:pointer;">
 
-			<div id="manageTab" title="管理" data-options="iconCls:'icon-man'">
+			<div title="信息列表" data-options="iconCls:'icon-more'">
+
+
+				<div id="resultsdiv" class="easyui-accordion" style="width:100%;height:100%; float: right;">
+
+					<div id="searchstat" title="检索汇总" selected="true" style="overflow:auto;">
+						<h3 style="color:#0099FF; text-align: center">查询信息汇总</h3>
+						<!--<div id="distinfo" style="display: none">-->
+							<!--<p id="distname" style="text-align: center" onclick="toPlaceRes()">行政区名称：</p>-->
+							<!--<p id="numval" style="text-align: center" onclick="toPlaceRes()">乡村数：</p>-->
+							<!--<p id="numcomu" style="text-align: center" onclick="toPlaceRes()">社区数：</p>-->
+							<!--<p id="subcom" style="text-align: center" onclick="toPlaceRes()">下属村、居委会：</p>-->
+						<!--</div>-->
+						<p id="placeintotal" style="text-align: center" onclick="toPlaceRes()">地名：0条记录</p>
+						<p id="distintotal" style="text-align: center" onclick="toDistRes()">行政区：0条记录</p>
+						<p id="boundintotal" style="text-align: center" onclick="toBoundRes()">行政界线：0条记录</p>
+						<p id="bmintotal" style="text-align: center" onclick="toBmRes()">界桩：0条记录</p>
+
+						<br/>
+						<p style="text-align: center">
+							<button id="outputbtn" class="srhbtn" onclick="openResultWindow()">
+								查询结果详情</button></p>
+					</div>
+
+					<div title="地名" id="placeresultsdiv" >
+						<div id="placeresults"></div>
+						<div id="hm_Paginate_places"></div>
+					</div>
+
+					<div title="行政区" id="distresultsdiv">
+						<div id="distresults"></div>
+						<div id="hm_Paginate_dists"></div>
+					</div>
+
+					<div title="行政界线" id="boundresultsdiv">
+						<div id="boundresults"></div>
+						<div id="hm_Paginate_bounds"></div>
+					</div>
+
+					<div title="界桩" id="bmresultsdiv">
+						<div id="boundmarkrsresults"></div>
+						<div id="hm_Paginate_boundmarkers"></div>
+					</div>
+
+				</div>
+
+				<div id="hiddendiv" class="hiddendiv"></div>
+
+			</div>
+
+			<div id="manageTab" title="管理指南" data-options="iconCls:'icon-man'">
 
 				<div id="manageDiv" class="searchDiv">
 
@@ -269,56 +319,6 @@
 
 			</div>
 
-			<div title="信息列表" data-options="iconCls:'icon-more'">
-
-
-				<div id="resultsdiv" class="easyui-accordion" style="width:100%;height:100%; float: right;">
-
-					<div id="searchstat" title="检索汇总" style="overflow:auto;">
-						<h3 style="color:#0099FF; text-align: center">查询信息汇总</h3>
-						<!--<div id="distinfo" style="display: none">-->
-							<!--<p id="distname" style="text-align: center" onclick="toPlaceRes()">行政区名称：</p>-->
-							<!--<p id="numval" style="text-align: center" onclick="toPlaceRes()">乡村数：</p>-->
-							<!--<p id="numcomu" style="text-align: center" onclick="toPlaceRes()">社区数：</p>-->
-							<!--<p id="subcom" style="text-align: center" onclick="toPlaceRes()">下属村、居委会：</p>-->
-						<!--</div>-->
-						<p id="placeintotal" style="text-align: center" onclick="toPlaceRes()">地名：0条记录</p>
-						<p id="distintotal" style="text-align: center" onclick="toDistRes()">行政区：0条记录</p>
-						<p id="boundintotal" style="text-align: center" onclick="toBoundRes()">行政界线：0条记录</p>
-						<p id="bmintotal" style="text-align: center" onclick="toBmRes()">界桩：0条记录</p>
-
-						<br/>
-						<p style="text-align: center">
-							<button id="outputbtn" class="srhbtn" onclick="openResultWindow()">
-								查询结果详情</button></p>
-					</div>
-
-					<div title="地名" id="placeresultsdiv" selected="true" >
-						<div id="placeresults"></div>
-						<div id="hm_Paginate_places"></div>
-					</div>
-
-					<div title="行政区" id="distresultsdiv">
-						<div id="distresults"></div>
-						<div id="hm_Paginate_dists"></div>
-					</div>
-
-					<div title="行政界线" id="boundresultsdiv">
-						<div id="boundresults"></div>
-						<div id="hm_Paginate_bounds"></div>
-					</div>
-
-					<div title="界桩" id="bmresultsdiv">
-						<div id="boundmarkrsresults"></div>
-						<div id="hm_Paginate_boundmarkers"></div>
-					</div>
-
-				</div>
-
-				<div id="hiddendiv" class="hiddendiv"></div>
-
-			</div>
-
 		</div>
 
 	</div>
@@ -329,10 +329,10 @@
         
         <div id="mapContainer" style="width:100%; height: 93%"></div>
 		<div class='button-group' style="background-color: #0d9bf2;right: 20px">
-			<input type="checkbox" id="toolbarPlaces" checked="checked" onclick="placesCheckBox(this)"/>地名
-			<input type="checkbox" id="toolbarDists" onclick="distsCheckBox(this)"/>行政区
-			<input type="checkbox" id="toolbarBounds" onclick="boundsCheckBox(this)"/>行政界线
-			<input type="checkbox" id="toolbarBoundMarkers" onclick="boundMarksCheckBox(this)"/>界桩
+			<input type="checkbox" id="toolbarPlaces" checked onclick="placesCheckBox(this)"/>地名
+			<input type="checkbox" id="toolbarDists" checked onclick="distsCheckBox(this)"/>行政区
+			<input type="checkbox" id="toolbarBounds" checked onclick="boundsCheckBox(this)"/>行政界线
+			<input type="checkbox" id="toolbarBoundMarkers" checked onclick="boundMarksCheckBox(this)"/>界桩
 			<input type="checkbox" id="overview" disabled/>鹰眼
 			<input type="checkbox" id="overviewOpen" disabled />展开鹰眼
 		</div>

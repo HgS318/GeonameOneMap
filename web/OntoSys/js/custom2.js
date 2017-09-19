@@ -200,7 +200,7 @@ function openSimpleInfoWindow(e) {
 			"' target='_blank'>新增界桩、界碑</a>"
 		);
 	} else if("boundmarker" == type) {
-		tpname = "界桩界碑";
+		tpname = "界桩";
 		winheight = 300;
 		content.push("<img src='images/boundmarkereg.jpg'>"
 			+ "<strong>行政等级：</strong>" + extData['Grade']);
@@ -465,7 +465,7 @@ function setAutoComplete() {
 
 // showMarkers(showingPlaces);
 
-function initTrees() {
+function initTrees(show) {
 
 	$("#searchStart").click(function(){ //检索
 		$("#ClassCheckbox").submit();
@@ -495,12 +495,15 @@ function initTrees() {
 			}
 			return s;
 		},
-		onLoadSuccess: function () {
+		onLoadSuccess: function (node, data) {
 			distsInited = true;
 			if(!admin) {
 				showingDists = distPolygons;
 			}
-			// showDists(distPolygons);
+			setResultItems(data[0].children, "distresults", "dist");
+			if(show) {
+				showDists(distPolygons, false);
+			}
 			if ($('#id_tree_dist').tree('getRoots').length > 0 && k) {
 //				V($('#id_tree').tree('getRoots')[0].id);
 				k = false;
@@ -574,7 +577,7 @@ function initTrees() {
 	// 	height: '30px'
 	// });
 
-	$("#tabsDiv").tabs("select", 0);
+	// $("#tabsDiv").tabs("select", 0);
 
 }
 
@@ -1344,6 +1347,17 @@ function getNowFormatDate() {
 	return currentdate;
 }
 
+// 最简单数组去重法
+function unique1(array){
+	var n = []; //一个新的临时数组
+//遍历当前数组
+	for(var i = 0; i < array.length; i++){
+//如果当前数组的第i已经保存进了临时数组，那么跳过，
+//否则把当前项push到临时数组里面
+		if (n.indexOf(array[i]) == -1) n.push(array[i]);
+	}
+	return n;
+}
 function toResStat() {
 	$("#eastTabsDiv").tabs("select", "信息列表");
 	$("#resultsdiv").accordion("select", "检索汇总");

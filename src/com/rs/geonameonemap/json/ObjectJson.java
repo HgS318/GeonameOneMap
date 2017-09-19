@@ -138,6 +138,7 @@ public class ObjectJson {
 		StringBuffer json=new StringBuffer();
 		json.append("{");
 		json.append("\"name\":\"").append(this.name).append("\"");
+		json.append(",\"g1m\":\"").append("g1m").append("\"");
 //		json.append(",\"state\":\"closed\"");
 		if(parent != null) {
 			json.append(",\"parent\":\"").append(this.parent.name).append("\"");
@@ -178,6 +179,7 @@ public class ObjectJson {
 		StringBuffer json=new StringBuffer();
 		json.append("{");
 		json.append("\"name\":\"").append(this.name).append("\"");
+		json.append(",\"g1m\":\"").append("g1m").append("\"");
 		if(parent != null) {
 			json.append(",\"parent\":\"").append(this.parent.name).append("\"");
 		}
@@ -215,6 +217,7 @@ public class ObjectJson {
 		StringBuffer json=new StringBuffer();
 		json.append("{");
 		json.append("\"name\":\"").append(this.name).append("\"");
+		json.append(",\"g1m\":\"").append("g1m").append("\"");
 		if(parent != null) {
 			json.append(",\"parent\":\"").append(this.parent.name);
 		}
@@ -249,6 +252,7 @@ public class ObjectJson {
 		StringBuffer json=new StringBuffer();
 		json.append("{");
 		json.append("\"name\":\"").append(this.name).append("\"");
+		json.append(",\"g1m\":\"").append("g1m").append("\"");
 		if(parent != null) {
 			json.append(",\"parent\":\"").append(this.parent.name);
 		}
