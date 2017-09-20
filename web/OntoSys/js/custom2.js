@@ -465,6 +465,8 @@ function setAutoComplete() {
 
 // showMarkers(showingPlaces);
 
+var typeinited = false;
+
 function initTrees(show) {
 
 	$("#searchStart").click(function(){ //检索
@@ -524,6 +526,10 @@ function initTrees(show) {
 		}
 	});
 
+	if(typeinited) {
+		return;
+	}
+
 	$('#id_tree_type').tree({
 		lines: true,
 		animate: false,
@@ -536,6 +542,7 @@ function initTrees(show) {
 			return s;
 		},
 		onLoadSuccess: function () {
+			typeinited = true;
 			if ($('#id_tree_type').tree('getRoots').length > 0 && k) {
 //				V($('#id_tree').tree('getRoots')[0].id);
 				k = false;
@@ -1350,11 +1357,13 @@ function getNowFormatDate() {
 // 最简单数组去重法
 function unique1(array){
 	var n = []; //一个新的临时数组
-//遍历当前数组
+	//遍历当前数组
 	for(var i = 0; i < array.length; i++){
-//如果当前数组的第i已经保存进了临时数组，那么跳过，
-//否则把当前项push到临时数组里面
-		if (n.indexOf(array[i]) == -1) n.push(array[i]);
+		//如果当前数组的第i已经保存进了临时数组，那么跳过，
+		//否则把当前项push到临时数组里面
+		if (n.indexOf(array[i]) == -1) {
+			n.push(array[i]);
+		}
 	}
 	return n;
 }

@@ -86,7 +86,8 @@
             uploader.makeThumb(file, function(error, src) {
                 if (error) {
                     //$wrap.text('不能预览');
-                    var tipText = $('<div>您上传的<b> ' + file.name + ' </b>文件不支持预览！</div>');
+                    // var tipText = $('<div>您上传的<b> ' + file.name + ' </b>文件不支持预览！</div>');
+                    var tipText = $('<div>\<b> ' + file.name + ' </b>文件已添加</div>');
                     tipText.css({
                         "width": "100%",
                         "position": "absolute",
