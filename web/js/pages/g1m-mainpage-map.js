@@ -10,8 +10,8 @@ var boundPolylines = [];	//	所有界线标注
 var showingBounds = [];	//	当前显示的界线标注
 var boundMarkers = [];	//	所有界桩、界碑
 var showingbms = [];    //	当前显示的界桩、界碑
-var mouseTool;
-var placedata;
+var mouseTool;  //  地图图形编辑工具，用于勾选范围等
+var placedata;  //  项目中的所有地名
 var showingPlaces;	//	所有当前显示的地名
 var windata;		//	当前信息窗体中的地名数据
 var orgdata, destdata;	//	信息窗体搜索框中起点，终点的地点数据
@@ -21,7 +21,7 @@ var infoWinDown;	//	信息窗体下部搜索框html
 
 var distsInited = false;	//	地区是否已经初始化
 
-var mousePos;
+var mousePos;   //  鼠标位置
 
 
 
@@ -69,7 +69,7 @@ $(function() {
                 });
                 placedata = places;
                 showingPlaces = placedata;
-                initmarkers();
+                initGeonames();
                 setAutoComplete();
                 setRightMenu();
                 initTrees(true);
@@ -88,228 +88,29 @@ $(function() {
 
 });
 
-function createDistPolygon(distjson, dists) {
-    if(!distjson.path) {
-        return;
+//	初始化并显示所有地点
+function initGeonames(pdata) {
+    // if(pdata) {
+    //     showingPlaces = pdata;
+    // } else {
+    //     showingPlaces = placedata;
+    // }
+    for(var i = 0; i < markers.length; i++) {
+        var marker = markers[i];
+        marker.hide();
+        marker.setMap(null);
+        map.remove(marker);
     }
-    distjson['overlay'] = "dist";
-    var pathArr = JSON.parse(distjson.path);
-    var polygon = new AMap.Polygon({
-        zIndex: 40,
-        extData: distjson,
-        path: pathArr,//设置多边形边界路径
-        strokeColor: "#FF44FF", //线颜色
-        strokeOpacity: 0.3, //线透明度
-        strokeWeight: 1.5,    //线宽
-        fillColor: "#1791fc", //填充色
-        fillOpacity: 0.3//填充透明度
-    });
-    // AMap.event.addListener(polygon, "dblclick", distDbClick);
-    AMap.event.addListener(polygon, "mouseover", overlayHighlight);
-    AMap.event.addListener(polygon, "mouseout", overlayMouseOut);
-    AMap.event.addListener(polygon, "click", overlayFeatureClick);
-    // polygon.setMap(map);
-    dists.push(polygon);
+    markers = [];
+    var pldata = pdata ? pdata : placedata;
+    createGeonameFeature(pldata, markers);
+    setResultItems(pldata, "placeresults", "geoname")
+    setShowingGeonames(markers);
+    showGeonames();
 }
 
-function initTmpDists() {
-    var wholeTmpDistsUrl = 'wholeEasyBounds.action';
-    if(admin) {
-        wholeTmpDistsUrl = "";
-    }
-    $.ajax({
-        url: wholeTmpDistsUrl,
-        type:'get',
-        dataType: 'json',
-        success:function(dist_data){
-            var distArrayJson = dist_data;
-            // initBounds(boundArrayJson);
-            for(var i = 0; i < distArrayJson.length; i++) {
-                var distjson = distArrayJson[i];
-                distjson['selected'] = false;
-                createDistPolygon(distjson, distPolygons);
-            }
-            showingDists = distPolygons;
-        },
-        error:function(dist_data){
-            console.log(dist_data);
-        }
-    });
-}
-
-function distDbClick(e) {
-    var distPolygon = e.target;
-    // var nickname = distPolygon.getExtData()['nickname'];
-    var id = distPolygon.getExtData()['id'];
-    window.open("html/distEdit.html?id=" + id);
-}
-
-function boundDbClick(e) {
-    var boundline = e.target;
-    var id = boundline.getExtData()['Id'];
-    window.open("html/boundEdit.html?id=" + id);
-}
-
-function bdmarkDbClick(e) {
-    var boundMarker = e.target;
-    // var nickname = distPolygon.getExtData()['nickname'];
-    var id = boundMarker.getExtData()['Id'];
-    window.open("html/boundMarkerEdit.html?id=" + id);
-}
-
-function showDists(distpolygons, fit) {
-    if(distPolygons != distpolygons) {
-        for(var i = 0; i < distPolygons.length; i++) {
-            var old = distPolygons[i];
-            old.setMap(null);
-        }
-    }
-    for(var i = 0; i < distpolygons.length; i++) {
-        var polygon = distpolygons[i];
-        polygon.setMap(map);
-        polygon.show();
-    }
-    $("#toolbarDists")[0].checked = true;
-    if(fit) {
-        map.setFitView(distpolygons);
-    }
-}
-
-function initBounds(show) {
-    var wholeBoundsUrl = 'wholeEasyBounds.action';
-
-    $.ajax({
-        url: wholeBoundsUrl,
-        type:'get',
-        dataType: 'json',
-        success:function(bound_data){
-            var boundArrayJson = bound_data;
-            // initBounds(boundArrayJson);
-            for(var i = 0; i < boundArrayJson.length; i++) {
-                var boundjson = boundArrayJson[i];
-                boundjson['selected'] = false;
-                createBoundPolyline(boundjson, boundPolylines);
-            }
-            showingBounds = boundPolylines;
-            setResultItems(boundArrayJson, "boundresults", "bound");
-            if(show) {
-                boundsShow();
-            }
-        },
-        error:function(bound_data){
-            console.log(bound_data);
-        }
-    });
-
-    // showBounds(boundPolylines);
-}
-
-function createBoundPolyline(boundjson, bounds) {
-    if(!boundjson.path) {
-        return;
-    }
-    boundjson['overlay'] = "bound";
-    var lineArr = JSON.parse(boundjson.path);
-    var polyline = new AMap.Polyline({
-        zIndex: 50,
-        extData: boundjson,
-        path: lineArr,//设置多边形边界路径
-        strokeColor: "#FF33FF", //线颜色
-        strokeOpacity: 0.9,       //线透明度
-        strokeWeight: 3,        //线宽
-        strokeStyle: "solid",   //线样式
-        strokeDasharray: [10, 5] //补充线样式
-    });
-    // AMap.event.addListener(polyline, "dblclick", boundDbClick);
-    AMap.event.addListener(polyline, "mouseover", overlayHighlight);
-    AMap.event.addListener(polyline, "mouseout", overlayMouseOut);
-    AMap.event.addListener(polyline, "click", overlayFeatureClick);
-    // polyline.setMap(map);
-    bounds.push(polyline);
-}
-
-function showBounds(boundPylylines) {
-    if(boundPolylines != boundPylylines) {
-        for(var i = 0; i < boundPolylines.length; i++) {
-            var old = boundPolylines[i];
-            old.setMap(null);
-        }
-    }
-    for(var i = 0; i < boundPylylines.length; i++) {
-        var polyline = boundPylylines[i];
-        polyline.setMap(map);
-        polyline.show();
-    }
-
-    $("#toolbarBounds")[0].checked = true;
-}
-
-function initBoundMarkers(show) {
-    var wholebmurl = 'wholeEasyBoundMarkers.action';
-    $.ajax({
-        url: wholebmurl,
-        type:'get',
-        dataType: 'json',
-        success:function(bm_data){
-            var bmArrayJson = bm_data;
-            setResultItems(bmArrayJson, "boundmarkersall", "boundmarker");
-            setResultItems(bmArrayJson, "boundmarkrsresults", "boundmarker");
-            // initBoundMarkers(bmArrayJson);
-            for(var i = 0; i < bmArrayJson.length; i++) {
-                var bmjson = bmArrayJson[i];
-                bmjson['selected'] = false;
-                createBoundMarkers(bmjson, boundMarkers);
-            }
-            showingbms = boundMarkers;
-            if(show) {
-                bdmarksShow();
-            }
-        },
-        error:function(bm_data){
-            console.log(bm_data);
-        }
-    });
-
-    // showBoundMarkers(boundMarkers);
-}
-
-function createBoundMarkers(bmjson, boundMarkers) {
-    if(!bmjson.position) {
-        return;
-    }
-    bmjson['overlay'] = "boundmarker";
-    var marker = new AMap.Marker({
-        // map: map,
-        position: bmjson.position,
-        zIndex: 180,
-        extData: bmjson,
-        title: bmjson.name,
-        icon: "images/markers/boundmarker_blue.png",
-    });
-    // AMap.event.addListener(marker, "dblclick", bdmarkDbClick);
-    AMap.event.addListener(marker, "mouseover", overlayHighlight);
-    AMap.event.addListener(marker, "mouseout", overlayMouseOut);
-    AMap.event.addListener(marker, "click", overlayFeatureClick);
-    // marker.setMap(map);
-    boundMarkers.push(marker);
-}
-
-function showBoundMarkers(bmMarkers) {
-    if(boundMarkers != bmMarkers) {
-        for(var i = 0; i < boundMarkers.length; i++) {
-            var old = boundMarkers[i];
-            old.setMap(null);
-        }
-    }
-    for(var i = 0; i < bmMarkers.length; i++) {
-        var marker = bmMarkers[i];
-        marker.setMap(map);
-        marker.show();
-    }
-    $("#toolbarBoundMarkers")[0].checked = true;
-}
-
-function simpleSetMarkers(psdata, markers) {
+//  根据json数据生成地名的地图要素（点或线），并加入列表中
+function createGeonameFeature(psdata, markers) {
     for (var i = 0; i < psdata.length; i++) {
         var data = psdata[i];
         data["selected"] = false;
@@ -347,7 +148,245 @@ function simpleSetMarkers(psdata, markers) {
     }
 }
 
-//	新的点标注
+//	显示一定量的地点
+function showGeonames(psdata) {
+    // placesHide();
+    // createGeonameFeature(psdata, showingMarkers);
+    // setNewMarkers(psdata);
+    if(psdata) {
+        setShowingGeonames(psdata);
+    } else {
+        showingMarkers = markers;
+    }
+    placesShow();
+    $("#toolbarPlaces")[0].selected = true;
+}
+
+//  设置某些地点需要显示（暂时不显示出来，调用placesShow方法再最终显示出来）
+function setShowingGeonames(psdata) {
+    showingMarkers = [];
+    for(var i = 0; i < markers.length; i++) {
+        for(var j = 0; j < psdata.length; j++) {
+            if(markers[i].getExtData(0)['id'] == psdata[j]['id']) {
+                showingMarkers.push(markers[i]);
+                break;
+            }
+        }
+    }
+    return showingMarkers;
+}
+
+//  根据json数据生成行政区多边形，并加入列表中
+function createDistPolygon(distjson, dists) {
+    if(!distjson.path) {
+        return;
+    }
+    distjson['overlay'] = "dist";
+    var pathArr = JSON.parse(distjson.path);
+    var polygon = new AMap.Polygon({
+        zIndex: 40,
+        extData: distjson,
+        path: pathArr,//设置多边形边界路径
+        strokeColor: "#FF44FF", //线颜色
+        strokeOpacity: 0.3, //线透明度
+        strokeWeight: 1.5,    //线宽
+        fillColor: "#1791fc", //填充色
+        fillOpacity: 0.3//填充透明度
+    });
+    // AMap.event.addListener(polygon, "dblclick", distDbClick);
+    AMap.event.addListener(polygon, "mouseover", overlayHighlight);
+    AMap.event.addListener(polygon, "mouseout", overlayMouseOut);
+    AMap.event.addListener(polygon, "click", overlayFeatureClick);
+    // polygon.setMap(map);
+    dists.push(polygon);
+}
+
+//  产生临时行政区域多边形
+function initTmpDists() {
+    var wholeTmpDistsUrl = 'wholeEasyBounds.action';
+    if(admin) {
+        wholeTmpDistsUrl = "";
+    }
+    $.ajax({
+        url: wholeTmpDistsUrl,
+        type:'get',
+        dataType: 'json',
+        success:function(dist_data){
+            var distArrayJson = dist_data;
+            // initBounds(boundArrayJson);
+            for(var i = 0; i < distArrayJson.length; i++) {
+                var distjson = distArrayJson[i];
+                distjson['selected'] = false;
+                createDistPolygon(distjson, distPolygons);
+            }
+            showingDists = distPolygons;
+        },
+        error:function(dist_data){
+            console.log(dist_data);
+        }
+    });
+}
+
+//  显示部分行政区域，第二个参数表示是否自动调整地图范围
+function showDists(distpolygons, fit) {
+    if(distPolygons != distpolygons) {
+        for(var i = 0; i < distPolygons.length; i++) {
+            var old = distPolygons[i];
+            old.setMap(null);
+        }
+    }
+    for(var i = 0; i < distpolygons.length; i++) {
+        var polygon = distpolygons[i];
+        polygon.setMap(map);
+        polygon.show();
+    }
+    $("#toolbarDists")[0].checked = true;
+    if(fit) {
+        map.setFitView(distpolygons);
+    }
+}
+
+//  初始化行政界线
+function initBounds(show) {
+    var wholeBoundsUrl = 'wholeEasyBounds.action';
+
+    $.ajax({
+        url: wholeBoundsUrl,
+        type:'get',
+        dataType: 'json',
+        success:function(bound_data){
+            var boundArrayJson = bound_data;
+            // initBounds(boundArrayJson);
+            for(var i = 0; i < boundArrayJson.length; i++) {
+                var boundjson = boundArrayJson[i];
+                boundjson['selected'] = false;
+                createBoundPolyline(boundjson, boundPolylines);
+            }
+            showingBounds = boundPolylines;
+            setResultItems(boundArrayJson, "boundresults", "bound");
+            if(show) {
+                boundsShow();
+            }
+        },
+        error:function(bound_data){
+            console.log(bound_data);
+        }
+    });
+
+    // showBounds(boundPolylines);
+}
+
+//  根据json数据生成行政界线地图要素，并加入列表中
+function createBoundPolyline(boundjson, bounds) {
+    if(!boundjson.path) {
+        return;
+    }
+    boundjson['overlay'] = "bound";
+    var lineArr = JSON.parse(boundjson.path);
+    var polyline = new AMap.Polyline({
+        zIndex: 50,
+        extData: boundjson,
+        path: lineArr,//设置多边形边界路径
+        strokeColor: "#FF33FF", //线颜色
+        strokeOpacity: 0.9,       //线透明度
+        strokeWeight: 3,        //线宽
+        strokeStyle: "solid",   //线样式
+        strokeDasharray: [10, 5] //补充线样式
+    });
+    // AMap.event.addListener(polyline, "dblclick", boundDbClick);
+    AMap.event.addListener(polyline, "mouseover", overlayHighlight);
+    AMap.event.addListener(polyline, "mouseout", overlayMouseOut);
+    AMap.event.addListener(polyline, "click", overlayFeatureClick);
+    // polyline.setMap(map);
+    bounds.push(polyline);
+}
+
+//  显示部分行政界线
+function showBounds(boundPylylines) {
+    if(boundPolylines != boundPylylines) {
+        for(var i = 0; i < boundPolylines.length; i++) {
+            var old = boundPolylines[i];
+            old.setMap(null);
+        }
+    }
+    for(var i = 0; i < boundPylylines.length; i++) {
+        var polyline = boundPylylines[i];
+        polyline.setMap(map);
+        polyline.show();
+    }
+
+    $("#toolbarBounds")[0].checked = true;
+}
+
+//  初始化界桩
+function initBoundMarkers(show) {
+    var wholebmurl = 'wholeEasyBoundMarkers.action';
+    $.ajax({
+        url: wholebmurl,
+        type:'get',
+        dataType: 'json',
+        success:function(bm_data){
+            var bmArrayJson = bm_data;
+            setResultItems(bmArrayJson, "boundmarkersall", "boundmarker");
+            setResultItems(bmArrayJson, "boundmarkrsresults", "boundmarker");
+            // initBoundMarkers(bmArrayJson);
+            for(var i = 0; i < bmArrayJson.length; i++) {
+                var bmjson = bmArrayJson[i];
+                bmjson['selected'] = false;
+                createBoundMarkers(bmjson, boundMarkers);
+            }
+            showingbms = boundMarkers;
+            if(show) {
+                bdmarksShow();
+            }
+        },
+        error:function(bm_data){
+            console.log(bm_data);
+        }
+    });
+
+    // showBoundMarkers(boundMarkers);
+}
+
+//  根据json数据生成界桩地图要素，并加入列表中
+function createBoundMarkers(bmjson, boundMarkers) {
+    if(!bmjson.position) {
+        return;
+    }
+    bmjson['overlay'] = "boundmarker";
+    var marker = new AMap.Marker({
+        // map: map,
+        position: bmjson.position,
+        zIndex: 180,
+        extData: bmjson,
+        title: bmjson.name,
+        icon: "images/markers/boundmarker_blue.png",
+    });
+    // AMap.event.addListener(marker, "dblclick", bdmarkDbClick);
+    AMap.event.addListener(marker, "mouseover", overlayHighlight);
+    AMap.event.addListener(marker, "mouseout", overlayMouseOut);
+    AMap.event.addListener(marker, "click", overlayFeatureClick);
+    // marker.setMap(map);
+    boundMarkers.push(marker);
+}
+
+//  显示部分界桩
+function showBoundMarkers(bmMarkers) {
+    if(boundMarkers != bmMarkers) {
+        for(var i = 0; i < boundMarkers.length; i++) {
+            var old = boundMarkers[i];
+            old.setMap(null);
+        }
+    }
+    for(var i = 0; i < bmMarkers.length; i++) {
+        var marker = bmMarkers[i];
+        marker.setMap(map);
+        marker.show();
+    }
+    $("#toolbarBoundMarkers")[0].checked = true;
+}
+
+//	产生新的点标注
 function setNewMarkers(newdata) {
     for(var i = 0; i < showingMarkers.length; i++) {
         var marker = showingMarkers[i];
@@ -357,7 +396,7 @@ function setNewMarkers(newdata) {
     }
     closeInfoWindow();
     showingMarkers = [];
-    simpleSetMarkers(newdata, showingMarkers);
+    createGeonameFeature(newdata, showingMarkers);
     // map.setFitView();
 }
 
@@ -440,7 +479,7 @@ function setResultsInDiv(items, divname) {
     parentdiv.innerHTML = totalstr;
 }
 
-//	产生左边结果栏的一条数据——名称，位置，起点/终点，最左序号，下方详情
+//	产生右边结果栏的一条数据——名称，位置，起点/终点，最左序号，下方详情
 function consResultItem(clas, name, id, type, order, content){
     str = "<div class='list-group-item'" +"onclick=\"gotoOverlay('"+ clas + "', '" + id + "')\"" +
         "><div class='SearchResult_item_left' " +
@@ -452,73 +491,29 @@ function consResultItem(clas, name, id, type, order, content){
     return str;
 }
 
-//	产生左边结果栏的一条数据，place为地点的json数据
+//	产生右边结果栏的一条地点数据
 function consPlaceResult(place, order) {
     return consResultItem("geoname" ,place.name, place.id, place['小类'], order,
         "地域代码：" + place.dist);
     // return consResultItem_old(place.name, place.position, place['小类'], order, "地域代码：" + place.dist);
 }
+//	产生右边结果栏的一条行政区域数据
 function consDistResult(dist, order) {
     return consResultItem("dist" ,dist.name, dist.id, dist['Grade'], order,
         "地域代码：" + dist.id + "&nbsp;&nbsp;&nbsp;上级行政区:" + dist['上级行政区']);
 }
+//	产生右边结果栏的一条行政界线数据
 function consBoundResult(bound, order) {
     return consResultItem("bound" ,bound.name, bound.Id, bound['Grade'], order,
         "相关行政区：" + bound.LeftName + ", " + bound.RightName);
 }
+//	产生右边结果栏的一条界桩数据
 function consBoundMarkerResult(bm, order) {
     return consResultItem("bm" ,bm.name, bm.Id, bm['TypeName'], order,
         "相关行政区：" + bm.relatedDists);
 }
 
-//	初始化所有点标注
-function initmarkers(pdata) {
-    // if(pdata) {
-    //     showingPlaces = pdata;
-    // } else {
-    //     showingPlaces = placedata;
-    // }
-    for(var i = 0; i < markers.length; i++) {
-        var marker = markers[i];
-        marker.hide();
-        marker.setMap(null);
-        map.remove(marker);
-    }
-    markers = [];
-    var pldata = pdata ? pdata : placedata;
-    simpleSetMarkers(pldata, markers);
-    setResultItems(pldata, "placeresults", "geoname")
-    setShowingMarkers(markers);
-    showMarkers();
-}
-
-//	显示一定量的点标注
-function showMarkers(psdata) {
-    // placesHide();
-    // simpleSetMarkers(psdata, showingMarkers);
-    // setNewMarkers(psdata);
-    if(psdata) {
-        setShowingMarkers(psdata);
-    } else {
-        showingMarkers = markers;
-    }
-    placesShow();
-    $("#toolbarPlaces")[0].selected = true;
-}
-
-function setShowingMarkers(psdata) {
-    showingMarkers = [];
-    for(var i = 0; i < markers.length; i++) {
-        for(var j = 0; j < psdata.length; j++) {
-            if(markers[i].getExtData(0)['id'] == psdata[j]['id']) {
-                showingMarkers.push(markers[i]);
-                break;
-            }
-        }
-    }
-    return showingMarkers;
-}
-
+//  根据json显示出地图要素，包括地名、行政区、行政界线、界桩
 function showOverlays(psdata, distdata, bounddata, bmdata) {
     if(distdata == "{}") {
         distsHide();
@@ -543,12 +538,13 @@ function showOverlays(psdata, distdata, bounddata, bmdata) {
         placesHide();
         $("#toolbarPlaces")[0].selected = false;
     } else {
-        showMarkers(psdata);
+        showGeonames(psdata);
     }
 }
 
+//  根据json设置要显示的地图要素，包括地名、行政区、行政界线、界桩（暂时不显示，调用showXXX方法最终显示出来）
 function setShowingOverlays(psdata, distdata, bounddata, bmdata) {
-    // setShowingMarkers(psdata);
+    // setShowingGeonames(psdata);
 
     showingDists = [];
     for(var i = 0; i < distPolygons.length; i++) {
@@ -582,11 +578,12 @@ function setShowingOverlays(psdata, distdata, bounddata, bmdata) {
 
 }
 
-//	点击标注Marker时
+//	点击地名要素时
 function mapFeatureClick(e){
     openInfoWindow(e);
 }
 
+//  地名要素高亮显示
 function markerHighlight(e) {
     var fea = e.target;
     var data = fea.getExtData();
@@ -598,6 +595,7 @@ function markerHighlight(e) {
 
 }
 
+//  取消地名要素高亮显示
 function markerUnhighlight(e) {
     var fea = e.target;
     var data = fea.getExtData();
@@ -609,6 +607,7 @@ function markerUnhighlight(e) {
     }
 }
 
+//  鼠标移开地名要素时
 function markerMouseOut(e) {
     var fea = e.target;
     var data = fea.getExtData();
@@ -622,10 +621,12 @@ function markerMouseOut(e) {
     }
 }
 
+//	点击行政区、行政界线、界桩要素时
 function overlayFeatureClick(e){
     openSimpleInfoWindow(e);
 }
 
+//  行政区、行政界线、界桩要素高亮显示
 function overlayHighlight(e) {
     var fea = e.target;
     var data = fea.getExtData();
@@ -647,6 +648,7 @@ function overlayHighlight(e) {
 
 }
 
+//  取消行政区、行政界线、界桩要素高亮显示
 function overlayUnhighlight(e) {
     var fea = e.target;
     var data = fea.getExtData();
@@ -668,6 +670,7 @@ function overlayUnhighlight(e) {
     }
 }
 
+//  鼠标移开行政区、行政界线、界桩要素时
 function overlayMouseOut(e) {
     var fea = e.target;
     var data = fea.getExtData();
@@ -691,89 +694,6 @@ function overlayMouseOut(e) {
     }
 }
 
-
-//	附近搜索
-function srhpoi() {
-    var item0 = consPlaceResult(windata, "中");
-
-    var inputele = document.getElementById("winsrhword");
-    var srhtxt = inputele.value;
-    var placeSearch = new AMap.PlaceSearch({ //构造地点查询类
-        pageSize: 5,
-        pageIndex: 1,
-        city: windata.citycode, //城市
-        map: map,
-        panel: "pathinfo1"
-    });
-    placeSearch.searchNearBy(srhtxt, windata.position, 500, function(status, result) {
-        var test = 0;
-    });
-    closeWindowBySearch();
-    clearNavPanel();
-    setResultsInDiv([item0], "pathpoints");
-}
-
-//	驾车搜索
-function srhdrive() {
-    navMethod = "drive";
-    var transOptions = createTransOption();
-    var trans = new AMap.Driving(transOptions);
-    trans.search(orgdata.position, destdata.position, function(status, result) {
-        //TODO:开发者使用result自己创建交互面板和地图展示
-    });
-    closeWindowBySearch();
-}
-
-//	公交搜索
-function srhbus() {
-    navMethod = "trans";
-    var transOptions = createTransOption();
-    var trans = new AMap.Transfer(transOptions);
-    trans.search(orgdata.position, destdata.position, function(status, result) {
-        //TODO:开发者使用result自己创建交互面板和地图展示
-    });
-    closeWindowBySearch();
-}
-
-//	步行搜索
-function srhwalk() {
-    navMethod = "walk";
-    var transOptions = createTransOption();
-    var trans = new AMap.Walking(transOptions);
-    trans.search(orgdata.position, destdata.position, function(status, result) {
-        //TODO:开发者使用result自己创建交互面板和地图展示
-    });
-    closeWindowBySearch();
-}
-
-//	生成搜索Options的内容
-function createTransOption() {
-    var inputele = document.getElementById("winsrhword");
-    var srhtxt = inputele.value;
-    var soe = document.getElementById("startorend");
-    var otherplace = findPlaceByAttr("name", srhtxt);
-    if(soe.innerHTML == "起点") {
-        orgdata = otherplace;
-        destdata = windata;
-    } else {
-        orgdata = windata;
-        destdata = otherplace;
-    }
-    var item1 = consPlaceResult(orgdata, "起");
-    var item2 = consPlaceResult(destdata, "终");
-    clearNavPanel();
-    setResultsInDiv([item1, item2], "pathpoints");
-
-    var transOptions = {
-        city: orgdata.citycode,
-        citid: destdata.citycode,
-//				policy: AMap.TransferPolicy.LEAST_TIME,
-        map: map,
-        panel: "pathinfo1"
-    };
-    return transOptions;
-}
-
 //	在所有地名中按属性查询
 function findPlaceByAttr(attr, _name) {
     var pla = null;
@@ -787,101 +707,7 @@ function findPlaceByAttr(attr, _name) {
     return pla;
 }
 
-//	因为搜索而关闭信息窗体
-function closeWindowBySearch() {
-    document.getElementById("winsrhword").value = "";
-    closeInfoWindow();
-    map.clearMap();
-    initmarkers();
-    toChangeHead("hm_favnav");
-}
-
-//	清空“路径规划”容器的内容
-function clearNavPanel() {
-    var navPanel = document.getElementById("pathinfo1");
-    navPanel.innerHTML = "";
-}
-
-//	设置信息窗体搜索方式
-function selectsrhmethod(e) {
-    var oid = e.id;
-    var posObj = document.getElementById("findnear");
-    var fhObj = document.getElementById("fromhere");
-    var thObj = document.getElementById("tothere");
-
-    switch(oid) {
-        case "findnear":{
-            posObj.className = "tab selected";
-            fhObj.className = "tab";
-            thObj.className = "tab";
-            $("#startorend")[0].innerHTML = "";
-            $("#poisrhbtn")[0].className = "search-button";
-            $("#navsrhdiv")[0].className = "nav-button hide";
-            break;
-        }
-        case "fromhere":{
-            posObj.className = "tab";
-            fhObj.className = "tab selected";
-            thObj.className = "tab";
-            $("#startorend")[0].innerHTML = "终点";
-            $("#poisrhbtn")[0].className = "search-button hide";
-            $("#navsrhdiv")[0].className = "nav-button";
-            break;
-        }
-        case "tothere":{
-            posObj.className = "tab";
-            fhObj.className = "tab";
-            thObj.className = "tab selected";
-            $("#startorend")[0].innerHTML = "起点";
-            $("#poisrhbtn")[0].className = "search-button hide";
-            $("#navsrhdiv")[0].className = "nav-button";
-            break;
-        }
-    }
-
-}
-
-//	切换左边栏的窗体
-function toChangeHead(oid) {
-    var titles=["hm_wikinav", "hm_classnav", "hm_favnav"];
-    var infoClassObj = document.getElementById("hm_infoClass");
-    var favoritesObj = document.getElementById("hm_favorites");
-    var wikiClassObj = document.getElementById("hm_wikiClass");
-
-    for(var i = 0;i < titles.length; i++) {
-        var title = titles[i];
-        var preHeadObj = document.getElementById(title);
-        var reg = new RegExp('(\\s|^)' + "active" + '(\\s|$)');
-        preHeadObj.className = preHeadObj.className.replace(reg, ' ');
-    }
-    document.getElementById(oid).className += " active";
-    document.getElementById("hm_mapInfo").style.display="block";
-    document.getElementById("placeresults").style.display="none";
-    switch(oid) {
-        case "hm_classnav":{
-            infoClassObj.style.display="block";
-            favoritesObj.style.display="none";
-            document.getElementById("pathinfo1").style.display = "none";
-            wikiClassObj.style.display="none";
-            break;
-        }
-        case "hm_favnav":{
-            infoClassObj.style.display="none";
-            favoritesObj.style.display="block";
-            document.getElementById("pathinfo1").style.display = "block";
-            wikiClassObj.style.display="none";
-            break;
-        }
-        case "hm_wikinav":{
-            infoClassObj.style.display="none";
-            favoritesObj.style.display="none";
-            document.getElementById("pathinfo1").style.display = "none";
-            wikiClassObj.style.display="block";
-            break;
-        }
-    }
-}
-
+//  除地名外其他要素都设置为空
 function setPlaceElseNone() {
     var nullArray = [];
     boundsHide();
@@ -894,11 +720,12 @@ function setPlaceElseNone() {
     setResultItems(nullArray, "boundmarkrsresults", "boundmarker");
 }
 
+//  显示所有类型的地名
 function gotoAllType() {
     var tmpdata = placedata;
     showingPlaces = tmpdata;
     // setNewMarkers(tmpdata);
-    showMarkers(tmpdata);
+    showGeonames(tmpdata);
     setPlaceElseNone();
     setResultItems(tmpdata, "placeresults");
     toPlaceRes();
@@ -916,7 +743,7 @@ function gotoBigType(bigtype) {
     if(tmpdata.length > 0) {
         showingPlaces = tmpdata;
         // setNewMarkers(tmpdata);
-        showMarkers(tmpdata);
+        showGeonames(tmpdata);
         setPlaceElseNone();
         setResultItems(tmpdata, "placeresults");
         toPlaceRes();
@@ -938,7 +765,7 @@ function gotoSmallType(bigtype, smalltype) {
     if(tmpdata.length > 0) {
         showingPlaces = tmpdata;
         // setNewMarkers(tmpdata);
-        showMarkers(tmpdata);
+        showGeonames(tmpdata);
         setPlaceElseNone();
         setResultItems(tmpdata, "placeresults");
         toPlaceRes();
@@ -962,7 +789,7 @@ function gotoDist(distcode) {
     if(tmpdata.length > 0) {
         showingPlaces = tmpdata;
         // setNewMarkers(tmpdata);
-        showMarkers(tmpdata);
+        showGeonames(tmpdata);
         setResultItems(tmpdata, "placeresults");
     } else {
         alert("暂无 " + distcode + " 地区相关数据...");
@@ -1008,6 +835,7 @@ function gotoDist(distcode) {
     }
 }
 
+//  找到某行政区的所有行政界线
 function findDistBounds(distcode) {
     var ba = [];
     for(var i = 0; i < boundPolylines.length; i++) {
@@ -1020,6 +848,7 @@ function findDistBounds(distcode) {
     return ba;
 }
 
+//  找到界桩相关的所有行政界线
 function findBoundBms(bid, bma) {
     for(var i = 0; i < boundMarkers.length; i++) {
         var bm = boundMarkers[i];
@@ -1053,7 +882,7 @@ function gotoPlace(posStr, name) {
     }
 }
 
-//	地图前往某一坐标点
+//	地图前往某一地名点
 function gotoGeoname(placeid) {
     var pla = findPlaceByAttr("id", placeid);
     closeInfoWindow();
@@ -1071,6 +900,7 @@ function gotoGeoname(placeid) {
     }
 }
 
+//	地图前往某一覆盖物（地名、行政区、行政界线、界桩等）
 function gotoOverlay(type, id) {
     var overlay, center;
     var zom = 11;
@@ -1101,6 +931,7 @@ function gotoOverlay(type, id) {
 
 }
 
+//  在覆盖物数组中根据id查询某一覆盖物
 function findOverlay(overlays, id) {
     for(var i = 0; i < overlays.length; i++) {
         var ov = overlays[i];
@@ -1111,6 +942,7 @@ function findOverlay(overlays, id) {
     return null;
 }
 
+//  根据地区编码查询行政区要素
 function findDistPolygon(distcode) {
     for(var i = 0; i < distPolygons.length; i++) {
         var dp = distPolygons[i];
@@ -1141,6 +973,7 @@ function distIn(sub, par) {
     return true;
 }
 
+//  显示地名图层
 function placesShow() {
 
     if(showingMarkers != markers &&
@@ -1158,6 +991,7 @@ function placesShow() {
     map.setFitView(showingMarkers);
 }
 
+//  隐藏地名图层
 function placesHide() {
     for(var i = 0; i < showingMarkers.length; i++) {
         var marker = showingMarkers[i];
@@ -1167,10 +1001,12 @@ function placesHide() {
     }
 }
 
+//  显示行政区图层
 function distsShow(fit) {
     showDists(showingDists, fit);
 }
 
+//  隐藏行政区图层
 function distsHide() {
     for(var i = 0; i < showingDists.length; i++) {
         var dist = showingDists[i];
@@ -1178,10 +1014,12 @@ function distsHide() {
     }
 }
 
+//  显示行政界线图层
 function boundsShow() {
     showBounds(showingBounds);
 }
 
+//  隐藏行政界线图层
 function boundsHide() {
     for(var i = 0; i < showingBounds.length; i++) {
         var bound = showingBounds[i];
@@ -1189,10 +1027,12 @@ function boundsHide() {
     }
 }
 
+//  显示界桩图层
 function bdmarksShow() {
     showBoundMarkers(showingbms);
 }
 
+//  隐藏界桩图层
 function bdmarksHide() {
     for(var i = 0; i < showingbms.length; i++) {
         var boundMarker = showingbms[i];

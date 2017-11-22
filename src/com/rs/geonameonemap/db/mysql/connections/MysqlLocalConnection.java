@@ -6,7 +6,7 @@ import java.sql.*;
 import java.io.*;
 import java.util.*;
 /**
- * Created by Administrator on 2017/7/27 0027.
+ * MySQL 数据库读写，底层操作类
  */
 public class MysqlLocalConnection {
     public static final String dbDriver = "com.mysql.jdbc.Driver";
@@ -19,13 +19,14 @@ public class MysqlLocalConnection {
     protected String dbName = null;
     public static String defDbName = "";
     protected static MysqlLocalConnection instance = null;
-    protected Connection conn = null;
+    protected Connection conn = null;   //  系统中所有数据库操作共用此连接
 
+    //  所有数据库操作共用此操作类实例
     public static MysqlLocalConnection getInstance() {
         if(instance == null) {
             instance = new MysqlLocalConnection();
         }
-        return  instance;
+        return instance;
     }
 
     public String getDbName() {
@@ -36,6 +37,7 @@ public class MysqlLocalConnection {
         this.dbName = _dbName;
     }
 
+    //  执行SQL查询语句
     public static ResultSet executeQuery(String sql) {
         Statement st;
         ResultSet rs = null;
@@ -49,6 +51,7 @@ public class MysqlLocalConnection {
         return rs;
     }
 
+    //  执行SQL增删、更新语句
     public static boolean excuteUpdate(String sql) {
         Statement st;
         Connection con = MysqlLocalConnection.getConnection();

@@ -10,7 +10,7 @@ import java.util.*;
 import java.io.*;
 
 /**
- * Created by Administrator on 2017/9/5 0005.
+ * 秭归地名查询操作类（过时）
  */
 public class ZPlaceQuery extends MySQLQuery {
 
@@ -49,8 +49,9 @@ public class ZPlaceQuery extends MySQLQuery {
 //        }
     }
 
+    //  批量读取doc文档构建地名数据库
     static void typeIntoDb(String typeName) throws Exception  {
-        String rootPath = "D:\\temp\\秭归县第二次全国地名普查地名成果表\\";
+        String rootPath = "D:\\temp\\秭归县第二次全国地名普查地名成果表" + File.separator;
         String folderPath = rootPath + typeName + File.separator;
         File folder = new File(folderPath);
         File[] files = folder.listFiles();
@@ -62,8 +63,9 @@ public class ZPlaceQuery extends MySQLQuery {
         }
     }
 
+    //  读取单个doc文档构建地名数据库
     static void indivIntoDb(String typeName, String indivName) throws Exception  {
-        String rootPath = "D:\\temp\\秭归县第二次全国地名普查地名成果表\\";
+        String rootPath = "D:\\temp\\秭归县第二次全国地名普查地名成果表" + File.separator;
         String filePath = rootPath + typeName + File.separator + indivName;
         Map<String, String> map = WordDemo01.readZiguiDocsTable(filePath);
         map.put("大类", typeName + "类");

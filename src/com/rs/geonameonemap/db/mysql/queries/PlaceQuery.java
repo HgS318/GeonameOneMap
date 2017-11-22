@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.*;
 import java.io.*;
 
+/**
+ * 秭归地名查询操作类（现用）
+ */
 public class PlaceQuery extends MySQLQuery {
 
 //    public static final String tbName = "pn";
@@ -23,11 +26,13 @@ public class PlaceQuery extends MySQLQuery {
             "dist", "citycode", "ChnSpell", "brif", "TSCG", "DXCG", "SJCG", "SJQJ", "SJHR",
             "SJDJ", "SJDS", "YGCG", "YGDS", "SWCG", "LTCG", "SYCG", "SPCG"
     };
+    //  简单式地名数据，只导出以下列
     public static String[] easyColumnNames = new String[]{
             "id", "name", "nickname", "大类", "小类", "position", "spaType", "path",
             "所在跨行政区", "dist", "citycode", "spell", "brif", "desbrif"
     };
 
+    //  获取所有地名的json
     public static String getTotalGeonameInfo(){
         String sql = "SELECT * from " + tbName;
         List<PlaceJson> ps = searchPlaces(sql);
@@ -38,6 +43,7 @@ public class PlaceQuery extends MySQLQuery {
         return str;
     }
 
+    //  获取所有临时地名的json
     public static String getTotalTempGeonameInfo(){
         String sql = "SELECT * from " + tmpTbName;
         List<PlaceJson> ps = searchPlaces(sql);
@@ -48,10 +54,10 @@ public class PlaceQuery extends MySQLQuery {
         return str;
     }
 
+    //  获取所有地名的简单式json
     public static String getEasyGeonameInfo(){
         String cns = MySQLQuery.createSqlColumns(easyColumnNames);
         String sql = "SELECT " + cns + " from " + tbName;
-//        List<PlaceJson> ps = searchPlaces(sql);
         List<PlaceJson> ps = searchEasyPlaces(sql);
         if(ps.size() < 1) {
             return null;
@@ -61,6 +67,7 @@ public class PlaceQuery extends MySQLQuery {
         return str;
     }
 
+    //  获取所有临时地名的简单式json
     public static String getEasyTempGeonameInfo(){
         String sql = "SELECT * from " + tmpTbName;
         List<PlaceJson> ps = searchPlaces(sql);
@@ -71,6 +78,7 @@ public class PlaceQuery extends MySQLQuery {
         return str;
     }
 
+    //  随机获取一些地名
     public static String getRandomResults(boolean admin) {
         String sql = null;
         if(admin) {
@@ -122,6 +130,7 @@ public class PlaceQuery extends MySQLQuery {
         return str;
     }
 
+    //  通过字符串型的列查询相关地名，输出简单式json
     public static String getGeonameInfoByAttr(String attr, String val, boolean admin){
         String sql = admin ? "SELECT * from " + tmpTbName + " where " + attr + " = '" + val + "'":
             "SELECT * from " + tbName + " where " + attr + " = '" + val + "'";
@@ -130,14 +139,16 @@ public class PlaceQuery extends MySQLQuery {
         return str;
     }
 
+    //  通过数值型的列查询相关地名，输出简单式json
     public static String getGeonameInfoByNum(String attr, String numVal, boolean admin){
         String sql = admin ? "SELECT * from " + tmpTbName + " where " + attr + " = " + numVal :
-        "SELECT * from " + tbName + " where " + attr + " = " + numVal;
+            "SELECT * from " + tbName + " where " + attr + " = " + numVal;
         List<PlaceJson> ps = searchPlaces(sql);
         String str = PlaceJson.toJson(ps);
         return str;
     }
 
+    //  通过字符串型的列查询相关地名，输出完整式json
     public static String getGeonameFullByAttr(String attr, String val, boolean admin){
         String sql =admin ? "SELECT * from " + tmpTbName + " where " + attr + " = '" + val + "'" :
                 "SELECT * from " + tbName + " where " + attr + " = '" + val + "'";
@@ -146,18 +157,21 @@ public class PlaceQuery extends MySQLQuery {
         return str;
     }
 
+    //  通过字符串型的列查询相关地名
     public static List<PlaceJson> searchByAttribute(String attr, String val) {
         String sql = "SELECT * from " + tbName + " where " + attr + " = '" + val + "'";
         List<PlaceJson> ps = searchPlaces(sql);
         return ps;
     }
 
+    //  通过数值型的列查询相关地名
     public static List<PlaceJson> searchByNumber(String attr, Object numObj) {
         String sql = "SELECT * from " + tbName + " where " + attr + " = " + numObj;
         List<PlaceJson> ps = searchPlaces(sql);
         return ps;
     }
 
+    //  通过名称模糊查询地名
     public static List<PlaceJson> searchFuzzy(String val) {
         String sql = "SELECT * from " + tbName + " where name like '%" + val + "' ";
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
@@ -165,6 +179,7 @@ public class PlaceQuery extends MySQLQuery {
         return ps;
     }
 
+    //  通过一个SQL语句查询地名
     public static List<PlaceJson> searchPlaces(String sql) {
         PlaceJson.consColumnNames(dbType, tbName);
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
@@ -181,6 +196,7 @@ public class PlaceQuery extends MySQLQuery {
         return ps;
     }
 
+    //  通过一个SQL语句查询easy型地名（引号。换行号等不必替换）
     public static List<PlaceJson> searchEasyPlaces(String sql) {
         PlaceJson.consColumnNames(dbType, tbName);
         ResultSet rs = MysqlLocalConnection.executeQuery(sql);
@@ -198,7 +214,7 @@ public class PlaceQuery extends MySQLQuery {
     }
 
 
-
+    //  将一个地名写入数据库中
     public static boolean placeIntoDb(Map<String, String> map) {
         String sql= "insert into " + tbName +
                 " (`geonamecode`,`类别名称`,`name`,`民族文字`,`语种`,`ChnSpell`,`使用时间`,`abbre`,`nickname`,`oldname`," +
@@ -288,6 +304,7 @@ public class PlaceQuery extends MySQLQuery {
         return true;
     }
 
+    //  获取行政区的地名代码
     public static long getDist(String distStr) {
         if("秭归县".equals(distStr)) {
             return 420527000;

@@ -7,9 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/*
+	地名的 json 操作类
+ */
 public class PlaceJson extends ObjectJson {
 
 
+	//	地名的所有列名
 	protected static Map<Integer, String> columnNames = new HashMap<Integer, String>();
 
 	public static String[] fuzzyInfoCol = new String[] {
@@ -24,6 +28,7 @@ public class PlaceJson extends ObjectJson {
 		
 	}
 
+	//	根据一些字符串构造地名
 	public PlaceJson(List<String> data) {
 		for(int i = 0; i < data.size(); i++) {
 			String key = columnNames.get(i);
@@ -51,6 +56,7 @@ public class PlaceJson extends ObjectJson {
 		}
 	}
 
+	//	根据一条数据库查询结果(ResultSet)构造一个地名
 	public PlaceJson(ResultSet rs) {
 		for(int i = 0; i < columnNames.size(); i++) {
 			String key = columnNames.get(i);
@@ -86,6 +92,7 @@ public class PlaceJson extends ObjectJson {
 		}
 	}
 
+	//	根据一条数据库查询结果(ResultSet)构造一个地名，默认需要替换引号、换行等格式，easy型不必替换
 	public PlaceJson(ResultSet rs, boolean easy) {
 		for(int i = 0; i < columnNames.size(); i++) {
 			String key = columnNames.get(i);
@@ -157,9 +164,6 @@ public class PlaceJson extends ObjectJson {
 		return sb.toString();
 	}
 
-
-
-
 	public static void main(String[] args) {
 		List<PlaceJson> ps = new LinkedList<PlaceJson>();
 		List<List<String>> data = null;
@@ -178,8 +182,6 @@ public class PlaceJson extends ObjectJson {
 				ps.add(pj);
 			}
 		}
-
-
 //		System.out.print("{\'total\':" + ps.size() +", ");
 //		System.out.print("\'places\':");
 		System.out.println("[");
@@ -198,7 +200,7 @@ public class PlaceJson extends ObjectJson {
 		ObjectJson.consColumnNames(dbType, tbName, PlaceJson.columnNames);
 	}
 
-
+	//	"度分秒"格式字符串生成小数度数
 	public static double drg2num(String drg) {
 		if(drg == null || "".equals(drg)) {
 			return -200.00;
@@ -225,6 +227,7 @@ public class PlaceJson extends ObjectJson {
 		return val;
 	}
 
+	//	汉语拼音 - 英文拼写
 	public static String pinyin2spell(String py) {
 		String tmp = py;
 		tmp = tmp.replace(" ", "");

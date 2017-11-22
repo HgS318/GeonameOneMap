@@ -4,11 +4,13 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * Created by Administrator on 2017/7/23 0023.
+ * 数据库、文件操作相关的常用方法
  */
 public class DbUse {
 
-    public static void appendResult2JsonBuffer(ResultSet rs, StringBuffer jsonBuf, String[] columns) throws SQLException {
+    //  将数据库查询结果(ResultSet)的信息写入json格式的 StringBuffer 中
+    public static void appendResult2JsonBuffer(ResultSet rs, StringBuffer jsonBuf,
+            String[] columns) throws SQLException {
         jsonBuf.append("{");
         for(int j = 0; j < columns.length; j++) {
             String columnName = columns[j];
@@ -35,6 +37,7 @@ public class DbUse {
         return str;
     }
 
+    //  获取 ResultSet 结果的数目
     public static int getResultSetRowNum(ResultSet resultSet) {
         int rowCount = -1;
         try {
@@ -48,6 +51,7 @@ public class DbUse {
         return rowCount;
     }
 
+    //  构造SQL语句中的列名
     public static String columnsToSQL(String[] columns) {
         StringBuffer sb = new StringBuffer();
         for(int i = 0; i < columns.length; i++) {
@@ -60,6 +64,7 @@ public class DbUse {
         return sb.toString();
     }
 
+    //  获取文件后缀名
     public static String getFileSuffix(String fileName) {
         int dId = fileName.lastIndexOf('.');
         if(dId < 0) {
@@ -77,6 +82,7 @@ public class DbUse {
         createRandomIds(24);
     }
 
+    //  在不大于 len 的自然数中，获取互不相同的随机数（随机数的个数也是随机确定的）
     public static int[] createRandomIds(int len) {
         Random random = new Random();
         List<Integer> lis = new LinkedList<Integer>();
@@ -99,9 +105,7 @@ public class DbUse {
         int[] re = new int[total];
         for(int i = 0; i < total; i++) {
             re[i] = lis.get(i) + offset;
-//            System.out.print(re[i] + ", ");
         }
-//        System.out.println();
         return re;
     }
 

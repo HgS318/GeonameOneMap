@@ -191,7 +191,6 @@ public class JsonAction01 {
         try {
             String name = new String(request.getParameter("name").getBytes("iso-8859-1"));
             String str = PlaceQuery.getGeonameInfoByAttr("nickname" ,name, requestContainsAttr(request, "admin"));
-            toBeJson(str);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ex.getMessage();
@@ -359,10 +358,6 @@ public class JsonAction01 {
             ex.printStackTrace();
             return ex.getMessage();
         }
-        return null;
-    }
-
-    public String defInstanceJson() {
         return null;
     }
 

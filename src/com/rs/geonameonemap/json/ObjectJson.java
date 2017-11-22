@@ -9,15 +9,20 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
+
+/*
+	对象的json处理总操作类
+ */
 public class ObjectJson {
 
-	public String name;
-	public ObjectJson parent;
-	public List<ObjectJson> subclasses = new LinkedList<ObjectJson>();
-	public Map<String, String> attr = new HashMap<String, String>();
-	public boolean open = false;
+	public String name;	//	名称
+	public ObjectJson parent;	//	父对象
+	public List<ObjectJson> subclasses = new LinkedList<ObjectJson>();	//	子对象
+	public Map<String, String> attr = new HashMap<String, String>();	//	对象的 属性-值 映射表
+	public boolean open = false;	//	在树状图中，是否需要展开其子类
 //	public Map<Integer, String> columnNames = new HashMap<Integer, String>();
 
+	//	值数值型的列（其他列的值默认为字符串型）
 	public static String[] numKeys = new String[]{"id", "position", "X", "Y", "TSCG", "DXCG", "SJCG",
 			"SJQJ", "SJHR", "SJDJ", "SJDS", "YGCG", "YGDS", "SWCG", "LTCG", "SYCG", "SPCG"};
 
@@ -133,7 +138,8 @@ public class ObjectJson {
 			this.subclasses.add(sub);
 		}
 	}
-	
+
+	//	对象的完整信息的json字符串（其子类的信息递归地在出现在json中）
 	public String toFullJson() {
 		StringBuffer json=new StringBuffer();
 		json.append("{");
@@ -175,6 +181,7 @@ public class ObjectJson {
 		return str;
 	}
 
+	//	对象的完整信息的json字符串，只输出部分列的信息（其子类的信息递归地在出现在json中）
 	public String toFullJson(Collection<String> columns) {
 		StringBuffer json=new StringBuffer();
 		json.append("{");
@@ -213,6 +220,7 @@ public class ObjectJson {
 		return str;
 	}
 
+	//	对象的自身信息的json字符串，只输出部分列的信息（只包括子类的名称，子类不递归）
 	public String toJson() {
 		StringBuffer json=new StringBuffer();
 		json.append("{");
@@ -244,6 +252,7 @@ public class ObjectJson {
 		return str;
 	}
 
+	//	对象的自身信息的json字符串，只输出部分列的信息（只包括子类的名称，子类不递归）
 	public String toJson(String[] useColumns) {
 		List<String> cos = new LinkedList<String>();
 		for(String col : useColumns) {
@@ -279,6 +288,7 @@ public class ObjectJson {
 		return str;
 	}
 
+	//	对象数组输出成json数组
 	public static String toJson(ObjectJson[] ojs) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[");
@@ -290,7 +300,8 @@ public class ObjectJson {
 		sb.append("]");
 		return sb.toString();
 	}
-	
+
+	//	数值型在json中无引号，字符串型在json中有引号
 	public String jsonKeyValue(String key, String value) {
 		boolean flag = false;
 		for(String numkey : numKeys) {
@@ -305,7 +316,7 @@ public class ObjectJson {
 			return "\"" + key + "\":\"" + value +"\"";
 		}
 	}
-	
+
 	public boolean equals(Object obj) {
 		if(obj == this) {
 			return true;
@@ -321,7 +332,7 @@ public class ObjectJson {
 		
 	}
 
-
+	//	为子对象设置默认的 ChildID
 	public void setChildIds() {
 		if(subclasses.size() < 1) {
 			return;
@@ -376,7 +387,7 @@ public class ObjectJson {
 		return !hasZero;
 	}
 
-
+	//	为某一类Json操作类（地名、行政区域、行政界线或界桩）产生公共列名，通过一系列已知的列名字符串
 	public static void consColumnNames(List<String> columns, Map<Integer, String> columnNames) {
 		if(columnNames == null || columnNames.size() > 0) {
 			return;
@@ -389,6 +400,7 @@ public class ObjectJson {
 		}
 	}
 
+	//	为某一类Json操作类（地名、行政区域、行政界线或界桩）产生公共列名，通过查询操作类相对应的数据表
 	public static void consColumnNames(String dbType, String tbName, Map<Integer, String> columnNames) {
 		if(columnNames == null || columnNames.size() > 0) {
 			return;
@@ -416,6 +428,7 @@ public class ObjectJson {
 		}
 	}
 
+	//	为某一类Json操作类（地名、行政区域、行政界线或界桩）产生公共列名，通过查询操作类相对应的数据表
 	public static ResultSet consColumnNamesBySql(String dbType, String sql, Map<Integer, String> columnNames) {
 		ResultSet rs = null;
 		if("mysql".equalsIgnoreCase(dbType)) {
